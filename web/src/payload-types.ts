@@ -67,8 +67,16 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    pages: Page;
+    posts: Post;
+    studies: Study;
+    webinars: Webinar;
+    people: Person;
+    speakers: Speaker;
+    categories: Category;
     media: Media;
+    documents: Document;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,19 +84,33 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    studies: StudiesSelect<false> | StudiesSelect<true>;
+    webinars: WebinarsSelect<false> | WebinarsSelect<true>;
+    people: PeopleSelect<false> | PeopleSelect<true>;
+    speakers: SpeakersSelect<false> | SpeakersSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    navigation: Navigation;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -119,10 +141,346 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  /**
+   * Short lede shown under the page title.
+   */
+  intro?: string | null;
+  hero?:
+    | {
+        title: string;
+        subtitle?: string | null;
+        ctaLabel?: string | null;
+        ctaHref?: string | null;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  meta?: {
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describe the image for screen reader users. Leave a single space only if the image is purely decorative.
+   */
+  alt: string;
+  credit?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    wide?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageBlock".
+ */
+export interface ImageBlock {
+  image: number | Media;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoBlock".
+ */
+export interface VideoBlock {
+  url: string;
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock".
+ */
+export interface ButtonBlock {
+  label: string;
+  href: string;
+  variant?: ('primary' | 'secondary' | 'donate') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'buttonBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EmbedBlock".
+ */
+export interface EmbedBlock {
+  url: string;
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'embedBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TableBlock".
+ */
+export interface TableBlock {
+  caption?: string | null;
+  rows: {
+    cells: {
+      value?: string | null;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tableBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  items: {
+    title: string;
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordionBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  publishedAt: string;
+  byline?: string | null;
+  categories?: (number | Category)[] | null;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  layout?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  meta?: {
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Studies people can take part in, shown under Participate in Research.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studies".
+ */
+export interface Study {
+  id: number;
+  title: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  publishedAt: string;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  layout?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  meta?: {
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webinars".
+ */
+export interface Webinar {
+  id: number;
+  title: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  /**
+   * YouTube video URL.
+   */
+  url: string;
+  description?: string | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people".
+ */
+export interface Person {
+  id: number;
+  name: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  group: 'trustees' | 'team' | 'scientific-advisory-board' | 'ambassadors' | 'partners';
+  order?: number | null;
+  role?: string | null;
+  photo?: (number | null) | Media;
+  excerpt?: string | null;
+  bio?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Speakers listed on the conference pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speakers".
+ */
+export interface Speaker {
+  id: number;
+  name: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
+  role?: string | null;
+  photo?: (number | null) | Media;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,29 +502,10 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +522,52 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'studies';
+        value: number | Study;
+      } | null)
+    | ({
+        relationTo: 'webinars';
+        value: number | Webinar;
+      } | null)
+    | ({
+        relationTo: 'people';
+        value: number | Person;
+      } | null)
+    | ({
+        relationTo: 'speakers';
+        value: number | Speaker;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +577,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,11 +600,329 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  intro?: T;
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        image?: T;
+        id?: T;
+      };
+  layout?:
+    | T
+    | {
+        richText?: T | RichTextBlockSelect<T>;
+        imageBlock?: T | ImageBlockSelect<T>;
+        videoBlock?: T | VideoBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
+        embedBlock?: T | EmbedBlockSelect<T>;
+        tableBlock?: T | TableBlockSelect<T>;
+        accordionBlock?: T | AccordionBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageBlock_select".
+ */
+export interface ImageBlockSelect<T extends boolean = true> {
+  image?: T;
+  caption?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoBlock_select".
+ */
+export interface VideoBlockSelect<T extends boolean = true> {
+  url?: T;
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ButtonBlock_select".
+ */
+export interface ButtonBlockSelect<T extends boolean = true> {
+  label?: T;
+  href?: T;
+  variant?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EmbedBlock_select".
+ */
+export interface EmbedBlockSelect<T extends boolean = true> {
+  url?: T;
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TableBlock_select".
+ */
+export interface TableBlockSelect<T extends boolean = true> {
+  caption?: T;
+  rows?:
+    | T
+    | {
+        cells?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock_select".
+ */
+export interface AccordionBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  publishedAt?: T;
+  byline?: T;
+  categories?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  layout?:
+    | T
+    | {
+        richText?: T | RichTextBlockSelect<T>;
+        imageBlock?: T | ImageBlockSelect<T>;
+        videoBlock?: T | VideoBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
+        embedBlock?: T | EmbedBlockSelect<T>;
+        tableBlock?: T | TableBlockSelect<T>;
+        accordionBlock?: T | AccordionBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "studies_select".
+ */
+export interface StudiesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  publishedAt?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  layout?:
+    | T
+    | {
+        richText?: T | RichTextBlockSelect<T>;
+        imageBlock?: T | ImageBlockSelect<T>;
+        videoBlock?: T | VideoBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
+        embedBlock?: T | EmbedBlockSelect<T>;
+        tableBlock?: T | TableBlockSelect<T>;
+        accordionBlock?: T | AccordionBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "webinars_select".
+ */
+export interface WebinarsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  url?: T;
+  description?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people_select".
+ */
+export interface PeopleSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  group?: T;
+  order?: T;
+  role?: T;
+  photo?: T;
+  excerpt?: T;
+  bio?:
+    | T
+    | {
+        richText?: T | RichTextBlockSelect<T>;
+        imageBlock?: T | ImageBlockSelect<T>;
+        videoBlock?: T | VideoBlockSelect<T>;
+        buttonBlock?: T | ButtonBlockSelect<T>;
+        embedBlock?: T | EmbedBlockSelect<T>;
+        tableBlock?: T | TableBlockSelect<T>;
+        accordionBlock?: T | AccordionBlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "speakers_select".
+ */
+export interface SpeakersSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  role?: T;
+  photo?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  credit?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        wide?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -256,24 +945,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +985,170 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  announcement?: {
+    enabled?: boolean | null;
+    text?: string | null;
+    linkLabel?: string | null;
+    linkHref?: string | null;
+  };
+  donateUrl: string;
+  registryUrl: string;
+  contact: {
+    email: string;
+    address: string;
+    mapUrl?: string | null;
+    charityNumber: string;
+    charityRegisterUrl?: string | null;
+  };
+  social?:
+    | {
+        platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  stats?:
+    | {
+        value: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  newsletter?: {
+    heading?: string | null;
+    body?: string | null;
+    signupUrl?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  main?:
+    | {
+        label: string;
+        href: string;
+        children?:
+          | {
+              label: string;
+              href: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  footer?:
+    | {
+        heading: string;
+        links?:
+          | {
+              label: string;
+              href: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  announcement?:
+    | T
+    | {
+        enabled?: T;
+        text?: T;
+        linkLabel?: T;
+        linkHref?: T;
+      };
+  donateUrl?: T;
+  registryUrl?: T;
+  contact?:
+    | T
+    | {
+        email?: T;
+        address?: T;
+        mapUrl?: T;
+        charityNumber?: T;
+        charityRegisterUrl?: T;
+      };
+  social?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        description?: T;
+        id?: T;
+      };
+  newsletter?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        signupUrl?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  main?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footer?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

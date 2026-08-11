@@ -1,9 +1,18 @@
-import { defineConfig } from 'vitest/config'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from 'vitest/config'
+
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@payload-config': path.resolve(dirname, 'src/payload.config.ts'),
+      '@': path.resolve(dirname, 'src'),
+    },
+  },
   test: {
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],

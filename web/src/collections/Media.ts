@@ -5,12 +5,31 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    useAsTitle: 'alt',
+  },
   fields: [
     {
       name: 'alt',
       type: 'text',
       required: true,
+      admin: {
+        description:
+          'Describe the image for screen reader users. Leave a single space only if the image is purely decorative.',
+      },
+    },
+    {
+      name: 'credit',
+      type: 'text',
     },
   ],
-  upload: true,
+  upload: {
+    mimeTypes: ['image/*'],
+    focalPoint: false,
+    imageSizes: [
+      { name: 'thumbnail', width: 400, height: undefined, position: 'centre' },
+      { name: 'card', width: 768, height: undefined, position: 'centre' },
+      { name: 'wide', width: 1400, height: undefined, position: 'centre' },
+    ],
+  },
 }

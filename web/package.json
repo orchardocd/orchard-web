@@ -18,11 +18,14 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "typecheck": "tsc --noEmit",
     "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)' src tests",
-    "ci": "pnpm lint && pnpm typecheck && pnpm dup && pnpm build && pnpm test"
+    "ci": "pnpm lint && pnpm typecheck && pnpm dup && pnpm build && pnpm test",
+    "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
+    "seed": "node --import tsx/esm --env-file=.env src/seed/index.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@payloadcms/db-sqlite": "3.87.1",
+    "@payloadcms/email-nodemailer": "^3.87.1",
     "@payloadcms/next": "3.87.1",
     "@payloadcms/richtext-lexical": "3.87.1",
     "@payloadcms/ui": "3.87.1",
@@ -31,6 +34,7 @@
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
     "next": "16.3.0",
+    "nodemailer": "^9.0.5",
     "payload": "3.87.1",
     "postcss": "^8.5.26",
     "react": "19.2.6",
@@ -44,6 +48,7 @@
     "@playwright/test": "1.58.2",
     "@testing-library/react": "16.3.0",
     "@types/node": "22.19.9",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "4.5.2",
@@ -52,20 +57,12 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "jsdom": "28.0.0",
     "prettier": "^3.4.2",
-    "tsx": "4.22.4",
+    "tsx": "4.23.12",
     "typescript": "5.7.3",
-    "vite-tsconfig-paths": "6.0.5",
     "vitest": "4.0.18"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
     "pnpm": "^9 || ^10 || ^11"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ]
   }
 }

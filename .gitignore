@@ -1,3 +1,5 @@
 mirror/
 *.zip
 node_modules/
+web/web.db
+web/media/
