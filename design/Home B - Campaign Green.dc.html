@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF;color:#132824;font-family:'Exo',Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#00776D}a:hover{color:#004C45}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #5B6600;outline-offset:2px}
+::selection{background:#B6BF00;color:#122E2A}
+</style>
+</helmet>
+<div data-screen-label="Homepage — Direction B (Campaign Green)" style="min-width:1100px">
+<a href="#main" style="position:absolute;left:16px;top:-64px;z-index:60;background:#00655C;color:#FFFFFF;padding:10px 18px;font-size:14px;font-weight:600;text-decoration:none;border-radius:0 0 4px 4px" style-focus="top:0px">Skip to main content</a>
+<sc-if value="{{ showBar }}" hint-placeholder-val="{{ true }}">
+<div style="background:#B6BF00;display:flex;justify-content:center;align-items:center;gap:12px;padding:10px 32px">
+<span style="font-size:14px;font-weight:600;color:#122E2A">Donate today to help OCD research</span>
+<a href="https://checkout.justgiving.com/c/2633482" style="font-size:14px;font-weight:700;color:#122E2A;text-decoration:underline;text-underline-offset:3px">Click Here</a>
+</div>
+</sc-if>
+<header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.96);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(14,42,39,0.1)">
+<div style="max-width:1240px;margin:0 auto;padding:15px 32px;display:flex;align-items:center;justify-content:space-between;gap:32px">
+<a href="https://www.orchardocd.org/" style="display:flex;align-items:center"><img src="assets/logo-pos.png" alt="Orchard — Advancing Global OCD Research" style="height:48px;display:block"></a>
+<nav aria-label="Main navigation" style="display:flex;align-items:center;gap:26px">
+<a href="https://www.orchardocd.org/about-ocd/" style="font-size:15.5px;font-weight:600;color:#132824;text-decoration:none" style-hover="color:#00776D">About OCD</a>
+<a href="https://www.orchardocd.org/the-work-we-do/" style="font-size:15.5px;font-weight:600;color:#132824;text-decoration:none" style-hover="color:#00776D">Our Research</a>
+<a href="https://www.orchardocd.org/get-involved/" style="font-size:15.5px;font-weight:600;color:#132824;text-decoration:none" style-hover="color:#00776D">Get Involved</a>
+<a href="https://www.orchardocd.org/blog/" style="font-size:15.5px;font-weight:600;color:#132824;text-decoration:none" style-hover="color:#00776D">News &amp; Events</a>
+<a href="https://www.orchardocd.org/about-orchard/" style="font-size:15.5px;font-weight:600;color:#132824;text-decoration:none" style-hover="color:#00776D">About Us</a>
+<a href="https://checkout.justgiving.com/c/2633482" style="background:#00877C;color:#FFFFFF;font-size:15.5px;font-weight:700;text-decoration:none;padding:12px 26px;border-radius:4px" style-hover="background:#00554E">Donate</a>
+</nav>
+</div>
+</header>
+<main id="main">
+<section style="background:#00655C;position:relative;overflow:hidden">
+<div aria-hidden="true" style="position:absolute;right:-40px;top:-30px;opacity:0.18;pointer-events:none">
+<svg width="620" height="560" viewBox="0 0 620 560"><rect x="60" y="40" width="96" height="20" rx="10" fill="#FFFFFF" transform="rotate(24 108 50)"></rect><rect x="230" y="20" width="60" height="20" rx="10" fill="#B6BF00"></rect><rect x="360" y="60" width="96" height="20" rx="10" fill="#FFFFFF" transform="rotate(-24 408 70)"></rect><rect x="510" y="30" width="60" height="20" rx="10" fill="#B6BF00" transform="rotate(90 540 40)"></rect><rect x="30" y="200" width="60" height="20" rx="10" fill="#B6BF00" transform="rotate(90 60 210)"></rect><rect x="170" y="190" width="96" height="20" rx="10" fill="#FFFFFF"></rect><rect x="340" y="210" width="96" height="20" rx="10" fill="#B6BF00" transform="rotate(24 388 220)"></rect><rect x="500" y="200" width="60" height="20" rx="10" fill="#FFFFFF" transform="rotate(-24 530 210)"></rect><rect x="80" y="380" width="96" height="20" rx="10" fill="#FFFFFF" transform="rotate(-24 128 390)"></rect><rect x="250" y="400" width="60" height="20" rx="10" fill="#B6BF00" transform="rotate(90 280 410)"></rect><rect x="390" y="380" width="96" height="20" rx="10" fill="#FFFFFF"></rect><rect x="540" y="370" width="60" height="20" rx="10" fill="#B6BF00" transform="rotate(24 570 380)"></rect><rect x="150" y="510" width="60" height="20" rx="10" fill="#B6BF00" transform="rotate(-24 180 520)"></rect><rect x="320" y="520" width="96" height="20" rx="10" fill="#FFFFFF" transform="rotate(24 368 530)"></rect></svg>
+</div>
+<div style="max-width:1240px;margin:0 auto;padding:96px 32px 72px;position:relative">
+<p style="margin:0 0 20px;font-size:14px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#D9E27A">Find · Filter · Fund</p>
+<h1 style="margin:0;font-size:82px;line-height:1.02;font-weight:700;letter-spacing:-0.02em;color:#FFFFFF;max-width:900px;text-wrap:pretty">Advancing Global <span style="color:#B6BF00">OCD Research</span></h1>
+<p style="margin:28px 0 0;font-size:22px;line-height:1.5;color:rgba(255,255,255,0.92);max-width:640px;text-wrap:pretty">Help us develop better treatments for Obsessive Compulsive Disorder (OCD).</p>
+<div style="display:flex;align-items:center;gap:16px;margin-top:40px">
+<a href="https://checkout.justgiving.com/c/2633482" style="background:#B6BF00;color:#122E2A;font-size:17px;font-weight:700;text-decoration:none;padding:17px 34px;border-radius:4px" style-hover="background:#CDD64B">Donate Now</a>
+<a href="https://orchardocdregistry.org/" style="border:2px solid rgba(255,255,255,0.85);color:#FFFFFF;font-size:17px;font-weight:600;text-decoration:none;padding:15px 32px;border-radius:4px" style-hover="background:rgba(255,255,255,0.12)">Join the OCD Registry</a>
+</div>
+</div>
+<sc-if value="{{ showStats }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:1240px;margin:0 auto;padding:0 32px 88px;position:relative;display:grid;grid-template-columns:1fr 1fr;gap:28px">
+<div style="background:#FFFFFF;border-radius:8px;padding:30px 34px;display:flex;align-items:center;gap:26px;box-shadow:0 14px 34px rgba(0,30,27,0.24)">
+<p style="margin:0;font-size:54px;font-weight:700;color:#00877C;letter-spacing:-0.02em;white-space:nowrap">2–3%</p>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#3E514C">of people in Western general populations are affected by OCD — one of the most commonly occurring mental health disorders.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:8px;padding:30px 34px;display:flex;align-items:center;gap:26px;box-shadow:0 14px 34px rgba(0,30,27,0.24)">
+<p style="margin:0;font-size:54px;font-weight:700;color:#00877C;letter-spacing:-0.02em;white-space:nowrap">Top 10</p>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#3E514C">The WHO has listed OCD among the world’s 10 most debilitating conditions; at its worst it causes severe depression and suicide.</p>
+</div>
+</div>
+</sc-if>
+</section>
+<section aria-label="Ways to help" style="max-width:1240px;margin:0 auto;padding:72px 32px 8px">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+<a href="https://checkout.justgiving.com/c/2633482" style="background:#00877C;color:#FFFFFF;text-decoration:none;border-radius:8px;padding:34px 32px;display:flex;flex-direction:column;gap:12px;min-height:180px" style-hover="background:#00554E">
+<h2 style="margin:0;font-size:28px;font-weight:700">Donate</h2>
+<p style="margin:0;font-size:16px;line-height:1.55;color:rgba(255,255,255,0.9)">Donate today to help OCD research.</p>
+<span aria-hidden="true" style="margin-top:auto;font-size:24px;font-weight:700">→</span>
+</a>
+<a href="https://orchardocdregistry.org/" style="background:#EFF4EE;color:#132824;text-decoration:none;border-radius:8px;padding:34px 32px;display:flex;flex-direction:column;gap:12px;min-height:180px;border:2px solid transparent" style-hover="border-color:#00877C">
+<h2 style="margin:0;font-size:28px;font-weight:700;color:#00776D">Join the Registry</h2>
+<p style="margin:0;font-size:16px;line-height:1.55;color:#3E514C">Participate in exciting new OCD research.</p>
+<span aria-hidden="true" style="margin-top:auto;font-size:24px;font-weight:700;color:#00877C">→</span>
+</a>
+<a href="https://www.orchardocd.org/fundraising-events/" style="background:#EFF4EE;color:#132824;text-decoration:none;border-radius:8px;padding:34px 32px;display:flex;flex-direction:column;gap:12px;min-height:180px;border:2px solid transparent" style-hover="border-color:#00877C">
+<h2 style="margin:0;font-size:28px;font-weight:700;color:#00776D">Fundraising &amp; Events</h2>
+<p style="margin:0;font-size:16px;line-height:1.55;color:#3E514C">Volunteer · Work with us · Become a trustee</p>
+<span aria-hidden="true" style="margin-top:auto;font-size:24px;font-weight:700;color:#00877C">→</span>
+</a>
+</div>
+</section>
+<section aria-labelledby="fff-h" style="max-width:1240px;margin:0 auto;padding:80px 32px">
+<h2 id="fff-h" style="margin:0 0 12px;font-size:14px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#00776D">What we do</h2>
+<p style="margin:0 0 44px;font-size:34px;font-weight:700;color:#132824;max-width:760px;line-height:1.25;text-wrap:pretty">We exist to find, filter and fund treatments for OCD.</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+<div style="border:1.5px solid rgba(14,42,39,0.14);border-radius:8px;padding:32px">
+<svg aria-hidden="true" width="64" height="18" viewBox="0 0 64 18"><rect x="0" y="4" width="34" height="10" rx="5" fill="#00877C"></rect><rect x="42" y="4" width="20" height="10" rx="5" fill="#B6BF00" transform="rotate(24 52 9)"></rect></svg>
+<h3 style="margin:18px 0 10px;font-size:26px;font-weight:700;color:#00877C;text-transform:uppercase;letter-spacing:0.04em">Find</h3>
+<p style="margin:0;font-size:16.5px;line-height:1.6;color:#3E514C">innovative, hard to fund research projects</p>
+</div>
+<div style="border:1.5px solid rgba(14,42,39,0.14);border-radius:8px;padding:32px">
+<svg aria-hidden="true" width="64" height="18" viewBox="0 0 64 18"><rect x="0" y="4" width="20" height="10" rx="5" fill="#B6BF00" transform="rotate(-24 10 9)"></rect><rect x="28" y="4" width="34" height="10" rx="5" fill="#00877C"></rect></svg>
+<h3 style="margin:18px 0 10px;font-size:26px;font-weight:700;color:#00877C;text-transform:uppercase;letter-spacing:0.04em">Filter</h3>
+<p style="margin:0;font-size:16.5px;line-height:1.6;color:#3E514C">them through a thorough scientific process</p>
+</div>
+<div style="border:1.5px solid rgba(14,42,39,0.14);border-radius:8px;padding:32px">
+<svg aria-hidden="true" width="64" height="18" viewBox="0 0 64 18"><rect x="0" y="4" width="34" height="10" rx="5" fill="#00877C" transform="rotate(24 17 9)"></rect><rect x="42" y="4" width="20" height="10" rx="5" fill="#B6BF00"></rect></svg>
+<h3 style="margin:18px 0 10px;font-size:26px;font-weight:700;color:#00877C;text-transform:uppercase;letter-spacing:0.04em">Fund</h3>
+<p style="margin:0;font-size:16.5px;line-height:1.6;color:#3E514C">promising projects through public and private means</p>
+</div>
+</div>
+</section>
+<section aria-labelledby="about-h" style="background:#EFF4EE">
+<div style="max-width:1240px;margin:0 auto;padding:80px 32px">
+<h2 id="about-h" style="margin:0;font-size:40px;font-weight:700;color:#132824">About <span style="color:#00877C">Orchard OCD</span></h2>
+<p style="margin:20px 0 44px;font-size:19px;line-height:1.6;color:#3E514C;max-width:780px;text-wrap:pretty">We build a community of interdisciplinary professionals and work with them closely to progress together in developing new and better treatments for patients suffering from OCD.</p>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+<div style="background:#FFFFFF;border-radius:8px;padding:32px;box-shadow:0 2px 10px rgba(14,42,39,0.06)">
+<h3 style="margin:0 0 12px;font-size:22px;font-weight:700;color:#00776D">Our Vision</h3>
+<p style="margin:0;font-size:16.5px;line-height:1.6;color:#3E514C">is a world where all patients suffering from OCD receive effective treatment for their condition.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:8px;padding:32px;box-shadow:0 2px 10px rgba(14,42,39,0.06)">
+<h3 style="margin:0 0 12px;font-size:22px;font-weight:700;color:#00776D">Our Mission</h3>
+<p style="margin:0;font-size:16.5px;line-height:1.6;color:#3E514C">is to build that world by advancing collaborative translational research and driving the quest for new and better treatments for OCD.</p>
+</div>
+<div style="background:#FFFFFF;border-radius:8px;padding:32px;box-shadow:0 2px 10px rgba(14,42,39,0.06)">
+<h3 style="margin:0 0 12px;font-size:22px;font-weight:700;color:#00776D">Our Goals</h3>
+<p style="margin:0 0 8px;font-size:16.5px;line-height:1.6;color:#3E514C">We have a three-pillar approach,</p>
+<ol style="margin:0;padding-left:20px;font-size:16.5px;line-height:1.7;color:#3E514C">
+<li>Research (fund and run clinical trials)</li>
+<li>Hubs (OCD research database and repository)</li>
+<li>Dissemination (awareness campaigns and conferences)</li>
+</ol>
+</div>
+</div>
+<a href="https://www.orchardocd.org/about-orchard/" style="display:inline-block;margin-top:36px;background:#00877C;color:#FFFFFF;font-size:16px;font-weight:700;text-decoration:none;padding:14px 30px;border-radius:4px" style-hover="background:#00554E">Learn about Orchard OCD</a>
+</div>
+</section>
+<section aria-labelledby="cfp-h">
+<div style="max-width:1240px;margin:0 auto;padding:84px 32px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center">
+<div>
+<h2 id="cfp-h" style="margin:0 0 18px;font-size:36px;font-weight:700;color:#132824">Call for Proposals 2022</h2>
+<p style="margin:0;font-size:17px;line-height:1.65;color:#3E514C;text-wrap:pretty">In 2022 we launched our second call for proposals seeking hard-to-fund projects that have great potential to make a major impact for obsessive compulsive disorder (OCD). We received many great submissions, and our independent scientific advisory board judged the projects last year. We are now excited to announce our winner:</p>
+<a href="https://www.orchardocd.org/call-for-proposals-2022/" style="display:inline-block;margin-top:28px;border:2px solid #00877C;color:#00776D;font-size:16px;font-weight:700;text-decoration:none;padding:12px 28px;border-radius:4px" style-hover="background:#EFF4EE">Read More</a>
+</div>
+<div style="background:#00655C;border-radius:8px;padding:48px 44px;position:relative;overflow:hidden">
+<svg aria-hidden="true" width="88" height="20" viewBox="0 0 88 20" style="display:block;margin-bottom:22px"><rect x="0" y="5" width="40" height="11" rx="5.5" fill="#B6BF00"></rect><rect x="50" y="5" width="22" height="11" rx="5.5" fill="#FFFFFF" opacity="0.65" transform="rotate(24 61 10)"></rect></svg>
+<p style="margin:0;font-size:26px;line-height:1.4;font-weight:600;color:#FFFFFF;text-wrap:pretty">“Double-blind Randomised Placebo-controlled study of Tolcapone for OCD”</p>
+<p style="margin:20px 0 0;font-size:14px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#D9E27A">2022 winning study</p>
+</div>
+</section>
+<section aria-labelledby="blog-h" style="border-top:1px solid rgba(14,42,39,0.12)">
+<div style="max-width:1240px;margin:0 auto;padding:80px 32px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:40px">
+<h2 id="blog-h" style="margin:0;font-size:40px;font-weight:700;color:#132824">From the <span style="color:#00877C">Blog</span></h2>
+<a href="https://www.orchardocd.org/blog/" style="font-size:16px;font-weight:700;color:#00776D;text-decoration:none" style-hover="color:#004C45">View all posts →</a>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+<article style="border:1.5px solid rgba(14,42,39,0.14);border-top:6px solid #B6BF00;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="margin:0;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7C8B86">20 May 2026 · Brandon Williams</p>
+<h3 style="margin:0;font-size:22px;line-height:1.3;font-weight:700"><a href="https://www.orchardocd.org/what-i-want-people-to-understand-about-ocd/" style="color:#132824;text-decoration:none" style-hover="color:#00776D">What I want people to understand about OCD</a></h3>
+<p style="margin:0;font-size:15.5px;line-height:1.6;color:#3E514C">“In 6th grade, I was homeschooled. Not because of anything anyone could see from the outside. But because everything felt darkly overwhelming.”</p>
+<a href="https://www.orchardocd.org/what-i-want-people-to-understand-about-ocd/" style="margin-top:auto;font-size:15px;font-weight:700;color:#00776D;text-decoration:none" style-hover="color:#004C45">Read story →</a>
+</article>
+<article style="border:1.5px solid rgba(14,42,39,0.14);border-top:6px solid #00877C;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="margin:0;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7C8B86">14 May 2026 · Yann Lana</p>
+<h3 style="margin:0;font-size:22px;line-height:1.3;font-weight:700"><a href="https://www.orchardocd.org/yanns-ocd-story/" style="color:#132824;text-decoration:none" style-hover="color:#00776D">Yann’s OCD Story</a></h3>
+<p style="margin:0;font-size:15.5px;line-height:1.6;color:#3E514C">“My life changed at the age of 16 during a trip to French Guiana. That is when Obsessive Compulsive Disorder began.”</p>
+<a href="https://www.orchardocd.org/yanns-ocd-story/" style="margin-top:auto;font-size:15px;font-weight:700;color:#00776D;text-decoration:none" style-hover="color:#004C45">Read story →</a>
+</article>
+<article style="border:1.5px solid rgba(14,42,39,0.14);border-top:6px solid #B6BF00;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="margin:0;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#7C8B86">5 May 2026 · Mourice Schuurmans</p>
+<h3 style="margin:0;font-size:22px;line-height:1.3;font-weight:700"><a href="https://www.orchardocd.org/ocd-the-hardest-and-most-important-lesson-of-my-life/" style="color:#132824;text-decoration:none" style-hover="color:#00776D">OCD: The Hardest and Most Important Lesson of My Life</a></h3>
+<p style="margin:0;font-size:15.5px;line-height:1.6;color:#3E514C">“For as long as I can remember, I dealt with everything on my own. Emotions, stress, fear, problems.”</p>
+<a href="https://www.orchardocd.org/ocd-the-hardest-and-most-important-lesson-of-my-life/" style="margin-top:auto;font-size:15px;font-weight:700;color:#00776D;text-decoration:none" style-hover="color:#004C45">Read story →</a>
+</article>
+</div>
+<div style="margin-top:32px;background:#00655C;border-radius:8px;padding:30px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+<p style="margin:0;font-size:19px;color:#FFFFFF">Our latest Webinar: <span style="font-weight:700">Everything you need to know about OCD</span></p>
+<a href="https://www.youtube.com/watch?v=6x59KTFuRZ4" style="background:#B6BF00;color:#122E2A;font-size:15.5px;font-weight:700;text-decoration:none;padding:12px 26px;border-radius:4px" style-hover="background:#CDD64B">Watch Now</a>
+</div>
+</div>
+</section>
+<section aria-labelledby="news-h" style="background:#00877C">
+<div style="max-width:1240px;margin:0 auto;padding:72px 32px;display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center">
+<div>
+<h2 id="news-h" style="margin:0;font-size:36px;font-weight:700;color:#FFFFFF">Subscribe to our Newsletter</h2>
+<p style="margin:16px 0 0;font-size:15.5px;line-height:1.65;color:rgba(255,255,255,0.92);text-wrap:pretty">Here at Orchard OCD, we are focusing on developing treatments for patients suffering from obsessive-compulsive disorder (OCD), a serious mental illness. You can help us treat this debilitating disorder, through taking part in research, donating towards crowdfunding campaigns and promoting our work. All of this information will be sent to you through our E-News. Sign up today and you will be part of the future of OCD treatment.</p>
+</div>
+<div>
+<label for="nl-email" style="display:block;font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:10px">Email address</label>
+<div style="display:flex;gap:12px">
+<input id="nl-email" type="email" placeholder="you@example.com" style="flex:1;border:none;border-radius:4px;background:#FFFFFF;padding:15px 16px;font-size:16px;font-family:'Exo',Arial,sans-serif;color:#132824">
+<a href="https://www.orchardocd.org/join-our-mailing-list/" style="background:#B6BF00;color:#122E2A;font-size:16px;font-weight:700;text-decoration:none;padding:15px 30px;border-radius:4px;white-space:nowrap" style-hover="background:#CDD64B">Sign up</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer style="background:#0F2E2A">
+<div style="max-width:1240px;margin:0 auto;padding:64px 32px 28px">
+<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:48px;align-items:start">
+<div>
+<img src="assets/logo-neg.png" alt="Orchard — Advancing Global OCD Research" style="height:44px;display:block">
+<p style="margin:22px 0 12px;font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55)">Follow us on social media</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<a href="https://www.facebook.com/OrchardOCD" style="background:rgba(255,255,255,0.1);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:#FFFFFF;text-decoration:none" style-hover="background:rgba(255,255,255,0.22)">Facebook</a>
+<a href="https://www.instagram.com/orchardocd/" style="background:rgba(255,255,255,0.1);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:#FFFFFF;text-decoration:none" style-hover="background:rgba(255,255,255,0.22)">Instagram</a>
+<a href="https://twitter.com/OrchardOCD" style="background:rgba(255,255,255,0.1);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:#FFFFFF;text-decoration:none" style-hover="background:rgba(255,255,255,0.22)">X / Twitter</a>
+<a href="https://www.linkedin.com/company/orchard-ocd" style="background:rgba(255,255,255,0.1);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:#FFFFFF;text-decoration:none" style-hover="background:rgba(255,255,255,0.22)">LinkedIn</a>
+<a href="https://www.youtube.com/@orchardocd5099" style="background:rgba(255,255,255,0.1);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:#FFFFFF;text-decoration:none" style-hover="background:rgba(255,255,255,0.22)">YouTube</a>
+</div>
+</div>
+<nav aria-label="Explore" style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0 0 4px;font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55)">Explore</h3>
+<a href="https://www.orchardocd.org/about-ocd/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">About OCD</a>
+<a href="https://www.orchardocd.org/the-work-we-do/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Our Funded Studies</a>
+<a href="https://www.orchardocd.org/our-research-strategy/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Our Research Strategy</a>
+<a href="https://www.orchardocd.org/participate-research/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Participate in Research</a>
+<a href="https://www.orchardocd.org/conference/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Conference</a>
+<a href="https://www.orchardocd.org/webinars/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Webinars</a>
+</nav>
+<nav aria-label="Help and support" style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0 0 4px;font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55)">Help &amp; Support</h3>
+<a href="https://www.orchardocd.org/join-our-mailing-list/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Join Our Mailing List</a>
+<a href="https://www.orchardocd.org/volunteer/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Volunteer</a>
+<a href="https://www.orchardocd.org/fundraising-events/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Fundraising &amp; Events</a>
+<a href="https://www.orchardocd.org/cookies-privacy/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Cookies &amp; Privacy</a>
+<a href="https://www.orchardocd.org/terms-of-use/" style="font-size:15px;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">Terms of Use</a>
+</nav>
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0 0 4px;font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55)">Contact us</h3>
+<a href="mailto:info@orchardocd.org" style="font-size:15px;font-weight:700;color:#B6BF00;text-decoration:none" style-hover="color:#CDD64B">info@orchardocd.org</a>
+<a href="https://www.google.com/maps?q=66+Devonshire+Road,+Cambridge,+Cambridgeshire,+CB1+2BL" style="font-size:15px;line-height:1.6;color:rgba(255,255,255,0.88);text-decoration:none" style-hover="color:#B6BF00">66 Devonshire Road, Cambridge, Cambridgeshire, CB1 2BL, UK</a>
+<p style="margin:0;font-size:15px;color:rgba(255,255,255,0.88)">Registered Charity Number: <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5098022" style="color:#B6BF00;font-weight:700;text-decoration:underline;text-underline-offset:3px">1174480</a></p>
+</div>
+</div>
+<div style="margin-top:56px;border-top:1px solid rgba(255,255,255,0.14);padding-top:22px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+<p style="margin:0;font-size:13.5px;color:rgba(255,255,255,0.6)">© 2026 Orchard OCD. Advancing Global OCD Research.</p>
+<p style="margin:0;font-size:13.5px;color:rgba(255,255,255,0.6)">Find · Filter · Fund</p>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;showAnnouncement&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Header&quot;},&quot;showHeroStats&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showBar: this.props.showAnnouncement ?? true,
+      showStats: this.props.showHeroStats ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>

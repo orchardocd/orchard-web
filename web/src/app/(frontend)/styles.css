@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-exo), 'Exo', Arial, Helvetica, sans-serif;
+
+  --color-brand: #00877c;
+  --color-brand-deep: #00655c;
+  --color-brand-strong: #00746a;
+  --color-brand-hover: #00554e;
+  --color-brand-link: #00776d;
+  --color-brand-link-hover: #004c45;
+  --color-brand-dark: #0b3b36;
+
+  --color-lime: #b6bf00;
+  --color-lime-hover: #cdd64b;
+  --color-lime-soft: #d9e27a;
+  --color-lime-focus: #5b6600;
+
+  --color-ink: #132824;
+  --color-ink-on-lime: #122e2a;
+  --color-body: #3e514c;
+  --color-faint: #5e6e68;
+  --color-mist: #eff4ee;
+  --color-footer: #0f2e2a;
+  --color-line: rgba(14, 42, 39, 0.14);
+
+  --spacing-measure: 40rem;
+}
+
+@layer base {
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-ink-on-lime);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--color-lime-focus);
+    outline-offset: 2px;
+  }
+}
