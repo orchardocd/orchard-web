@@ -68,7 +68,7 @@ export function PageHero({
           ) : undefined
         }
       >
-        <BannerTitle>{title}</BannerTitle>
+        <BannerTitle>{intro?.title || title}</BannerTitle>
         {intro?.content ? (
           <RichText
             data={intro.content}

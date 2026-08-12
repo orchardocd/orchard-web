@@ -50,8 +50,9 @@ directions:
 
 - every text unit the old page rendered is present on the new page, down to headings and
   button labels (the floor is 12 characters, so only single words are exempt);
-- every illustration the old page used is present on the new page, under the same heading
-  it sat under, and never rendered twice on one page;
+- every illustration the old page used is present on the new page, sits nearest the same
+  heading it sat nearest to before (resolved by ARIA role, so a card's own title wins over
+  the previous card's), and is never rendered twice on one page;
 - no copy exists on the new site that appears nowhere on the old site.
 
 Copy that is genuinely new (UI wording such as "Skip to main content") lives in an

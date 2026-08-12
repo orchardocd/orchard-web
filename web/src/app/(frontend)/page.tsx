@@ -88,7 +88,6 @@ export default async function HomePage() {
             <h2 id="about-orchard" className="text-4xl font-bold text-ink">
               {about.heading}
             </h2>
-            <Illustrations items={about.ctaImages} />
             {about.image ? (
               <MediaImage media={about.image} className="max-w-40" sizes="160px" />
             ) : null}
@@ -120,10 +119,22 @@ export default async function HomePage() {
         </Container>
       </Section>
 
-      {video?.url ? (
-        <Section label={about.heading} className="py-14">
-          <Container>
-            <VideoEmbed url={video.url} title={about.heading} poster={video.poster} />
+      {video?.url || (about.ctaImages ?? []).length > 0 ? (
+        <Section labelledBy="learn-about" className="py-14">
+          <Container className="flex flex-col gap-8">
+            <div className="flex flex-wrap items-center justify-between gap-8">
+              <h2 id="learn-about" className="text-3xl font-bold text-ink">
+                {about.ctaHeading ?? about.heading}
+              </h2>
+              <Illustrations items={about.ctaImages} />
+            </div>
+            {video?.url ? (
+              <VideoEmbed
+                url={video.url}
+                title={about.ctaHeading ?? about.heading}
+                poster={video.poster}
+              />
+            ) : null}
           </Container>
         </Section>
       ) : null}
@@ -212,7 +223,7 @@ export default async function HomePage() {
               {webinar.image ? (
                 <MediaImage media={webinar.image} className="h-20 w-auto rounded" sizes="120px" />
               ) : null}
-              <p className="flex-1 text-lg font-semibold text-white">{webinar.title}</p>
+              <h3 className="flex-1 text-lg font-semibold text-white">{webinar.title}</h3>
               {webinar.ctaHref && webinar.ctaLabel ? (
                 <ButtonLink href={webinar.ctaHref} variant="donate">
                   {webinar.ctaLabel}

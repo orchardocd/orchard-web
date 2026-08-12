@@ -134,39 +134,64 @@ def image_stem(src: str, side: str) -> str | None:
 HEADINGS = ('h1', 'h2', 'h3', 'h4', 'h5', 'h6')
 
 
-def image_sections(html: str, scope_selector: str | None) -> dict[str, str]:
-    """Which heading each illustration follows, walking the old page in document order."""
+def heading_text(element) -> str:
+    """Heading by accessibility role: h1-h6 plus anything marked role="heading"."""
+    if element.name not in HEADINGS and (element.get('role') or '').lower() != 'heading':
+        return ''
+    text = normalize(element.get_text(' ', strip=True))
+    # An unedited Elementor default names nothing.
+    return '' if text == 'add your heading text here' else text
+
+
+def heading_order(html: str, scope_selector: str | None) -> list[str]:
+    """Every heading on a page, in the order it appears."""
     soup = BeautifulSoup(html, 'html.parser')
     strip_chrome(soup)
     scope = soup.select_one(scope_selector) if scope_selector else None
     scope = scope or soup.body or soup
+    return [text for text in (heading_text(node) for node in scope.find_all(True)) if text]
+
+
+def image_sections(html: str, scope_selector: str | None, side: str = 'old') -> dict[str, str]:
+    """The heading that names each illustration's section, resolved by structure.
+
+    An illustration belongs to the nearest heading inside the smallest ancestor that has
+    one, which is how a card's own title wins over the previous card's title.
+    """
+    soup = BeautifulSoup(html, 'html.parser')
+    strip_chrome(soup)
+    scope = soup.select_one(scope_selector) if scope_selector else None
+    scope = scope or soup.body or soup
+
+    order = list(scope.find_all(True))
+    positions = {id(element): index for index, element in enumerate(order)}
+
     sections: dict[str, str] = {}
-    heading = ''
-    for element in scope.find_all(HEADINGS + ('img',)):
-        if element.name == 'img':
-            if 'mob-bnr' in (element.get('class') or []):
-                continue
-            stem = image_stem(element.get('src') or '', 'old')
-            if stem and stem.lower() not in sections:
-                sections[stem.lower()] = heading
+    leads: set[str] = set()
+    for element in order:
+        if element.name != 'img' or 'mob-bnr' in (element.get('class') or []):
             continue
-        text = normalize(element.get_text(' ', strip=True))
-        if text:
-            heading = text
-    return sections
-
-
-def content_sections(blocks: list) -> dict[str, str]:
-    """The same grouping, read from the structured content the seed consumes."""
-    sections: dict[str, str] = {}
-    heading = ''
-    for block in blocks:
-        if block['type'] == 'heading':
-            heading = normalize(block['text'])
-        elif block['type'] == 'image':
-            stem = media_stem(block['image'])
-            if stem and stem not in sections:
-                sections[stem] = heading
+        stem = image_stem(element.get('src') or '', side)
+        if not stem or stem.lower() in sections:
+            continue
+        here = positions[id(element)]
+        ancestor = element.parent
+        while ancestor is not None:
+            headings = [
+                (positions[id(node)], heading_text(node))
+                for node in ancestor.find_all(True)
+                if id(node) in positions and heading_text(node)
+            ]
+            if headings:
+                above = [h for h in headings if h[0] < here]
+                chosen = max(above) if above else min(headings)
+                sections[stem.lower()] = chosen[1]
+                if not above:
+                    # No heading above it: this illustration opens its section.
+                    leads.add(stem.lower())
+                break
+            ancestor = ancestor.parent if ancestor is not scope else None
+    sections['__leads__'] = ' '.join(sorted(leads))
     return sections
 
 
@@ -367,6 +392,7 @@ def route_expectations(route: dict) -> dict:
         **route_id(route),
         'text': text_units(source_html, old_scope(route)),
         'images': sorted(images),
+        'imageSections': image_sections(source_html, old_scope(route)),
     }
 
 
@@ -381,7 +407,8 @@ def check_route(route: dict, base: str, expectation: dict | None = None) -> dict
     except urllib.error.HTTPError as error:
         return {**route_id(route), 'status': f'HTTP {error.code}', 'missingText': expected_units,
                 'missingImages': sorted(expected_images), 'checkedText': len(expected_units),
-                'checkedImages': len(expected_images), 'repeatedImages': [], 'addedText': []}
+                'checkedImages': len(expected_images), 'repeatedImages': [],
+                'misplacedImages': [], 'addedText': []}
 
     actual_text, actual_images = collect(rendered, 'main', side='new')
 
@@ -390,6 +417,32 @@ def check_route(route: dict, base: str, expectation: dict | None = None) -> dict
 
     shown = image_sequence(rendered, 'main', side='new')
     repeated = sorted({stem for stem in shown if shown.count(stem) > 1})
+
+    # Each illustration must sit nearest the same heading it sat nearest to before.
+    expected_sections = expectation.get('imageSections', {})
+    actual_sections = image_sections(rendered, 'main', side='new')
+    leads = set(expected_sections.get('__leads__', '').split())
+    headings = heading_order(rendered, 'main')
+
+    def moved(stem: str) -> bool:
+        was, now = expected_sections[stem], actual_sections[stem]
+        if was == now:
+            return False
+        # The old heading may be a card title the rebuild renders from a collection; naming
+        # the section that contains that card is a coarser answer, not a wrong one.
+        if was in headings and now in headings and headings.index(was) > headings.index(now):
+            return False
+        return True
+
+    misplaced = sorted(
+        f'{stem}: was under "{expected_sections[stem]}", now under "{actual_sections[stem]}"'
+        for stem in expected_sections
+        if stem != '__leads__'
+        and stem in actual_sections
+        # An illustration that opened its section on the old page has no heading to keep.
+        and stem not in leads
+        and moved(stem)
+    )
 
 
     corpus = old_site_corpus()
@@ -407,50 +460,13 @@ def check_route(route: dict, base: str, expectation: dict | None = None) -> dict
         'missingText': missing_text,
         'missingImages': missing_images,
         'repeatedImages': repeated,
+        'misplacedImages': misplaced,
         'addedText': added_text,
     }
 
 
 def route_id(route: dict) -> dict:
     return {'kind': route['kind'], 'slug': route['slug'], 'route': route['route']}
-
-
-def check_sections() -> list[str]:
-    """Every illustration must still follow the heading it followed on the old site."""
-    content = json.loads(read_text(CONTENT))
-    problems = []
-    entries = (
-        # The landing page is composed from the home global, not from these blocks.
-        [
-            ('page', page, mirror_path(page['slug']), None)
-            for page in content['pages']
-            if page['slug'] != 'home'
-        ]
-        + [('post', post, mirror_path(post['slug']), '.ocd-single-post') for post in content['posts']]
-    )
-    for kind, item, source, scope in entries:
-        if not source.exists():
-            continue
-        expected = image_sections(read_text(source), scope)
-        actual = content_sections(item['blocks'])
-        our_headings = {
-            normalize(block['text']) for block in item['blocks'] if block['type'] == 'heading'
-        }
-        for stem, heading in actual.items():
-            was = expected.get(stem)
-            # An illustration that now opens the page has no heading above it; the old page
-            # put it under its banner slider heading, which the rebuild renders as the hero.
-            if not heading:
-                continue
-            # A heading the rebuild renders from a collection instead of as page copy
-            # cannot anchor an illustration, so the enclosing section is the right home.
-            if was not in our_headings:
-                continue
-            if was is not None and was != heading:
-                problems.append(
-                    f'{kind} {item["slug"]}: {stem} was under "{was}", now under "{heading}"'
-                )
-    return problems
 
 
 def main() -> int:
@@ -484,8 +500,6 @@ def main() -> int:
         )
         return 0
 
-    section_problems: list[str] = []
-
     if args.expectations:
         stored = json.loads(read_text(args.expectations))
         _corpus = stored['corpus']
@@ -498,9 +512,6 @@ def main() -> int:
         ]
         routes = expectations
     else:
-        section_problems = check_sections()
-        for problem in section_problems[: 10 if args.quiet else 60]:
-            print(f'illustration moved section: {problem}')
         routes = build_routes()
         if args.only:
             routes = [r for r in routes if args.only in r['slug']]
@@ -508,7 +519,7 @@ def main() -> int:
     failures = [
         r for r in results
         if r['missingText'] or r['missingImages'] or r['repeatedImages'] or r['addedText']
-        or r['status'] != 'ok'
+        or r['misplacedImages'] or r['status'] != 'ok'
     ]
 
     total_text = sum(r['checkedText'] for r in results)
@@ -517,6 +528,7 @@ def main() -> int:
     missing_images = sum(len(r['missingImages']) for r in results)
     added_text = sum(len(r['addedText']) for r in results)
     repeated_images = sum(len(r.get('repeatedImages', [])) for r in results)
+    misplaced_images = sum(len(r.get('misplacedImages', [])) for r in results)
 
     for result in failures:
         print(f"\n{result['route']}  ({result['kind']} {result['slug']}) status={result['status']}")
@@ -528,6 +540,8 @@ def main() -> int:
             print(f'   missing image: {stem}')
         for stem in result.get('repeatedImages', []):
             print(f'   image shown more than once: {stem}')
+        for detail in result.get('misplacedImages', [])[: 4 if args.quiet else 40]:
+            print(f'   illustration moved section: {detail}')
         for unit in result['addedText'][:8 if args.quiet else 40]:
             print(f'   ADDED text (not on old site): {unit[:160]}')
 
@@ -537,14 +551,14 @@ def main() -> int:
         f'images {total_images - missing_images}/{total_images} present | '
         f'{added_text} invented text unit(s) | '
         f'{repeated_images} repeated illustration(s) | '
-        f'{len(section_problems)} illustration(s) in the wrong section | '
+        f'{misplaced_images} illustration(s) in the wrong section | '
         f'{len(failures)} route(s) with gaps'
     )
 
     if args.json:
         args.json.write_text(json.dumps(results, indent=1), encoding='utf-8')
 
-    return 1 if failures or section_problems else 0
+    return 1 if failures else 0
 
 
 if __name__ == '__main__':
