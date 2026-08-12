@@ -79,6 +79,13 @@ async function wipe(payload: Payload) {
   for (const collection of COLLECTIONS) {
     await payload.db.deleteMany({ collection, where: {} })
   }
+  // Upload files outlive their rows, and Payload renames around leftovers.
+  for (const slug of ['media', 'documents', 'videos'] as const) {
+    const directory = payload.collections[slug]?.config.upload?.staticDir
+    if (typeof directory === 'string') {
+      await fs.rm(directory, { recursive: true, force: true })
+    }
+  }
 }
 
 async function seedAssets(payload: Payload, content: SeedContent) {

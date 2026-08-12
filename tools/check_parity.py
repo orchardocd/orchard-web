@@ -299,10 +299,21 @@ def old_scope(route: dict) -> str | None:
     return None
 
 
-def check_route(route: dict, base: str) -> dict:
+def route_expectations(route: dict) -> dict:
     source_html = old_html(route)
-    expected_units = text_units(source_html, old_scope(route))
-    _, expected_images = collect(source_html, old_scope(route))
+    _, images = collect(source_html, old_scope(route))
+    return {
+        **route_id(route),
+        'text': text_units(source_html, old_scope(route)),
+        'images': sorted(images),
+    }
+
+
+def check_route(route: dict, base: str, expectation: dict | None = None) -> dict:
+    if expectation is None:
+        expectation = route_expectations(route)
+    expected_units = expectation['text']
+    expected_images = set(expectation['images'])
 
     try:
         rendered = fetch(base.rstrip('/') + route['route'])
@@ -344,13 +355,47 @@ def main() -> int:
     parser.add_argument('--json', type=Path)
     parser.add_argument('--only', help='Substring filter on slug')
     parser.add_argument('--quiet', action='store_true')
+    parser.add_argument(
+        '--emit-expectations',
+        type=Path,
+        help='Write what the old site contained, so CI can check parity without the mirror',
+    )
+    parser.add_argument(
+        '--expectations',
+        type=Path,
+        help='Check against a previously emitted expectations file instead of the mirror',
+    )
     args = parser.parse_args()
 
-    routes = build_routes()
-    if args.only:
-        routes = [r for r in routes if args.only in r['slug']]
+    global _corpus
 
-    results = [check_route(route, args.base) for route in routes]
+    if args.emit_expectations:
+        payload = {
+            'routes': [route_expectations(route) for route in build_routes()],
+            'corpus': old_site_corpus(),
+        }
+        args.emit_expectations.write_text(json.dumps(payload), encoding='utf-8')
+        print(
+            f'wrote {len(payload["routes"])} route expectations to {args.emit_expectations}'
+        )
+        return 0
+
+    if args.expectations:
+        stored = json.loads(read_text(args.expectations))
+        _corpus = stored['corpus']
+        expectations = stored['routes']
+        if args.only:
+            expectations = [e for e in expectations if args.only in e['slug']]
+        results = [
+            check_route({'kind': e['kind'], 'slug': e['slug'], 'route': e['route']}, args.base, e)
+            for e in expectations
+        ]
+        routes = expectations
+    else:
+        routes = build_routes()
+        if args.only:
+            routes = [r for r in routes if args.only in r['slug']]
+        results = [check_route(route, args.base) for route in routes]
     failures = [
         r for r in results
         if r['missingText'] or r['missingImages'] or r['addedText'] or r['status'] != 'ok'

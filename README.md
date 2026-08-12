@@ -44,8 +44,8 @@ mirror/  ──tools/extract.py──▶  content.json  ──optimize-assets.mj
 
 ## Content parity
 
-`pnpm parity` (from the repo root: `python3 tools/check_parity.py`) walks all 142 routes
-with the production server running and enforces, in both directions:
+`pnpm parity` walks all 142 routes with the production server running and enforces, in both
+directions:
 
 - every text unit the old page rendered is present on the new page;
 - every illustration the old page used is present on the new page;
@@ -53,6 +53,11 @@ with the production server running and enforces, in both directions:
 
 Copy that is genuinely new (UI wording such as "Skip to main content") lives in an
 explicit allowlist in the script, so any addition has to be declared.
+
+CI checks parity against `web/src/seed/parity-expectations.json`, a fixture holding what
+each old page contained, so the check runs without the mirror. Regenerate it with
+`pnpm parity:update` after re-extracting; `pnpm parity:mirror` checks against the mirror
+directly.
 
 Current state: **2942/2942 text units, 368/368 images, 0 invented text units, 0 gaps.**
 

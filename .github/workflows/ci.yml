@@ -36,7 +36,7 @@ jobs:
       - run: pnpm test
       - name: Content parity with the previous site
         run: |
+          pip install --quiet beautifulsoup4 lxml
           pnpm start -H 127.0.0.1 &
           npx --yes wait-on http://127.0.0.1:3000 -t 120000
-          pip install --quiet beautifulsoup4 lxml
           pnpm parity
