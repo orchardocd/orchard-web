@@ -7,3 +7,4 @@ web/documents/
 web/videos/
 web/test-results/
 web/playwright-report/
+__pycache__/
