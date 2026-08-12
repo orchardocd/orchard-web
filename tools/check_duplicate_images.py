@@ -10,6 +10,7 @@ Usage: python3 tools/check_duplicate_images.py [--base http://localhost:3000] [-
 
 import argparse
 import hashlib
+import re
 import sys
 import urllib.parse
 import urllib.request
@@ -17,7 +18,11 @@ from collections import defaultdict
 
 from bs4 import BeautifulSoup
 
-from check_parity import IGNORED_IMAGE, fetch, site_routes, strip_chrome
+from check_parity import fetch, site_routes, strip_chrome
+
+# A stand-in drawn wherever a picture is missing is meant to appear as often as it is needed.
+# Everything else inside the page, supporter wordmarks and spot drawings included, is artwork.
+PLACEHOLDER = re.compile(r'no-image|placeholder|blank|spacer|shape-image', re.I)
 
 
 def source(element) -> str | None:
@@ -30,7 +35,7 @@ def source(element) -> str | None:
         if not wrapped:
             return None
         src = wrapped[0]
-    return src if not IGNORED_IMAGE.search(urllib.parse.unquote(src)) else None
+    return src if not PLACEHOLDER.search(urllib.parse.unquote(src)) else None
 
 
 _marks: dict[str, str] = {}
@@ -63,12 +68,47 @@ def name(src: str) -> str:
     return urllib.parse.unquote(src).rsplit('/', 1)[-1].split('?')[0]
 
 
+def self_test() -> int:
+    """The rules this check rests on, asserted without a server."""
+    _marks.update({
+        '/api/media/file/one.svg': 'a',
+        '/api/media/file/copy.svg': 'a',
+        '/api/media/file/two.png': 'b',
+        '/api/media/file/no-image.png': 'c',
+    })
+    cases = [
+        ('an svg drawn twice is caught', '<main><img src="/api/media/file/one.svg">'
+         '<img src="/api/media/file/one.svg"></main>', 1),
+        ('the same picture under two names is caught', '<main><img src="/api/media/file/one.svg">'
+         '<img src="/api/media/file/copy.svg"></main>', 1),
+        ('a resized copy is the same picture', '<main><img src="/api/media/file/one.svg">'
+         '<img src="/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fcopy.svg&w=640&q=75"></main>', 1),
+        ('two different pictures are fine', '<main><img src="/api/media/file/one.svg">'
+         '<img src="/api/media/file/two.png"></main>', 0),
+        ('a stand-in may be drawn as often as needed',
+         '<main><img src="/api/media/file/no-image.png">'
+         '<img src="/api/media/file/no-image.png"></main>', 0),
+        ('chrome outside the page is not artwork', '<body><header>'
+         '<img src="/api/media/file/one.svg"><img src="/api/media/file/one.svg">'
+         '</header><main><img src="/api/media/file/two.png"></main></body>', 0),
+    ]
+    failures = [name for name, html, want in cases if len(repeats('', html)) != want]
+    for failure in failures:
+        print(f'self test failed: {failure}')
+    print('self test: ' + ('failed' if failures else 'passed'))
+    return 1 if failures else 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--base', default='http://localhost:3000')
     parser.add_argument('--only', action='append', help='Check just these routes')
     parser.add_argument('--quiet', action='store_true', help='Only print routes that repeat art')
+    parser.add_argument('--self-test', action='store_true', help='Check the rules, without a server')
     args = parser.parse_args()
+
+    if args.self_test:
+        return self_test()
 
     routes = site_routes()
     if args.only:

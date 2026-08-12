@@ -58,6 +58,31 @@ def repeats(html: str, headings_only: bool) -> list[tuple[str, int]]:
     return sorted(found, key=lambda entry: (-entry[1], entry[0]))
 
 
+def self_test() -> int:
+    """The rules this check rests on, asserted without a server."""
+    cases = [
+        ('the same words twice is caught', '<main><p>Our Volunteers</p><h2>Our volunteers</h2></main>',
+         False, 1),
+        ('a wrapper around one copy says it once',
+         '<main><div><p>Our Volunteers</p></div></main>', False, 0),
+        ('two headings alike is caught', '<main><h2>Introduction</h2><h3>introduction</h3></main>',
+         True, 1),
+        ('a heading and a button alike is not a heading fault',
+         '<main><h2>Donate Now</h2><a>Donate Now</a></main>', True, 0),
+        ('different words are fine', '<main><h2>Our team</h2><h2>Our members</h2></main>', True, 0),
+        ('chrome outside the page does not count',
+         '<body><footer><p>Join our mailing list</p></footer>'
+         '<main><p>Join our mailing list</p></main></body>', False, 0),
+    ]
+    failures = [
+        name for name, html, headings, want in cases if len(repeats(html, headings)) != want
+    ]
+    for failure in failures:
+        print(f'self test failed: {failure}')
+    print('self test: ' + ('failed' if failures else 'passed'))
+    return 1 if failures else 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--base', default='http://localhost:3000')
@@ -68,7 +93,11 @@ def main() -> int:
         action='store_true',
         help=f'Check only headings ({", ".join(HEADINGS)} and role="heading")',
     )
+    parser.add_argument('--self-test', action='store_true', help='Check the rules, without a server')
     args = parser.parse_args()
+
+    if args.self_test:
+        return self_test()
 
     routes = site_routes()
     if args.only:
