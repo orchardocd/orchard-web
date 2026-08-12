@@ -273,6 +273,8 @@ def inline_html(element):
     out = inline_parts(element).replace('\xa0', ' ')
     out = re.sub(r'[ \t\r\n]+', ' ', out)
     out = re.sub(r'(<br>\s*){3,}', '<br><br>', out)
+    # A break landing mid-sentence was the old theme wrapping a line, not starting a new one.
+    out = re.sub(r'\s*<br>\s*(?=[a-z])', ' ', out)
     return out.strip()
 
 

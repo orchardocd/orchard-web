@@ -14,10 +14,25 @@ await fs.rm(dest, { recursive: true, force: true })
 
 const MAX_WIDTH = 2000
 
+const WHITE = /^(white|#fff|#ffffff)$/i
+
+/**
+ * The old site placed a few marks on a coloured band. On a white page they are invisible, so
+ * an SVG whose every stroke and fill is white gets the brand green instead.
+ */
+function recolourWhiteOnlySvg(markup) {
+  const colours = [...markup.matchAll(/(?:fill|stroke)="([^"]+)"/g)]
+    .map((match) => match[1])
+    .filter((value) => value.toLowerCase() !== 'none')
+  if (colours.length === 0 || !colours.every((value) => WHITE.test(value))) return markup
+  return markup.replace(/(fill|stroke)="(white|#fff|#ffffff)"/gi, '$1="#00655C"')
+}
+
 async function encodeImage(src, ext) {
   const original = await fs.readFile(src)
   if (ext === '.svg') {
-    return { buffer: original, ext }
+    const recoloured = recolourWhiteOnlySvg(original.toString('utf8'))
+    return { buffer: Buffer.from(recoloured, 'utf8'), ext }
   }
   const img = sharp(src, { failOn: 'none' })
   const meta = await img.metadata()

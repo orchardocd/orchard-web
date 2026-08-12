@@ -24,7 +24,7 @@ export function ArticleCard({
   excerpt,
   image,
   accent,
-  imageClassName = 'aspect-[4/3] object-cover',
+  imageClassName = 'aspect-[4/3] border-b border-line bg-mist object-contain p-4',
 }: ArticleCardProps) {
   return (
     <li
@@ -41,7 +41,7 @@ export function ArticleCard({
           sizes="(min-width: 1024px) 33vw, 100vw"
         />
       ) : null}
-      <div className="flex flex-1 flex-col gap-3 p-7">
+      <div className="flex flex-col gap-3 p-7">
         {date || byline ? (
           <p className="text-xs font-bold tracking-[0.1em] text-faint uppercase">
             {date ? <time dateTime={date}>{formatDate(date)}</time> : null}
@@ -77,11 +77,13 @@ export function PostCards({
   className,
   accents,
   showImages = true,
+  imageClassName,
 }: {
   posts: PostLike[]
   className: string
   accents?: [string, string]
   showImages?: boolean
+  imageClassName?: string
 }) {
   const items = withoutRepeats(
     posts.map((post) => ({ ...post, image: showImages ? post.featuredImage : undefined })),
@@ -98,6 +100,7 @@ export function PostCards({
           byline={post.byline}
           excerpt={post.excerpt}
           image={post.image}
+          imageClassName={imageClassName}
           accent={accents ? accents[index % accents.length] : undefined}
         />
       ))}

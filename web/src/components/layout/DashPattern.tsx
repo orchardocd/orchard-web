@@ -18,7 +18,12 @@ const DASHES = [
 export function DashPattern({ className }: { className?: string }) {
   return (
     <div aria-hidden="true" className={className}>
-      <svg width="620" height="560" viewBox="0 0 620 560" focusable="false">
+      <svg
+        viewBox="0 0 620 560"
+        focusable="false"
+        preserveAspectRatio="xMaxYMid meet"
+        className="h-full w-auto"
+      >
         {DASHES.map((dash) => (
           <rect
             key={`${dash.x}-${dash.y}`}

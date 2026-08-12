@@ -52,3 +52,4 @@ jobs:
           pnpm start -H 127.0.0.1 &
           npx --yes wait-on http://127.0.0.1:3000 -t 120000
           pnpm parity
+          pnpm duplicates

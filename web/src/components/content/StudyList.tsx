@@ -9,9 +9,9 @@ export async function StudyList() {
   )
 
   return (
-    <Section label="Participate in research" className="border-t border-line">
+    <Section label="Participate in research">
       <Container>
-        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
           {studies.map((study) => (
             <ArticleCard
               key={study.id}
@@ -20,7 +20,7 @@ export async function StudyList() {
               date={study.publishedAt}
               excerpt={study.excerpt}
               image={study.image}
-              imageClassName="aspect-video bg-mist object-contain"
+              imageClassName="aspect-[4/3] border-b border-line bg-mist object-contain p-4"
             />
           ))}
         </ul>

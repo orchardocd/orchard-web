@@ -255,29 +255,35 @@ def collect(html: str, scope_selector: str | None, side: str = 'old') -> tuple[s
     return normalize(scope.get_text(' ', strip=True)), images
 
 
-def text_units(html: str, scope_selector: str | None) -> list[str]:
+def text_leaves(html: str, scope_selector: str | None):
+    """Every sentence the page renders, paired with the element that holds it."""
     soup = BeautifulSoup(html, 'html.parser')
     strip_chrome(soup)
     scope = soup.select_one(scope_selector) if scope_selector else None
     scope = scope or soup.body or soup
 
-    units = []
     # Any leaf element can hold copy: Elementor puts plenty of it in bare divs and spans.
+    # A line break inside one does not make it a container, and counting it as one would
+    # drop whatever it wraps.
     leaves = [
         element
         for element in scope.find_all(True)
         if element.name not in ('script', 'style', 'noscript', 'br', 'img', 'svg', 'iframe')
-        and not element.find(True, recursive=False)
+        and not any(child.name != 'br' for child in element.find_all(True, recursive=False))
     ]
     for element in leaves:
-        raw = element.get_text(' ', strip=True)
-        if IGNORED_TEXT.search(raw):
-            continue
-        for sentence in re.split(r'(?<=[.!?])\s+(?=[A-Z"“])', raw):
-            normalized = normalize(sentence)
-            if len(normalized) >= MIN_UNIT_CHARS:
-                units.append(normalized)
-    return units
+        # A break is where the writer ended the line, so each one starts its own unit.
+        for raw in element.get_text('\n', strip=True).split('\n'):
+            if IGNORED_TEXT.search(raw):
+                continue
+            for sentence in re.split(r'(?<=[.!?])\s+(?=[A-Z"“])', raw):
+                normalized = normalize(sentence)
+                if len(normalized) >= MIN_UNIT_CHARS:
+                    yield element, normalized
+
+
+def text_units(html: str, scope_selector: str | None) -> list[str]:
+    return [unit for _, unit in text_leaves(html, scope_selector)]
 
 
 _corpus: str | None = None
@@ -405,6 +411,8 @@ def route_expectations(route: dict) -> dict:
     return {
         **route_id(route),
         'text': text_units(source_html, old_scope(route)),
+        # The old banner sat outside the article, so repeat counting needs the whole page.
+        'textAll': text_units(source_html, None),
         'images': sorted(images),
         'imageSections': image_sections(source_html, old_scope(route)),
     }

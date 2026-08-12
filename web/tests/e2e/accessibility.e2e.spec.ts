@@ -15,11 +15,14 @@ const ROUTES = [
   ['policy page', '/terms-of-use'],
 ] as const
 
-test('every video embed exposes an accessible name', async ({ page }) => {
+test('every video player names the webinar it plays', async ({ page }) => {
   await page.goto('/webinars')
-  const frames = page.locator('main iframe')
-  for (let index = 0; index < (await frames.count()); index += 1) {
-    await expect(frames.nth(index)).toHaveAttribute('title', /\S/)
+  const players = page.getByRole('button', { name: /Watch Now/i })
+  const count = await players.count()
+  expect(count).toBeGreaterThan(10)
+  for (let index = 0; index < count; index += 1) {
+    // The visible label is generic, so the accessible name carries the webinar title.
+    await expect(players.nth(index)).toHaveAccessibleName(/Watch Now: .{8,}/)
   }
 })
 

@@ -13,7 +13,8 @@ export default async function BlogIndex() {
 
   return (
     <BannerPage title="Blog">
-      <PostCards posts={posts.docs} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" />
+      <PostCards posts={posts.docs} className="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-3"
+          imageClassName="aspect-video border-b border-line bg-mist object-contain p-4" />
     </BannerPage>
   )
 }

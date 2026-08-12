@@ -12,7 +12,7 @@ export function VideoFacade({
 }: {
   src: string
   title: string
-  poster: Media
+  poster?: Media | null
 }) {
   const [playing, setPlaying] = useState(false)
 
@@ -32,15 +32,15 @@ export function VideoFacade({
     <button
       type="button"
       onClick={() => setPlaying(true)}
+      aria-label={`Watch Now: ${title}`}
       className="group absolute inset-0 h-full w-full cursor-pointer"
     >
       <MediaImage media={poster} className="h-full w-full object-cover" sizes="(min-width: 1024px) 60vw, 100vw" />
-      <span className="absolute inset-0 flex items-center justify-center bg-ink/25 transition-colors group-hover:bg-ink/40">
-        <span className="rounded-full bg-lime px-7 py-4 text-lg font-bold text-ink-on-lime">
+      <span className="absolute inset-0 flex items-end justify-start bg-gradient-to-t from-ink/70 via-ink/10 to-transparent p-4 transition-colors group-hover:from-ink/85">
+        <span className="rounded-full bg-white px-5 py-2.5 text-base font-bold text-ink">
           Watch Now
         </span>
       </span>
-      <span className="sr-only">{title}</span>
     </button>
   )
 }

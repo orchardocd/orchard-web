@@ -3,13 +3,15 @@ import type { ReactNode } from 'react'
 
 import { cn } from '@/lib/cn'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'donate' | 'ghost'
+export type ButtonVariant = 'primary' | 'secondary' | 'donate' | 'ghost' | 'light'
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: 'bg-brand-strong text-white hover:bg-brand-hover',
   secondary: 'border-2 border-brand text-brand-link hover:bg-mist',
   donate: 'bg-lime text-ink-on-lime hover:bg-lime-hover',
   ghost: 'border-2 border-white/85 text-white hover:bg-white/12',
+  // For dark surfaces, where lime is reserved for the donate action.
+  light: 'bg-white text-brand-link hover:bg-mist',
 }
 
 const BASE =

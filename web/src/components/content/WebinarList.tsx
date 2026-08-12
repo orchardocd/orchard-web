@@ -6,15 +6,15 @@ export async function WebinarList() {
   const webinars = await getWebinars()
 
   return (
-    <Section label="Webinars" className="border-t border-line">
+    <Section label="Webinars">
       <Container>
-        <ul className="grid gap-12 lg:grid-cols-2">
+        <ul className="grid items-start gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
           {webinars.map((webinar) => (
             <li key={webinar.id} className="flex flex-col gap-4">
-              <h3 className="text-xl leading-snug font-bold text-ink">{webinar.title}</h3>
+              <h3 className="text-lg leading-snug font-bold text-ink">{webinar.title}</h3>
               <VideoEmbed url={webinar.url} title={webinar.title} poster={webinar.image} />
               {webinar.description ? (
-                <p className="text-[0.97rem] leading-relaxed text-body">{webinar.description}</p>
+                <p className="text-sm leading-relaxed text-faint">{webinar.description}</p>
               ) : null}
             </li>
           ))}

@@ -65,7 +65,20 @@ function assetPath(asset: { id: string; asset?: string }): string {
   return path.join(assetsDir, asset.asset)
 }
 
-function excerptFrom(blocks: SeedContent['posts'][number]['blocks'], limit = 220): string {
+function sameWords(left: string, right: string): boolean {
+  const plain = (value: string) =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim()
+  return plain(left) === plain(right)
+}
+
+function excerptFrom(
+  blocks: SeedContent['posts'][number]['blocks'],
+  title: string,
+  limit = 220,
+): string {
   for (const block of blocks) {
     if (block.type !== 'paragraph') continue
     const text = block.html
@@ -77,8 +90,12 @@ function excerptFrom(blocks: SeedContent['posts'][number]['blocks'], limit = 220
       .replace(/\s+/g, ' ')
       .trim()
     if (text.length < 40) continue
-    if (text.length <= limit) return text
-    const cut = text.slice(0, limit)
+    // An opening line that only restates the title would print the title twice on the card.
+    const opener = text.split(/(?<=[.!?])\s+/)[0]
+    const body = sameWords(opener, title) ? text.slice(opener.length).trim() : text
+    if (body.length < 40) continue
+    if (body.length <= limit) return body
+    const cut = body.slice(0, limit)
     const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '))
     return stop > 60 ? cut.slice(0, stop + 1) : `${cut.trimEnd()}…`
   }
@@ -238,7 +255,7 @@ export async function seed(payload: Payload) {
         categories: post.categories
           .map((name) => categoryIds.get(name))
           .filter((id): id is number => id !== undefined),
-        excerpt: excerptFrom(post.blocks),
+        excerpt: excerptFrom(post.blocks, post.title),
         featuredImage: mediaIds.get(post.featuredImage ?? firstImage(post.blocks) ?? ''),
         layout: layoutOf(post.blocks),
         meta: { description: post.description },
@@ -257,7 +274,7 @@ export async function seed(payload: Payload) {
         title: study.title,
         slug: study.slug,
         publishedAt: study.date,
-        excerpt: excerptFrom(study.blocks),
+        excerpt: excerptFrom(study.blocks, study.title),
         featuredImage: mediaIds.get(study.featuredImage ?? firstImage(study.blocks) ?? ''),
         layout: layoutOf(study.blocks),
         meta: { description: study.description },

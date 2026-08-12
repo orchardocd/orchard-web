@@ -30,20 +30,9 @@ export function VideoEmbed({
   const posterMedia = resolveMedia(poster as Parameters<typeof resolveMedia>[0])
 
   return (
-    <div className={cn('mx-auto w-full max-w-4xl', className)}>
+    <div className={cn('w-full', className)}>
       <div className="relative aspect-video overflow-hidden rounded-lg bg-brand-dark">
-        {posterMedia ? (
-          <VideoFacade src={src} title={title || 'Video'} poster={posterMedia} />
-        ) : (
-          <iframe
-            src={src}
-            title={title || 'Video'}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full border-0"
-          />
-        )}
+        <VideoFacade src={src} title={title || 'Video'} poster={posterMedia} />
       </div>
     </div>
   )
@@ -51,14 +40,16 @@ export function VideoEmbed({
 
 export function VideoPlayer({
   block,
+  className,
 }: {
   block: { url?: string | null; file?: unknown; title?: string | null; poster?: unknown }
+  className?: string
 }) {
   const file = typeof block.file === 'object' && block.file !== null ? (block.file as { url?: string | null; title?: string | null }) : null
 
   if (file?.url) {
     return (
-      <div className="mx-auto max-w-4xl">
+      <div className={cn('w-full', className)}>
         <video controls preload="metadata" className="w-full rounded-lg bg-brand-dark">
           <source src={file.url} type="video/mp4" />
           Your browser does not support embedded video.
@@ -68,6 +59,6 @@ export function VideoPlayer({
   }
 
   return block.url ? (
-    <VideoEmbed url={block.url} title={block.title} poster={block.poster} />
+    <VideoEmbed url={block.url} title={block.title} poster={block.poster} className={className} />
   ) : null
 }

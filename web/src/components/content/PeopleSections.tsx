@@ -1,10 +1,11 @@
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { Container, Section } from '@/components/ui/Container'
-import { RoundImage } from '@/components/ui/Media'
+import { MediaImage, RoundImage } from '@/components/ui/Media'
+import { cn } from '@/lib/cn'
 import { getPeople } from '@/lib/payload'
 import type { Person } from '@/payload-types'
 
-const GROUPS: { value: Person['group']; label: string }[] = [
+export const GROUPS: { value: Person['group']; label: string }[] = [
   { value: 'team', label: 'Our team' },
   { value: 'scientific-advisory-board', label: 'Scientific advisory board' },
   { value: 'partners', label: 'Our supporters' },
@@ -12,13 +13,33 @@ const GROUPS: { value: Person['group']; label: string }[] = [
   { value: 'college', label: 'Our members' },
 ]
 
-function PersonCard({ person }: { person: Person }) {
+function PersonCard({ person, compact = false }: { person: Person; compact?: boolean }) {
+  // Supporters are organisations: their wordmarks belong on a plate, not in a portrait circle.
+  const isOrganisation = person.group === 'partners'
+
   return (
-    <li className="flex flex-col items-center gap-4 rounded-lg border border-line p-7 text-center">
+    <li
+      className={cn(
+        'flex flex-col items-center gap-4 rounded-lg border border-line',
+        compact ? 'p-4 sm:p-6' : 'p-7',
+      )}
+    >
       {person.photo ? (
-        <RoundImage media={person.photo} className="w-36" sizes="144px" />
+        isOrganisation ? (
+          <MediaImage
+            media={person.photo}
+            className="h-20 w-auto max-w-[70%] object-contain"
+            sizes="200px"
+          />
+        ) : (
+          <RoundImage
+            media={person.photo}
+            className={compact ? 'w-24 sm:w-28 lg:w-32' : 'w-36'}
+            sizes="144px"
+          />
+        )
       ) : null}
-      <h3 className="text-xl font-bold text-brand-link">
+      <h3 className="text-center text-xl font-bold text-brand-link">
         {person.website ? (
           <a href={person.website} className="text-brand-link no-underline hover:underline">
             {person.name}
@@ -28,9 +49,9 @@ function PersonCard({ person }: { person: Person }) {
         )}
       </h3>
       {person.excerpt ? (
-        <p className="text-[0.97rem] leading-relaxed text-body">{person.excerpt}</p>
+        <p className="w-full text-base leading-relaxed text-body">{person.excerpt}</p>
       ) : (
-        <RenderBlocks blocks={person.bio} className="gap-3 text-left" />
+        <RenderBlocks blocks={person.bio} className="w-full" />
       )}
     </li>
   )
@@ -46,20 +67,29 @@ export async function PeopleSections({ only }: { only?: Person['group'][] } = {}
         const members = people.filter((person) => person.group === group.value)
         if (members.length === 0) return null
         const headingId = `people-${group.value}`
+        // A 56-strong roster needs a denser grid than a nine-person team.
+        const compact = group.value === 'college'
 
         return (
           <Section
             key={group.value}
             labelledBy={headingId}
-            className={index % 2 === 1 ? 'bg-mist' : undefined}
+            className={index % 2 === 0 ? 'bg-mist' : undefined}
           >
             <Container>
-              <h2 id={headingId} className="mb-9 text-3xl font-bold text-ink">
+              <h2 id={headingId} className="mb-9 text-4xl font-bold text-ink">
                 {group.label}
               </h2>
-              <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <ul
+                className={cn(
+                  'grid items-start gap-6',
+                  compact
+                    ? 'grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4'
+                    : 'sm:grid-cols-2 lg:grid-cols-3',
+                )}
+              >
                 {members.map((person) => (
-                  <PersonCard key={person.id} person={person} />
+                  <PersonCard key={person.id} person={person} compact={compact} />
                 ))}
               </ul>
             </Container>

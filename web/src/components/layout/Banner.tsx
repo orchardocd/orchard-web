@@ -18,7 +18,7 @@ export function Banner({
 }) {
   return (
     <section className={cn('relative overflow-hidden bg-brand-deep', className)}>
-      <DashPattern className="pointer-events-none absolute -top-8 -right-10 opacity-18" />
+      <DashPattern className="pointer-events-none absolute inset-y-0 right-0 opacity-18" />
       <Container
         className={cn(
           'relative py-16 md:py-20',
@@ -45,10 +45,9 @@ export function BannerPage({ title, children }: { title: string; children: React
   )
 }
 
+export const TITLE_CLASSES =
+  'max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight text-balance italic md:text-6xl'
+
 export function BannerTitle({ children }: { children: ReactNode }) {
-  return (
-    <h1 className="max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight text-balance text-white italic md:text-6xl">
-      {children}
-    </h1>
-  )
+  return <h1 className={cn(TITLE_CLASSES, 'text-white')}>{children}</h1>
 }

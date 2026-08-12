@@ -51,12 +51,17 @@ test.describe('site', () => {
     await expect(page.getByRole('link', { name: /hertfordshire/i })).toBeVisible()
   })
 
-  test('renders webinars with playable embeds', async ({ page }) => {
+  test('renders every webinar as a click-to-play tile', async ({ page }) => {
     await page.goto('/webinars')
     await expect(page.getByRole('region', { name: 'Webinars' })).toBeVisible()
-    const embeds = page.locator('main iframe')
-    expect(await embeds.count()).toBeGreaterThan(10)
-    await expect(embeds.first()).toHaveAttribute('title', /\S/)
+
+    // Nothing is loaded from YouTube until someone asks for it.
+    await expect(page.locator('main iframe')).toHaveCount(0)
+    const players = page.getByRole('button', { name: /Watch Now/i })
+    expect(await players.count()).toBeGreaterThan(10)
+
+    await players.first().click()
+    await expect(page.locator('main iframe').first()).toHaveAttribute('title', /\S/)
   })
 
   test('returns a 404 page for unknown routes', async ({ page }) => {

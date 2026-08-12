@@ -7,7 +7,7 @@ export function DocumentLink({ block }: { block: Block }) {
   if (!document?.url) return null
 
   return (
-    <p className="max-w-measure">
+    <p>
       <a
         href={document.url}
         className="inline-flex items-center gap-2 rounded border-2 border-brand px-6 py-3 font-bold text-brand-link no-underline hover:bg-mist"

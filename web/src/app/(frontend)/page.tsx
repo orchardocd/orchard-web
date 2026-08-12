@@ -50,7 +50,7 @@ export default async function HomePage() {
       {(home.highlights ?? []).length > 0 ? (
         <Section label={about.heading} className="py-14">
           <Container>
-            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <ul className="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-4">
               {(home.highlights ?? []).map((item, index) => (
                 <li
                   key={item.id ?? index}
@@ -59,7 +59,7 @@ export default async function HomePage() {
                   {item.image ? (
                     <MediaImage
                       media={item.image}
-                      className="aspect-[4/3] bg-mist object-contain"
+                      className="aspect-[4/3] border-b border-line bg-mist object-contain p-6"
                       sizes="(min-width: 1024px) 25vw, 50vw"
                     />
                   ) : null}
@@ -133,6 +133,7 @@ export default async function HomePage() {
                   url={video.url}
                   title={about.ctaHeading ?? about.heading}
                   poster={video.poster}
+                  className="max-w-none"
                 />
               ) : null}
             </div>
@@ -143,7 +144,7 @@ export default async function HomePage() {
       <Section labelledBy="participate">
         <Container className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <h2 id="participate" className="text-3xl leading-tight font-bold text-ink">
+            <h2 id="participate" className="text-4xl leading-tight font-bold text-ink">
               {participate?.heading}
             </h2>
             <p className="mt-4 max-w-measure text-lg leading-relaxed text-body">
@@ -172,7 +173,7 @@ export default async function HomePage() {
       <Section labelledBy="proposals" className="bg-brand-deep">
         <Container className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <h2 id="proposals" className="text-3xl font-bold text-white">
+            <h2 id="proposals" className="text-4xl font-bold text-white">
               {proposals?.heading}
             </h2>
             {(proposals?.body ?? []).map((paragraph, index) => (
@@ -184,7 +185,7 @@ export default async function HomePage() {
               </p>
             ))}
             {proposals?.ctaHref && proposals.ctaLabel ? (
-              <ButtonLink href={proposals.ctaHref} variant="donate" className="mt-8">
+              <ButtonLink href={proposals.ctaHref} variant="light" className="mt-8">
                 {proposals.ctaLabel}
               </ButtonLink>
             ) : null}
@@ -214,7 +215,7 @@ export default async function HomePage() {
           </h2>
           <PostCards
             posts={posts.docs}
-            className="grid gap-6 md:grid-cols-3"
+            className="grid items-start gap-6 md:grid-cols-3"
             accents={['#B6BF00', '#00877C']}
             showImages={false}
           />
@@ -227,7 +228,7 @@ export default async function HomePage() {
               ) : null}
               <h3 className="flex-1 text-lg font-semibold text-white">{webinar.title}</h3>
               {webinar.ctaHref && webinar.ctaLabel ? (
-                <ButtonLink href={webinar.ctaHref} variant="donate">
+                <ButtonLink href={webinar.ctaHref} variant="light">
                   {webinar.ctaLabel}
                 </ButtonLink>
               ) : null}
@@ -239,7 +240,7 @@ export default async function HomePage() {
       <Section labelledBy="newsletter" className="bg-brand-strong">
         <Container className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <h2 id="newsletter" className="text-3xl font-bold text-white">
+            <h2 id="newsletter" className="text-4xl font-bold text-white">
               {settings.newsletter?.heading}
             </h2>
             <p className="mt-4 leading-relaxed text-pretty text-white/92">
@@ -249,8 +250,8 @@ export default async function HomePage() {
           </div>
           <ButtonLink
             href={settings.newsletter?.signupUrl || '/join-our-mailing-list'}
-            variant="donate"
-            className="justify-self-start px-8 py-4 text-lg"
+            variant="light"
+            className="px-8 py-4 text-lg"
           >
             Join Our Mailing List
           </ButtonLink>
