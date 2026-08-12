@@ -5,9 +5,14 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: web
@@ -16,6 +21,8 @@ jobs:
       PAYLOAD_SECRET: ci-only-secret
       PAYLOAD_ADMIN_EMAIL: admin@example.com
       PAYLOAD_ADMIN_PASSWORD: ci-only-password
+      DEBIAN_FRONTEND: noninteractive
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -32,9 +39,28 @@ jobs:
       - run: pnpm dup
       - run: pnpm seed
       - run: pnpm build
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('web/pnpm-lock.yaml') }}
+      - name: Install Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 8
+        run: pnpm exec playwright install chromium --with-deps
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        timeout-minutes: 8
+        run: pnpm exec playwright install-deps chromium
+
+      - name: Tests
+        timeout-minutes: 10
+        run: pnpm test
+
       - name: Content parity with the previous site
+        timeout-minutes: 10
         run: |
           pip install --quiet beautifulsoup4 lxml
           pnpm start -H 127.0.0.1 &
