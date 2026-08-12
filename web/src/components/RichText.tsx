@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn'
 const PROSE = [
   'max-w-measure text-lg leading-relaxed text-body',
   '[&_p]:my-5',
-  '[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:text-ink [&_h2]:leading-tight',
+  '[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-3xl [&_h2]:font-bold [&_h2]:text-ink [&_h2]:leading-tight [&>h2:first-child]:mt-0',
   '[&_h3]:mt-9 [&_h3]:mb-3 [&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-brand-link',
   '[&_h4]:mt-7 [&_h4]:mb-2 [&_h4]:text-xl [&_h4]:font-bold [&_h4]:text-ink',
   '[&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-5 [&_ol]:list-decimal [&_ol]:pl-6',

@@ -445,6 +445,24 @@ def widget_type(widget):
     return None
 
 
+SOCIAL_LABELS = {
+    'facebook.com': 'Facebook',
+    'instagram.com': 'Instagram',
+    'twitter.com': 'X / Twitter',
+    'x.com': 'X / Twitter',
+    'linkedin.com': 'LinkedIn',
+    'youtube.com': 'YouTube',
+}
+
+
+def link_label_from_url(href):
+    host = re.sub(r'^https?://(?:www\.)?', '', href).split('/')[0]
+    for domain, label in SOCIAL_LABELS.items():
+        if host.endswith(domain):
+            return label
+    return host
+
+
 def widget_link(widget):
     raw = widget.get('data-exad-element-link') or widget.get('data-elementor-element-link')
     if not raw:
@@ -578,9 +596,15 @@ def widget_blocks(widget, wtype):
     if wtype and wtype.startswith('wp-widget-nav_menu'):
         items = []
         for anchor in container.find_all('a', href=True):
-            label = clean_text(anchor.get_text(' ', strip=True))
             href = sanitize_href(anchor['href'])
-            if label and VALID_HREF.match(href):
+            if not VALID_HREF.match(href):
+                continue
+            label = (
+                clean_text(anchor.get_text(' ', strip=True))
+                or clean_text(anchor.get('aria-label') or anchor.get('title') or '')
+                or link_label_from_url(href)
+            )
+            if label:
                 items.append(f'<a href="{html.escape(href, quote=True)}">{label}</a>')
         return [{'type': 'list', 'ordered': False, 'items': items}] if items else []
     if wtype in ('html', 'shortcode'):
@@ -729,19 +753,41 @@ def extract_hero(slug):
     return slides
 
 
+# Section furniture the rebuilt design owns: the copy still renders, from the
+# blog listing and the newsletter settings rather than from page blocks.
+DESIGN_OWNED_HEADINGS = re.compile(r'^(from the blog|subscribe to our newsletter)$', re.I)
+
+
+def drop_design_owned(blocks):
+    result = []
+    skipping = False
+    for block in blocks:
+        if block['type'] == 'heading':
+            skipping = bool(DESIGN_OWNED_HEADINGS.match(block['text']))
+            if skipping:
+                continue
+        elif skipping and block['type'] == 'paragraph':
+            continue
+        else:
+            skipping = False
+        result.append(block)
+    return result
+
+
 def extract_pages():
     pages = []
     for page in load_api('pages'):
         slug = page['slug']
         if slug in UTILITY_SLUGS or page.get('status') != 'publish':
             continue
+        blocks = elementor_blocks(page['content']['rendered'])
         pages.append({
             'slug': slug,
             'title': strip_tags(page['title']['rendered']),
             'description': yoast_description(page),
             'featuredImage': featured_image(page),
             'hero': extract_hero(slug),
-            'blocks': elementor_blocks(page['content']['rendered']),
+            'blocks': blocks if slug != 'home' else drop_design_owned(blocks),
         })
     return pages
 

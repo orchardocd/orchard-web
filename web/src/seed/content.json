@@ -169,6 +169,17 @@
      "html": "If you want to keep up-to-date on the latest work Orchard is doing then please follow us on our social media platforms."
     },
     {
+     "type": "list",
+     "ordered": false,
+     "items": [
+      "<a href=\"https://www.facebook.com/OrchardOCD\">Facebook</a>",
+      "<a href=\"https://www.instagram.com/orchardocd/?hl=en\">Instagram</a>",
+      "<a href=\"https://twitter.com/OrchardOCD\">X / Twitter</a>",
+      "<a href=\"https://www.linkedin.com/company/orchard-ocd\">LinkedIn</a>",
+      "<a href=\"https://www.youtube.com/@orchardocd5099\">YouTube</a>"
+     ]
+    },
+    {
      "type": "image",
      "image": "uploads/2022/05/Component-1-–-1.png"
     },
@@ -195,26 +206,12 @@
      "image": "uploads/2022/03/homecallfor.svg"
     },
     {
-     "type": "heading",
-     "level": 3,
-     "text": "From The Blog"
-    },
-    {
      "type": "image",
      "image": "uploads/2022/03/Group14629.svg"
     },
     {
      "type": "image",
      "image": "uploads/2022/04/Group-8871.png"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Subscribe to our Newsletter"
-    },
-    {
-     "type": "paragraph",
-     "html": "Here at Orchard OCD, we are focusing on developing treatments for patients suffering from obsessive-compulsive disorder (OCD), a serious mental illness. You can help us treat this debilitating disorder, through taking part in research, donating towards crowdfunding campaigns and promoting our work. All of this information will be sent to you through our E-News. Sign up today and you will be part of the future of OCD treatment."
     }
    ]
   },

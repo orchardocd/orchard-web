@@ -102,11 +102,8 @@ export default async function HomePage() {
         <HeroHighlights slides={page?.hero ?? []} />
       </Section>
 
-      <Section labelledBy="about-orchard" className="bg-mist">
+      <Section label="About Orchard OCD" className="bg-mist">
         <Container>
-          <h2 id="about-orchard" className="sr-only">
-            About Orchard OCD
-          </h2>
           <RenderBlocks blocks={page?.layout} />
         </Container>
       </Section>

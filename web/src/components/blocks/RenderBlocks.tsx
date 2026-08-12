@@ -65,7 +65,7 @@ export function RenderBlocks({
             return <RichText key={key} data={block.content} />
           case 'imageBlock':
             return (
-              <figure key={key} className="mx-auto max-w-4xl">
+              <figure key={key} className="mx-auto max-w-2xl">
                 <MediaImage media={block.image} className="rounded-lg" />
                 {block.caption ? (
                   <figcaption className="mt-3 text-sm text-faint">{block.caption}</figcaption>
