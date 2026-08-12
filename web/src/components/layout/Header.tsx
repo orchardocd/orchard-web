@@ -117,7 +117,7 @@ export function Header({
         </div>
       ) : null}
 
-      <header className="sticky top-0 z-50 bg-white/96 shadow-[0_1px_0_rgba(14,42,39,0.1)] backdrop-blur-md">
+      <header className="sticky top-0 z-50 bg-white shadow-[0_1px_0_rgba(14,42,39,0.12)]">
         <Container className="flex items-center justify-between gap-8 py-3.5">
           <Link href="/" className="flex shrink-0 items-center">
             <Image

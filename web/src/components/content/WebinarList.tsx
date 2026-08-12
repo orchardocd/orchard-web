@@ -8,10 +8,13 @@ export async function WebinarList() {
   return (
     <Section label="Webinars">
       <Container>
-        <ul className="grid items-start gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
+        <ul className="grid items-stretch gap-x-8 gap-y-12 lg:grid-cols-2 xl:grid-cols-3">
           {webinars.map((webinar) => (
             <li key={webinar.id} className="flex flex-col gap-4">
-              <h3 className="text-lg leading-snug font-bold text-ink">{webinar.title}</h3>
+              {/* Three lines held open, so every tile below starts on the same line. */}
+              <h3 className="text-lg leading-snug font-bold text-ink lg:min-h-[4.5rem]">
+                {webinar.title}
+              </h3>
               <VideoEmbed url={webinar.url} title={webinar.title} poster={webinar.image} />
               {webinar.description ? (
                 <p className="text-sm leading-relaxed text-faint">{webinar.description}</p>

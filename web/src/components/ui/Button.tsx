@@ -14,8 +14,9 @@ const VARIANTS: Record<ButtonVariant, string> = {
   light: 'bg-white text-brand-link hover:bg-mist',
 }
 
+// Every variant carries the border so a filled button and an outlined one stand the same height.
 const BASE =
-  'inline-flex items-center justify-center gap-2 rounded px-7 py-3.5 text-base font-bold no-underline transition-colors'
+  'inline-flex items-center justify-center gap-2 rounded border-2 border-transparent px-7 py-3.5 text-base font-bold no-underline transition-colors'
 
 export function buttonClasses(variant: ButtonVariant = 'primary', className?: string) {
   return cn(BASE, VARIANTS[variant], className)

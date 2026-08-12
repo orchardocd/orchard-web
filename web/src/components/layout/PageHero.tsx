@@ -23,15 +23,15 @@ export function HeroHighlights({
     <Container className="py-14">
       <ul
         className={cn(
-          'grid items-start gap-8',
+          'grid items-stretch gap-8',
           items.length > 1 && 'md:grid-cols-2',
-          items.length > 2 && 'lg:grid-cols-3',
+          items.length > 2 && items.length !== 4 && 'lg:grid-cols-3',
         )}
       >
         {items.map((slide, index) => (
           <li
             key={slide.id ?? index}
-            className="flex flex-col gap-4 rounded-lg border border-line p-8"
+            className="flex h-full flex-col gap-4 rounded-lg border border-line p-6 sm:p-8"
           >
             {slide.image ? (
               <MediaImage
@@ -40,7 +40,7 @@ export function HeroHighlights({
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             ) : null}
-            <h2 className="text-3xl leading-tight font-bold text-ink">{slide.title}</h2>
+            <h2 className="text-xl leading-tight font-bold text-ink md:text-2xl">{slide.title}</h2>
             {slide.content ? <RichText data={slide.content} /> : null}
             {slide.ctaHref && slide.ctaLabel ? (
               <ButtonLink href={slide.ctaHref} variant="secondary" className="self-start">

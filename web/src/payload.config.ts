@@ -15,6 +15,7 @@ import { People } from '@/collections/People'
 import { Posts } from '@/collections/Posts'
 import { Speakers } from '@/collections/Speakers'
 import { Studies } from '@/collections/Studies'
+import { Subscribers } from '@/collections/Subscribers'
 import { Users } from '@/collections/Users'
 import { Videos } from '@/collections/Videos'
 import { Webinars } from '@/collections/Webinars'
@@ -46,6 +47,7 @@ export default buildConfig({
     Media,
     Documents,
     Videos,
+    Subscribers,
     Users,
   ],
   globals: [HomePage, SiteSettings, Navigation],

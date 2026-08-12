@@ -16,6 +16,8 @@ type MediaImageProps = {
   priority?: boolean
   fallbackWidth?: number
   fallbackHeight?: number
+  /** Let the image fill its box even where that means drawing it past its own pixels. */
+  fills?: boolean
 }
 
 export function MediaImage({
@@ -25,6 +27,7 @@ export function MediaImage({
   priority = false,
   fallbackWidth = 1200,
   fallbackHeight = 800,
+  fills = false,
 }: MediaImageProps) {
   const resolved = resolveMedia(media)
   if (!resolved?.url) return null
@@ -37,6 +40,8 @@ export function MediaImage({
       height={resolved.height ?? fallbackHeight}
       sizes={sizes}
       priority={priority}
+      // Nothing is worth blowing up past the pixels it was drawn with.
+      style={!fills && resolved.width ? { maxWidth: resolved.width } : undefined}
       className={cn('h-auto w-full', className)}
     />
   )
@@ -47,9 +52,13 @@ export function RoundImage({ media, className, sizes = '160px' }: MediaImageProp
     <MediaImage
       media={media}
       sizes={sizes}
+      fills
       fallbackWidth={400}
       fallbackHeight={400}
-      className={cn('aspect-square rounded-full object-cover', className)}
+      className={cn(
+        'aspect-square rounded-full bg-mist object-cover ring-1 ring-line grayscale',
+        className,
+      )}
     />
   )
 }

@@ -17,8 +17,13 @@ export function Illustrations({
   return (
     <ul className={cn('flex flex-wrap items-center gap-6', className)}>
       {images.map((item, index) => (
-        <li key={item.id ?? index}>
-          <MediaImage media={item.image} className={cn('w-auto', size)} sizes="160px" />
+        // A fixed footprint, so a pair of marks drawn on different canvases still reads as a pair.
+        <li key={item.id ?? index} className={cn('flex w-24 items-center justify-center', size)}>
+          <MediaImage
+            media={item.image}
+            className={cn('w-auto max-w-full object-contain', size)}
+            sizes="160px"
+          />
         </li>
       ))}
     </ul>

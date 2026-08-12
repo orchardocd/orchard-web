@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { DashRule } from '@/components/layout/DashPattern'
 import { MediaImage, type MediaValue } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 import { formatDate } from '@/lib/format'
@@ -24,7 +25,7 @@ export function ArticleCard({
   excerpt,
   image,
   accent,
-  imageClassName = 'aspect-[4/3] border-b border-line bg-mist object-contain p-4',
+  imageClassName = 'aspect-[16/9] border-b border-line bg-mist object-cover object-top',
 }: ArticleCardProps) {
   return (
     <li
@@ -37,11 +38,17 @@ export function ArticleCard({
       {image ? (
         <MediaImage
           media={image}
+          fills
           className={imageClassName}
           sizes="(min-width: 1024px) 33vw, 100vw"
         />
-      ) : null}
-      <div className="flex flex-col gap-3 p-7">
+      ) : (
+        // Without a picture the card still needs the same opening band, or the row goes ragged.
+        <div className="flex aspect-[16/9] items-center justify-center border-b border-line bg-mist">
+          <DashRule className="scale-150" />
+        </div>
+      )}
+      <div className="flex flex-col gap-2 p-5 md:p-7">
         {date || byline ? (
           <p className="text-xs font-bold tracking-[0.1em] text-faint uppercase">
             {date ? <time dateTime={date}>{formatDate(date)}</time> : null}
@@ -49,13 +56,13 @@ export function ArticleCard({
             {byline}
           </p>
         ) : null}
-        <h3 className="text-xl leading-snug font-bold">
+        <h3 className="mt-1 line-clamp-3 text-lg leading-snug font-bold md:text-xl">
           <Link href={href} className="text-ink no-underline hover:text-brand-link">
             {title}
           </Link>
         </h3>
         {excerpt ? (
-          <p className="line-clamp-4 text-[0.97rem] leading-relaxed text-body">{excerpt}</p>
+          <p className="mt-1 line-clamp-4 text-[0.97rem] leading-relaxed text-body">{excerpt}</p>
         ) : null}
       </div>
     </li>

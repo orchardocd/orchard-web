@@ -28,6 +28,11 @@
 }
 
 @layer base {
+  html {
+    /* The header is pinned, so a jump target has to clear it. */
+    scroll-padding-top: 5.5rem;
+  }
+
   body {
     @apply bg-white font-sans text-ink antialiased;
   }

@@ -19,8 +19,8 @@ export function Footer({
   return (
     <footer className="bg-footer text-white">
       <Container className="pt-16 pb-7">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.4fr]">
-          <div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[2fr_1fr_1fr_1.4fr]">
+          <div className="col-span-2 lg:col-span-1">
             <Image
               src="/brand/logo-neg.png"
               alt="Orchard OCD, advancing global OCD research"
@@ -33,7 +33,7 @@ export function Footer({
             </h2>
             <SocialLinks
               items={settings.social}
-              linkClassName="inline-block rounded-full bg-white/10 px-4 py-1.5 text-[0.8rem] font-semibold text-white no-underline hover:bg-white/22"
+              linkClassName="block rounded-full bg-white/10 px-4 py-1.5 text-center text-[0.8rem] font-semibold text-white no-underline hover:bg-white/22"
             />
           </div>
 
@@ -42,7 +42,7 @@ export function Footer({
               <h2 className="mb-4 text-[0.8rem] font-bold tracking-[0.14em] text-white/55 uppercase">
                 {column.heading}
               </h2>
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-2">
                 {(column.links ?? []).map((link) => (
                   <li key={link.id ?? link.href}>
                     <Link

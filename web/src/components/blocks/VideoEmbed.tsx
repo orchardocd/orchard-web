@@ -31,7 +31,7 @@ export function VideoEmbed({
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="relative aspect-video overflow-hidden rounded-lg bg-brand-dark">
+      <div className="relative aspect-video overflow-hidden rounded-lg bg-linear-to-br from-brand-deep to-brand-strong">
         <VideoFacade src={src} title={title || 'Video'} poster={posterMedia} />
       </div>
     </div>

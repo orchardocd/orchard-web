@@ -50,7 +50,7 @@ export default async function HomePage() {
       {(home.highlights ?? []).length > 0 ? (
         <Section label={about.heading} className="py-14">
           <Container>
-            <ul className="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <ul className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-4">
               {(home.highlights ?? []).map((item, index) => (
                 <li
                   key={item.id ?? index}
@@ -59,7 +59,7 @@ export default async function HomePage() {
                   {item.image ? (
                     <MediaImage
                       media={item.image}
-                      className="aspect-[4/3] border-b border-line bg-mist object-contain p-6"
+                      className="aspect-[16/9] border-b border-line bg-mist object-contain p-5"
                       sizes="(min-width: 1024px) 25vw, 50vw"
                     />
                   ) : null}
@@ -121,9 +121,9 @@ export default async function HomePage() {
           </div>
 
           {video?.url || (about.ctaImages ?? []).length > 0 ? (
-            <div className="mt-12 flex flex-col gap-6">
+            <div className="mt-16 flex flex-col gap-6">
               <div className="flex flex-wrap items-center justify-between gap-6">
-                <h3 id="learn-about" className="text-2xl font-bold text-brand-link">
+                <h3 id="learn-about" className="text-3xl font-bold text-ink md:text-4xl">
                   {about.ctaHeading ?? about.heading}
                 </h3>
                 <Illustrations items={about.ctaImages} size="h-16" />
@@ -142,7 +142,7 @@ export default async function HomePage() {
       </Section>
 
       <Section labelledBy="participate">
-        <Container className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+        <Container className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
           <div>
             <h2 id="participate" className="text-4xl leading-tight font-bold text-ink">
               {participate?.heading}
@@ -171,7 +171,7 @@ export default async function HomePage() {
       </Section>
 
       <Section labelledBy="proposals" className="bg-brand-deep">
-        <Container className="grid items-center gap-12 lg:grid-cols-2">
+        <Container className="grid gap-12 lg:grid-cols-2">
           <div>
             <h2 id="proposals" className="text-4xl font-bold text-white">
               {proposals?.heading}
@@ -215,14 +215,14 @@ export default async function HomePage() {
           </h2>
           <PostCards
             posts={posts.docs}
-            className="grid items-start gap-6 md:grid-cols-3"
-            accents={['#B6BF00', '#00877C']}
+            className="grid items-stretch gap-x-6 gap-y-10 md:grid-cols-3"
+            accents={['#00877C', '#00655C']}
             showImages={false}
           />
           <Illustrations items={blog?.images} className="mt-10 justify-center" />
 
           {webinar?.title ? (
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-6 rounded-lg bg-brand-deep px-9 py-7">
+            <div className="mt-12 flex flex-col items-start gap-6 rounded-lg bg-brand-deep px-9 py-7 md:flex-row md:flex-wrap md:items-center md:justify-between">
               {webinar.image ? (
                 <MediaImage media={webinar.image} className="h-20 w-auto rounded" sizes="120px" />
               ) : null}
@@ -251,7 +251,7 @@ export default async function HomePage() {
           <ButtonLink
             href={settings.newsletter?.signupUrl || '/join-our-mailing-list'}
             variant="light"
-            className="px-8 py-4 text-lg"
+            className="justify-self-start px-8 py-4 text-lg lg:self-center"
           >
             Join Our Mailing List
           </ButtonLink>

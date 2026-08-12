@@ -77,8 +77,8 @@ function Block({
         seen.add(key)
       }
       return (
-        <figure className="my-4 w-full">
-          <MediaImage media={block.image} className="rounded-lg" />
+        <figure className="mt-8 mb-4 w-full">
+          <MediaImage media={block.image} className="max-h-[26rem] w-auto rounded-lg object-contain" />
           {block.caption ? (
             <figcaption className="mt-3 text-sm text-faint">{block.caption}</figcaption>
           ) : null}
@@ -136,7 +136,7 @@ export function RenderBlocks({
   return (
     <div className={cn('flex w-full flex-col', className)}>
       {showTitle && opening.title ? (
-        <h1 className={cn('mx-auto mb-10 w-full max-w-measure', TITLE_CLASSES, 'text-ink')}>
+        <h1 className={cn('mb-10 w-full max-w-measure', TITLE_CLASSES, 'text-ink')}>
           {opening.title}
         </h1>
       ) : null}
@@ -151,7 +151,7 @@ export function RenderBlocks({
           })
           if (images.length === 0) return null
           return (
-            <ul key={entry.id} className="my-6 flex w-full flex-wrap items-center gap-10">
+            <ul key={entry.id} className="my-8 flex w-full max-w-measure flex-wrap items-center gap-10">
               {images.map((image, imageIndex) => (
                 <li key={image.id ?? imageIndex}>
                   <MediaImage
@@ -170,22 +170,22 @@ export function RenderBlocks({
             <ul
               key={entry.id}
               className={cn(
-                'my-6 grid w-full items-start gap-8',
-                entry.cards.length < 3
-                  ? 'mx-auto max-w-measure grid-cols-1 sm:grid-cols-2'
-                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+                'mt-4 mb-10 grid w-full gap-8',
+                entry.cards.length === 1
+                  ? 'max-w-[13rem] grid-cols-1'
+                  : 'max-w-measure grid-cols-2 lg:max-w-none lg:grid-cols-3',
               )}
             >
               {entry.cards.map((card) => (
-                <li key={card.id} className="flex flex-col gap-3">
+                <li key={card.id} className="flex flex-col gap-4">
                   <MediaImage
                     media={card.image.image}
-                    className="aspect-square w-full rounded-lg object-cover"
-                    sizes="(min-width: 1024px) 24rem, (min-width: 640px) 45vw, 90vw"
+                    className="aspect-square w-full rounded-full object-contain grayscale"
+                    sizes="(min-width: 1024px) 20rem, (min-width: 640px) 45vw, 90vw"
                   />
                   <RichText
                     data={card.caption.content}
-                    className="[&>*:first-child]:mt-0 [&_p]:my-0 [&_p]:text-base [&_strong]:text-ink"
+                    className="[&>*:first-child]:mt-0 [&_p]:my-0 [&_p]:text-base [&_p:first-child]:font-bold [&_p:first-child]:text-ink"
                   />
                 </li>
               ))}
@@ -194,7 +194,7 @@ export function RenderBlocks({
         }
 
         return (
-          <div key={entry.id} className="mx-auto w-full max-w-measure">
+          <div key={entry.id} className="w-full max-w-measure">
             <Block block={entry.block} isFirst={index === 0 && !showTitle} seen={seen} />
           </div>
         )

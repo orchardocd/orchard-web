@@ -26,11 +26,13 @@ function PersonCard({ person, compact = false }: { person: Person; compact?: boo
     >
       {person.photo ? (
         isOrganisation ? (
-          <MediaImage
-            media={person.photo}
-            className="h-20 w-auto max-w-[70%] object-contain"
-            sizes="200px"
-          />
+          <div className="flex h-28 w-full items-center justify-center">
+            <MediaImage
+              media={person.photo}
+              className="max-h-28 w-auto object-contain"
+              sizes="240px"
+            />
+          </div>
         ) : (
           <RoundImage
             media={person.photo}
@@ -39,7 +41,7 @@ function PersonCard({ person, compact = false }: { person: Person; compact?: boo
           />
         )
       ) : null}
-      <h3 className="text-center text-xl font-bold text-brand-link">
+      <h3 className="text-center text-base font-bold text-balance text-brand-link sm:text-lg lg:text-xl">
         {person.website ? (
           <a href={person.website} className="text-brand-link no-underline hover:underline">
             {person.name}
@@ -49,7 +51,7 @@ function PersonCard({ person, compact = false }: { person: Person; compact?: boo
         )}
       </h3>
       {person.excerpt ? (
-        <p className="w-full text-base leading-relaxed text-body">{person.excerpt}</p>
+        <p className="w-full text-center text-sm leading-relaxed text-body">{person.excerpt}</p>
       ) : (
         <RenderBlocks blocks={person.bio} className="w-full" />
       )}
@@ -77,12 +79,12 @@ export async function PeopleSections({ only }: { only?: Person['group'][] } = {}
             className={index % 2 === 0 ? 'bg-mist' : undefined}
           >
             <Container>
-              <h2 id={headingId} className="mb-9 text-4xl font-bold text-ink">
+              <h2 id={headingId} className="mb-9 text-2xl font-bold text-brand-deep md:text-3xl">
                 {group.label}
               </h2>
               <ul
                 className={cn(
-                  'grid items-start gap-6',
+                  'grid items-stretch gap-x-6 gap-y-8',
                   compact
                     ? 'grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4'
                     : 'sm:grid-cols-2 lg:grid-cols-3',
