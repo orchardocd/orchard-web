@@ -119,28 +119,26 @@ export default async function HomePage() {
               </ol>
             </div>
           </div>
+
+          {video?.url || (about.ctaImages ?? []).length > 0 ? (
+            <div className="mt-12 flex flex-col gap-6">
+              <div className="flex flex-wrap items-center justify-between gap-6">
+                <h3 id="learn-about" className="text-2xl font-bold text-brand-link">
+                  {about.ctaHeading ?? about.heading}
+                </h3>
+                <Illustrations items={about.ctaImages} size="h-16" />
+              </div>
+              {video?.url ? (
+                <VideoEmbed
+                  url={video.url}
+                  title={about.ctaHeading ?? about.heading}
+                  poster={video.poster}
+                />
+              ) : null}
+            </div>
+          ) : null}
         </Container>
       </Section>
-
-      {video?.url || (about.ctaImages ?? []).length > 0 ? (
-        <Section labelledBy="learn-about" className="py-14">
-          <Container className="flex flex-col gap-8">
-            <div className="flex flex-wrap items-center justify-between gap-8">
-              <h2 id="learn-about" className="text-3xl font-bold text-ink">
-                {about.ctaHeading ?? about.heading}
-              </h2>
-              <Illustrations items={about.ctaImages} />
-            </div>
-            {video?.url ? (
-              <VideoEmbed
-                url={video.url}
-                title={about.ctaHeading ?? about.heading}
-                poster={video.poster}
-              />
-            ) : null}
-          </Container>
-        </Section>
-      ) : null}
 
       <Section labelledBy="participate">
         <Container className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">

@@ -30,7 +30,7 @@ export function VideoEmbed({
   const posterMedia = resolveMedia(poster as Parameters<typeof resolveMedia>[0])
 
   return (
-    <div className={cn('mx-auto max-w-4xl', className)}>
+    <div className={cn('mx-auto w-full max-w-4xl', className)}>
       <div className="relative aspect-video overflow-hidden rounded-lg bg-brand-dark">
         {posterMedia ? (
           <VideoFacade src={src} title={title || 'Video'} poster={posterMedia} />
