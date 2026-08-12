@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit",
     "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)' src tests",
     "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
-    "seed": "node --import tsx/esm --env-file=.env src/seed/index.ts",
+    "seed": "node --import tsx/esm --env-file-if-exists=.env src/seed/index.ts",
     "parity": "python3 ../tools/check_parity.py",
     "verify": "pnpm lint && pnpm typecheck && pnpm dup && pnpm seed && pnpm build && pnpm test"
   },
