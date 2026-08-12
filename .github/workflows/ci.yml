@@ -12,8 +12,6 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    # The Playwright image ships the browsers, so CI never downloads one.
-    container: mcr.microsoft.com/playwright:v1.58.2-noble
     timeout-minutes: 30
     defaults:
       run:
@@ -42,6 +40,18 @@ jobs:
       - run: pnpm dup
       - run: pnpm seed
       - run: pnpm build
+
+      # Only the headless shell is needed, and the full Chrome build stalls on the runner.
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-shell-${{ runner.os }}-${{ hashFiles('web/pnpm-lock.yaml') }}
+      - name: Install Playwright headless shell
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        timeout-minutes: 10
+        run: pnpm exec playwright install chromium --only-shell
 
       - name: Tests
         timeout-minutes: 10
