@@ -11,6 +11,7 @@ page, against a local mirror of it.
 | Path | What it holds |
 | --- | --- |
 | `web/` | The application: Payload config, collections, seed, and the Next.js frontend |
+| `web/src/seed/content.json` | Everything the old site contained, as structured data |
 | `tools/extract.py` | Reads the mirror and writes `web/src/seed/content.json` |
 | `tools/check_parity.py` | Compares every rendered page against the old site |
 | `mirror/` | wget mirror of the old site plus its wp-json dumps (not committed) |
@@ -60,6 +61,21 @@ each old page contained, so the check runs without the mirror. Regenerate it wit
 directly.
 
 Current state: **2942/2942 text units, 368/368 images, 0 invented text units, 0 gaps.**
+
+## Content model
+
+| Collection | Count | Notes |
+| --- | --- | --- |
+| Pages | 29 | Body stored as blocks; hero slides carry the old banner sliders |
+| Posts | 84 | The blog, at `/blog/<slug>` |
+| Studies | 32 | "Participate in research", at `/participate-research/<slug>` |
+| Webinars | 15 | Titles from the page's slider, with poster images |
+| People | 85 | Team, scientific advisory board, supporters, volunteers, and 56 College members |
+| Speakers | 34 | Conference speakers |
+| Media / Documents / Videos | 328 / 22 / 6 | Uploads, PDFs, and the self-hosted talks |
+
+Globals hold the navigation, footer columns, donate and registry URLs, contact details,
+social profiles, homepage statistics, and newsletter copy.
 
 ## Checks
 
