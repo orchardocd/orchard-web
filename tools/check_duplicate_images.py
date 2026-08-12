@@ -1,20 +1,25 @@
 """Report any page that shows the same illustration twice.
 
 The rule matches the text check: read every picture a page draws, and no two of them may be
-the same picture. Sameness is judged on the file a reader is served, not on its name, because
-the old site uploaded the same artwork several times under different names and the rebuild
-carries every one of those uploads.
+the same picture. Sameness is judged on what a reader sees, not on the file name, because the
+old site uploaded the same artwork under several names, and kept two cuts of most drawings,
+one plain and one with the brand dashes scattered around it. Identical files are caught by
+their contents; two cuts of one drawing are caught by their shape, through tools/fingerprint.mjs.
 
 Usage: python3 tools/check_duplicate_images.py [--base http://localhost:3000] [--only /about]
 """
 
 import argparse
 import hashlib
+import json
 import re
+import subprocess
 import sys
+import tempfile
 import urllib.parse
 import urllib.request
 from collections import defaultdict
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 
@@ -23,6 +28,11 @@ from check_parity import fetch, site_routes, strip_chrome
 # A stand-in drawn wherever a picture is missing is meant to appear as often as it is needed.
 # Everything else inside the page, supporter wordmarks and spot drawings included, is artwork.
 PLACEHOLDER = re.compile(r'no-image|placeholder|blank|spacer|shape-image', re.I)
+
+# Below this two pictures are different drawings; at or above it they are two cuts of one.
+ALIKE = 0.87
+
+FINGERPRINT = Path(__file__).resolve().parent / 'fingerprint.mjs'
 
 
 def source(element) -> str | None:
@@ -38,30 +48,73 @@ def source(element) -> str | None:
     return src if not PLACEHOLDER.search(urllib.parse.unquote(src)) else None
 
 
-_marks: dict[str, str] = {}
+_bytes: dict[str, bytes] = {}
+_shapes: dict[str, list[float]] = {}
 
 
-def mark(base: str, src: str) -> str:
-    if src not in _marks:
+def content(base: str, src: str) -> bytes:
+    if src not in _bytes:
         url = src if src.startswith('http') else base + src
         request = urllib.request.Request(url, headers={'User-Agent': 'orchard-image-check'})
         with urllib.request.urlopen(request, timeout=90) as response:
-            _marks[src] = hashlib.sha256(response.read()).hexdigest()
-    return _marks[src]
+            _bytes[src] = response.read()
+    return _bytes[src]
 
 
-def repeats(base: str, html: str) -> list[list[str]]:
+def read_shapes(sources: list[str]) -> None:
+    """Ask the fingerprint helper what each drawing looks like, in one pass."""
+    with tempfile.TemporaryDirectory() as folder:
+        named = {}
+        for index, src in enumerate(sources):
+            suffix = Path(urllib.parse.unquote(src).split('?')[0]).suffix or '.png'
+            stored = f'{index:04d}{suffix}'
+            named[stored] = src
+            Path(folder, stored).write_bytes(_bytes[src])
+        printed = subprocess.run(
+            ['node', str(FINGERPRINT), folder],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    for stored, mark in json.loads(printed.stdout).items():
+        if mark:
+            _shapes[named[stored]] = mark
+
+
+def likeness(left: list[float], right: list[float]) -> float:
+    return sum(x * y for x, y in zip(left, right)) / len(left)
+
+
+def drawn(html: str) -> list[str]:
     soup = BeautifulSoup(html, 'html.parser')
     strip_chrome(soup)
     scope = soup.select_one('main') or soup.body or soup
-
-    drawn: dict[str, list[str]] = defaultdict(list)
+    found = []
     for element in scope.find_all('img'):
         src = source(element)
         if src:
-            drawn[mark(base, src)].append(src)
+            found.append(src)
+    return found
 
-    return sorted((shown for shown in drawn.values() if len(shown) > 1), key=len, reverse=True)
+
+def repeats(base: str, sources: list[str]) -> list[list[str]]:
+    """Groups of pictures on one page that a reader would see as the same illustration."""
+    groups: list[list[str]] = []
+    for src in sources:
+        for group in groups:
+            first = group[0]
+            same_file = content(base, src) == content(base, first)
+            alike = (
+                src in _shapes
+                and first in _shapes
+                and likeness(_shapes[src], _shapes[first]) >= ALIKE
+            )
+            if same_file or alike:
+                group.append(src)
+                break
+        else:
+            groups.append([src])
+    return sorted((group for group in groups if len(group) > 1), key=len, reverse=True)
 
 
 def name(src: str) -> str:
@@ -70,29 +123,35 @@ def name(src: str) -> str:
 
 def self_test() -> int:
     """The rules this check rests on, asserted without a server."""
-    _marks.update({
-        '/api/media/file/one.svg': 'a',
-        '/api/media/file/copy.svg': 'a',
-        '/api/media/file/two.png': 'b',
-        '/api/media/file/no-image.png': 'c',
+    one, copy, two = '/one.svg', '/copy.svg', '/two.png'
+    stand_in = '/api/media/file/no-image.png'
+    _bytes.update({one: b'A', copy: b'A', two: b'B', stand_in: b'C'})
+    # A drawing and its confetti cut: alike in shape, different as files.
+    plain, dashes, other = '/plain.svg', '/dashes.svg', '/other.svg'
+    _bytes.update({plain: b'D', dashes: b'E', other: b'F'})
+    _shapes.update({
+        plain: [1.0, 1.0, -1.0, -1.0],
+        dashes: [1.0, 0.8, -1.0, -1.0],
+        other: [-1.0, 1.0, 1.0, -1.0],
     })
     cases = [
-        ('an svg drawn twice is caught', '<main><img src="/api/media/file/one.svg">'
-         '<img src="/api/media/file/one.svg"></main>', 1),
-        ('the same picture under two names is caught', '<main><img src="/api/media/file/one.svg">'
-         '<img src="/api/media/file/copy.svg"></main>', 1),
-        ('a resized copy is the same picture', '<main><img src="/api/media/file/one.svg">'
-         '<img src="/_next/image?url=%2Fapi%2Fmedia%2Ffile%2Fcopy.svg&w=640&q=75"></main>', 1),
-        ('two different pictures are fine', '<main><img src="/api/media/file/one.svg">'
-         '<img src="/api/media/file/two.png"></main>', 0),
-        ('a stand-in may be drawn as often as needed',
-         '<main><img src="/api/media/file/no-image.png">'
+        ('an svg drawn twice is caught', [one, one], 1),
+        ('the same picture under two names is caught', [one, copy], 1),
+        ('two different pictures are fine', [one, two], 0),
+        ('a plain drawing and its confetti cut are one illustration', [plain, dashes], 1),
+        ('two different drawings stay apart', [plain, other], 0),
+    ]
+    failures = [name for name, sources, want in cases if len(repeats('', sources)) != want]
+    markup = [
+        ('a stand-in is not read as artwork', '<main><img src="/api/media/file/no-image.png">'
          '<img src="/api/media/file/no-image.png"></main>', 0),
         ('chrome outside the page is not artwork', '<body><header>'
-         '<img src="/api/media/file/one.svg"><img src="/api/media/file/one.svg">'
-         '</header><main><img src="/api/media/file/two.png"></main></body>', 0),
+         '<img src="/one.svg"><img src="/one.svg"></header>'
+         '<main><img src="/two.png"></main></body>', 1),
+        ('a resized copy points at the same file', '<main>'
+         '<img src="/_next/image?url=%2Fone.svg&w=640&q=75"></main>', 1),
     ]
-    failures = [name for name, html, want in cases if len(repeats('', html)) != want]
+    failures += [name for name, html, want in markup if len(drawn(html)) != want]
     for failure in failures:
         print(f'self test failed: {failure}')
     print('self test: ' + ('failed' if failures else 'passed'))
@@ -115,9 +174,15 @@ def main() -> int:
         wanted = set(args.only)
         routes = [route for route in routes if route in wanted]
 
+    pages = {route: drawn(fetch(args.base + route)) for route in routes}
+    for sources in pages.values():
+        for src in sources:
+            content(args.base, src)
+    read_shapes(sorted(_bytes))
+
     total = 0
-    for route in routes:
-        found = repeats(args.base, fetch(args.base + route))
+    for route, sources in pages.items():
+        found = repeats(args.base, sources)
         if not found:
             if not args.quiet:
                 print(f'{route}  ok')

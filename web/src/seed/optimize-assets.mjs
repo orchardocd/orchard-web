@@ -5,6 +5,11 @@ import path from 'node:path'
 import { promisify } from 'node:util'
 import sharp from 'sharp'
 
+import { likeness, signatures } from '../../../tools/fingerprint.mjs'
+
+// Below this two pictures are different drawings; at or above it they are two cuts of one.
+const ALIKE = 0.87
+
 const run = promisify(execFile)
 
 const ROOT = path.resolve(import.meta.dirname, '../../..')
@@ -101,6 +106,33 @@ for (const kind of ['images', 'documents', 'videos']) {
     byContent.set(fingerprint, asset)
   }
 }
+
+// Two cuts of one drawing, plain and confetti, are one illustration.
+const marks = await signatures(dest)
+const canonical = new Map()
+const collapsed = new Map()
+for (const item of content.images) {
+  if (collapsed.has(item.asset) || canonical.has(item.asset)) continue
+  const mark = marks[item.asset]
+  if (!mark) continue
+  let match = null
+  for (const [asset, other] of canonical) {
+    if (likeness(mark, other) >= ALIKE) {
+      match = asset
+      break
+    }
+  }
+  if (match) collapsed.set(item.asset, match)
+  else canonical.set(item.asset, mark)
+}
+for (const item of content.images) {
+  const instead = collapsed.get(item.asset)
+  if (instead) item.asset = instead
+}
+for (const asset of collapsed.keys()) {
+  await fs.rm(path.join(dest, asset), { force: true })
+}
+if (collapsed.size) console.log('drawings collapsed', collapsed.size)
 
 await fs.writeFile(contentPath, JSON.stringify(content, null, 1))
 console.log('before MB', (before / 1e6).toFixed(1), '-> after MB', (after / 1e6).toFixed(1))

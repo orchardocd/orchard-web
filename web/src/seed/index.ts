@@ -337,10 +337,17 @@ export async function seed(payload: Payload) {
 
   payload.logger.info('Writing the home page')
   const home = content.home
-  const media = (key: string | null | undefined) => (key ? mediaIds.get(key) : undefined)
+  // The landing page is one page, so a picture placed in one section is not placed again.
+  const drawn = new Set<number>()
+  const once = (id: number | undefined) => {
+    if (id === undefined || drawn.has(id)) return undefined
+    drawn.add(id)
+    return id
+  }
+  const media = (key: string | null | undefined) => (key ? once(mediaIds.get(key)) : undefined)
   const text = (value: string | null | undefined) => stripMarkup(value) || undefined
   const images = (keys: string[] = []) =>
-    keys.map((key) => mediaIds.get(key)).filter((id): id is number => id !== undefined)
+    keys.map((key) => once(mediaIds.get(key))).filter((id): id is number => id !== undefined)
       .map((image) => ({ image }))
   await payload.updateGlobal({
     slug: 'home-page',
