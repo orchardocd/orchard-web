@@ -132,13 +132,20 @@ async function seedAssets(payload: Payload, content: SeedContent) {
   const documentIds = new Map<string, number>()
   const videoIds = new Map<string, number>()
 
+  // Several uploads can share one file, and they are then one picture with one record.
+  const byAsset = new Map<string, number>()
   for (const image of content.images) {
-    const filePath = assetPath(image)
+    const existing = byAsset.get(image.asset)
+    if (existing !== undefined) {
+      mediaIds.set(image.id, existing)
+      continue
+    }
     const created = await payload.create({
       collection: 'media',
       data: { alt: image.alt?.trim() || titleFromFilename(image.id) },
-      filePath,
+      filePath: assetPath(image),
     })
+    byAsset.set(image.asset, created.id as number)
     mediaIds.set(image.id, created.id as number)
   }
 

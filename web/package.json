@@ -21,11 +21,12 @@
     "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
     "seed": "node --import tsx/esm --env-file-if-exists=.env src/seed/index.ts",
     "parity": "python3 ../tools/check_parity.py --expectations src/seed/parity-expectations.json",
-    "duplicates": "python3 ../tools/check_duplicate_text.py --expectations src/seed/parity-expectations.json --quiet",
+    "duplicates": "python3 ../tools/check_duplicate_text.py --headings --quiet",
+    "illustrations": "python3 ../tools/check_duplicate_images.py --quiet",
     "verify": "pnpm lint && pnpm typecheck && pnpm dup && pnpm seed && pnpm build && pnpm test",
     "parity:mirror": "python3 ../tools/check_parity.py",
-    "duplicates:mirror": "python3 ../tools/check_duplicate_text.py --quiet",
-    "parity:update": "python3 ../tools/check_parity.py --emit-expectations src/seed/parity-expectations.json"
+    "parity:update": "python3 ../tools/check_parity.py --emit-expectations src/seed/parity-expectations.json",
+    "duplicates:all": "python3 ../tools/check_duplicate_text.py --quiet"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",

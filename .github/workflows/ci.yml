@@ -53,3 +53,4 @@ jobs:
           npx --yes wait-on http://127.0.0.1:3000 -t 120000
           pnpm parity
           pnpm duplicates
+          pnpm illustrations

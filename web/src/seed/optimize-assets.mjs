@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { promisify } from 'node:util'
@@ -55,6 +56,8 @@ async function encodeImage(src, ext) {
 const seen = new Set()
 let before = 0
 let after = 0
+// The old site uploaded the same artwork under several names. One file, one asset.
+const byContent = new Map()
 for (const kind of ['images', 'documents', 'videos']) {
   for (const item of content[kind]) {
     const src = path.join(ROOT, 'mirror', item.file)
@@ -81,6 +84,13 @@ for (const kind of ['images', 'documents', 'videos']) {
         .replace(/\.[^.]+$/, '')
         .replace(/[^a-zA-Z0-9]+/g, '-')
         .replace(/^-|-$/g, '') + encoded.ext
+    const fingerprint = createHash('sha256').update(encoded.buffer).digest('hex')
+    const already = byContent.get(fingerprint)
+    if (already) {
+      item.asset = already
+      continue
+    }
+
     const out = path.join(dest, asset)
     await fs.mkdir(path.dirname(out), { recursive: true })
     if (seen.has(asset)) throw new Error(`Asset name collision: ${asset}`)
@@ -88,6 +98,7 @@ for (const kind of ['images', 'documents', 'videos']) {
     await fs.writeFile(out, encoded.buffer)
     after += encoded.buffer.length
     item.asset = asset
+    byContent.set(fingerprint, asset)
   }
 }
 

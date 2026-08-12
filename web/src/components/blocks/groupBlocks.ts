@@ -88,29 +88,84 @@ function asCaption(block: LayoutBlock | undefined, limit: number): RichTextBlock
   return written.length > 0 && written.length <= limit ? block : null
 }
 
+/** The text of a block's opening heading, in the form headings are compared in. */
+export function openingHeading(block: LayoutBlock | undefined): string | null {
+  if (block?.blockType !== 'richText') return null
+  const [first] = block.content.root.children
+  return first?.type === 'heading' ? plainText(first).trim().toLowerCase() : null
+}
+
+function withoutOpeningHeading(block: RichTextBlock): RichTextBlock {
+  const [, ...rest] = block.content.root.children
+  return { ...block, content: { ...block.content, root: { ...block.content.root, children: rest } } }
+}
+
+/** Cut a page apart after the last title whose section the page renders for itself. */
+export function splitAtTitles(
+  input: LayoutBlock[],
+  titles: string[],
+): { before: LayoutBlock[]; after: LayoutBlock[] } {
+  const blocks = flatten(input)
+  const named = titles.map((title) => title.trim().toLowerCase())
+  const last = blocks.reduce(
+    (found, block, index) => (named.includes(openingHeading(block) ?? '') ? index : found),
+    -1,
+  )
+  if (last < 0) return { before: blocks, after: [] }
+
+  const tail = blocks[last]
+  const rest =
+    tail.blockType === 'richText' && tail.content.root.children.length > 1
+      ? [withoutOpeningHeading(tail)]
+      : []
+  return { before: blocks.slice(0, last), after: [...rest, ...blocks.slice(last + 1)] }
+}
+
+function flatten(input: LayoutBlock[]): LayoutBlock[] {
+  return input.flatMap<LayoutBlock>((block, index) =>
+    block.blockType === 'richText' ? splitAtHeadings(block, index) : [block],
+  )
+}
+
+/**
+ * A title the page has already used says nothing the second time: either the rebuild renders
+ * that section itself, or the old page opened several sections with the same word. Keeping the
+ * first is enough, unless a picture sits under the title and would lose the section it names.
+ */
+function withoutRepeatedTitles(input: LayoutBlock[], renderedElsewhere: string[]): LayoutBlock[] {
+  const shown = new Set(renderedElsewhere.map((title) => title.trim().toLowerCase()))
+  const kept: LayoutBlock[] = []
+
+  input.forEach((block, index) => {
+    const heading = openingHeading(block)
+    if (heading === null || block.blockType !== 'richText') {
+      kept.push(block)
+      return
+    }
+    const under = block.content.root.children.length - 1
+    if (!shown.has(heading)) {
+      shown.add(heading)
+      kept.push(block)
+      return
+    }
+    if (under === 0) return
+    if (input[index + 1]?.blockType === 'imageBlock') {
+      kept.push(block)
+      return
+    }
+    kept.push(withoutOpeningHeading(block))
+  })
+
+  return kept
+}
+
 /**
  * Elementor emitted rosters and logo strips as long alternating runs of pictures and short
  * captions. Read back flat they become one column hundreds of screens tall, so fold each run
  * into the grid it was always meant to be.
  */
-/**
- * The old pages titled sections whose content came from a widget, so the title arrived with
- * nothing under it. Where the rebuild renders that section itself, the empty title is noise.
- */
-function isOrphanTitle(block: LayoutBlock, titles: string[]): boolean {
-  if (block.blockType !== 'richText') return false
-  const [only, ...rest] = block.content.root.children
-  if (rest.length > 0 || only?.type !== 'heading') return false
-  const written = plainText(only).trim().toLowerCase()
-  return titles.some((title) => title.trim().toLowerCase() === written)
-}
-
 export function groupBlocks(input: LayoutBlock[], renderedElsewhere: string[] = []): Grouped[] {
-  const blocks: LayoutBlock[] = input
-    .flatMap<LayoutBlock>((block, index) =>
-      block.blockType === 'richText' ? splitAtHeadings(block, index) : [block],
-    )
-    .filter((block) => !isOrphanTitle(block, renderedElsewhere))
+  const blocks = withoutRepeatedTitles(flatten(input), renderedElsewhere)
   const grouped: Grouped[] = []
   let index = 0
 

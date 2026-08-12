@@ -15,6 +15,8 @@ export type ArticleCardProps = {
   image?: MediaValue
   accent?: string
   imageClassName?: string
+  /** False where the same words already head another card, so they head the page only once. */
+  heading?: boolean
 }
 
 export function ArticleCard({
@@ -26,7 +28,9 @@ export function ArticleCard({
   image,
   accent,
   imageClassName = 'aspect-[16/9] border-b border-line bg-mist object-cover object-top',
+  heading = true,
 }: ArticleCardProps) {
+  const Title = heading ? 'h3' : 'p'
   return (
     <li
       className={cn(
@@ -56,11 +60,11 @@ export function ArticleCard({
             {byline}
           </p>
         ) : null}
-        <h3 className="mt-1 line-clamp-3 text-lg leading-snug font-bold md:text-xl">
+        <Title className="mt-1 line-clamp-3 text-lg leading-snug font-bold md:text-xl">
           <Link href={href} className="text-ink no-underline hover:text-brand-link">
             {title}
           </Link>
-        </h3>
+        </Title>
         {excerpt ? (
           <p className="mt-1 line-clamp-4 text-[0.97rem] leading-relaxed text-body">{excerpt}</p>
         ) : null}

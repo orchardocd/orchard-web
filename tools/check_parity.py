@@ -359,6 +359,15 @@ def media_stem(upload_path: str) -> str | None:
     return _media_map.get(upload_path)
 
 
+def site_routes() -> list[str]:
+    """Every route the seed produces, read from the seed itself so CI needs no mirror."""
+    content = json.loads(read_text(CONTENT))
+    pages = ['/' if page['slug'] == 'home' else f"/{page['slug']}" for page in content['pages']]
+    posts = [f"/blog/{post['slug']}" for post in content['posts']]
+    studies = [f"/participate-research/{study['slug']}" for study in content['studies']]
+    return pages + posts + studies
+
+
 def build_routes() -> list[dict]:
     content = json.loads(read_text(CONTENT))
     routes = []

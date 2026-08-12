@@ -12,12 +12,16 @@ type HeroSlide = NonNullable<Page['hero']>[number]
 export function HeroHighlights({
   slides,
   alreadyShown = [],
+  alreadyTitled = [],
 }: {
   slides: HeroSlide[]
   alreadyShown?: (number | Media | null | undefined)[]
+  /** Headings the page already carries, so a card never repeats one of them. */
+  alreadyTitled?: string[]
 }) {
   const items = withoutRepeats(slides, alreadyShown)
   if (items.length === 0) return null
+  const titled = new Set(alreadyTitled.map((title) => title.trim().toLowerCase()))
 
   return (
     <Container className="py-14">
@@ -40,7 +44,11 @@ export function HeroHighlights({
                 sizes="(min-width: 768px) 50vw, 100vw"
               />
             ) : null}
-            <h2 className="text-xl leading-tight font-bold text-ink md:text-2xl">{slide.title}</h2>
+            {slide.title && !titled.has(slide.title.trim().toLowerCase()) ? (
+              <h2 className="text-xl leading-tight font-bold text-ink md:text-2xl">
+                {slide.title}
+              </h2>
+            ) : null}
             {slide.content ? <RichText data={slide.content} /> : null}
             {slide.ctaHref && slide.ctaLabel ? (
               <ButtonLink href={slide.ctaHref} variant="secondary" className="self-start">
@@ -57,9 +65,12 @@ export function HeroHighlights({
 export function PageHero({
   title,
   slides,
+  bodyHeadings = [],
 }: {
   title: string
   slides: HeroSlide[] | null | undefined
+  /** Headings the page body carries, so a highlight card never repeats one. */
+  bodyHeadings?: string[]
 }) {
   const all = slides ?? []
   const intro = all[0]
@@ -92,7 +103,11 @@ export function PageHero({
         ) : null}
       </Banner>
 
-      <HeroHighlights slides={all.slice(1)} alreadyShown={[intro?.image]} />
+      <HeroHighlights
+        slides={all.slice(1)}
+        alreadyShown={[intro?.image]}
+        alreadyTitled={[intro?.title || title, ...bodyHeadings]}
+      />
     </>
   )
 }
