@@ -786,11 +786,22 @@ def drop_webinar_listing(blocks):
     return result
 
 
+LISTING_HEADINGS = {'about': 'our members'}
+
+
 def page_blocks(slug, blocks):
     if slug == 'home':
         return drop_design_owned(blocks)
     if slug == 'webinars':
         return drop_webinar_listing(blocks)
+    heading = LISTING_HEADINGS.get(slug)
+    if heading:
+        # The listing below the heading is rendered from the people collection.
+        return [
+            block
+            for block in blocks
+            if not (block['type'] == 'heading' and block['text'].lower() == heading)
+        ]
     return blocks
 
 

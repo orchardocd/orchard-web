@@ -12,6 +12,8 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    # The Playwright image ships the browsers, so CI never downloads one.
+    container: mcr.microsoft.com/playwright:v1.58.2-noble
     timeout-minutes: 30
     defaults:
       run:
@@ -21,7 +23,6 @@ jobs:
       PAYLOAD_SECRET: ci-only-secret
       PAYLOAD_ADMIN_EMAIL: admin@example.com
       PAYLOAD_ADMIN_PASSWORD: ci-only-password
-      DEBIAN_FRONTEND: noninteractive
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -39,18 +40,6 @@ jobs:
       - run: pnpm seed
       - run: pnpm build
 
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('web/pnpm-lock.yaml') }}
-      # ubuntu-latest already ships Chromium's system libraries; --with-deps hangs on apt.
-      - name: Install Playwright browser
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        timeout-minutes: 12
-        run: pnpm exec playwright install chromium
-
       - name: Tests
         timeout-minutes: 10
         run: pnpm test
@@ -58,7 +47,7 @@ jobs:
       - name: Content parity with the previous site
         timeout-minutes: 10
         run: |
-          pip install --quiet beautifulsoup4 lxml
+          pip install --quiet --break-system-packages beautifulsoup4 lxml
           pnpm start -H 127.0.0.1 &
           npx --yes wait-on http://127.0.0.1:3000 -t 120000
           pnpm parity
