@@ -1,3 +1,10 @@
+"""Extract every piece of orchardocd.org content from the local mirror.
+
+Reads the wget mirror plus the wp-json dumps under mirror/api and writes
+web/src/seed/content.json, the single source the Payload seed consumes.
+"""
+
+import html
 import json
 import re
 from pathlib import Path
@@ -10,10 +17,12 @@ SITE = MIRROR / 'www.orchardocd.org'
 API = MIRROR / 'api'
 OUT = ROOT / 'web' / 'src' / 'seed' / 'content.json'
 
+PARSER = 'lxml'
+
 UTILITY_SLUGS = {
     'account-details', 'checkout', 'dashboard', 'edit-account', 'files', 'logout',
     'my-account', 'my-files', 'my-pages', 'pages', 'payment-accepted',
-    'payment-rejected', 'payments', 'ocd-survey', 'orchard-ocd-college',
+    'payment-rejected', 'payments', 'ocd-survey',
 }
 
 CHROME_SELECTORS = [
@@ -21,13 +30,17 @@ CHROME_SELECTORS = [
     '#respond', '#comments', '.comments-area', '.comment-respond', '.comment-form',
     '#share', '.socialshare-and-readmore', '.share-buttons',
     '.pagination', '.nav-links', '.wp-pagenavi', '.page-numbers',
-    '.screen-reader-text', '.elementor-screen-only',
+    '.screen-reader-text', '.elementor-screen-only', '.orchard-meta', '.meta',
+    '.post-tags', '.tags-links', '.entry-footer',
+    '.home-recent-blogs', '.ocd-blogg', '.all-blogs', '.recent-blog-section',
+    '.ocd-research-listing', '.participate-research-listing',
 ]
 
 JUNK_TEXT = re.compile(
     r'^(share on:?|#respond|#comments|leave a reply|cancel reply|page \d+ of \d+|'
-    r'[\d\s.,»«]+|last »|» last|facebook|twitter|linkedin|read more|'
-    r'your email address will not be published.*)$',
+    r'[\d\s.,»«\-–—_]+|last »|» last|facebook|twitter|linkedin|read more|home|'
+    r'add your heading text here|your email address will not be published.*|'
+    r'tags?:.*|posted on:?.*)$',
     re.I,
 )
 
@@ -37,15 +50,15 @@ JUNK_SUBSTRINGS = re.compile(
     re.I,
 )
 
-SENTENCE_END = re.compile(r'[.!?:;”"\')\]]\s*$|<\/(?:strong|em|a)>\s*$')
-
 DOC_EXT = re.compile(r'\.(pdf|docx?|pptx?|xlsx?)($|\?)', re.I)
-
+IMAGE_EXT = re.compile(r'\.(png|jpe?g|gif|svg|webp)($|\?)', re.I)
+VIDEO_EXT = re.compile(r'\.(mov|mp4|m4v|webm)($|\?)', re.I)
 VALID_HREF = re.compile(r'^(https?://|mailto:|tel:|/|#)', re.I)
+TEASER_END = re.compile(r'(\.\.|…|\.\.\.)\s*$')
 
 images_seen = {}
 documents_seen = {}
-alt_index = {}
+videos_seen = {}
 
 
 def read_text(path):
@@ -54,7 +67,11 @@ def read_text(path):
 
 
 def read_soup(path):
-    return BeautifulSoup(read_text(path), 'html.parser')
+    return BeautifulSoup(read_text(path), PARSER)
+
+
+def soup_of(markup):
+    return BeautifulSoup(markup, PARSER)
 
 
 def load_api(name):
@@ -66,71 +83,29 @@ def load_api(name):
         except json.JSONDecodeError:
             continue
         if isinstance(data, list):
-            for it in data:
-                items[it['id']] = it
+            for item in data:
+                items[item['id']] = item
     return sorted(items.values(), key=lambda x: x['id'])
 
 
-def strip_size_suffix(url):
-    return re.sub(r'-\d+x\d+(?=\.\w+$)', '', url)
+def clean_text(value):
+    return re.sub(r'\s+', ' ', value).strip()
 
 
-def local_upload_path(url):
-    m = re.search(r'wp-content/uploads/(.+)$', url)
-    if not m:
-        return None
-    return 'uploads/' + m.group(1).split('?')[0]
+def strip_tags(markup):
+    text = markup if '<' not in markup else soup_of(markup).get_text(' ', strip=True)
+    return clean_text(html.unescape(text))
 
 
-def mirror_file(url):
-    rel = re.sub(r'^https?://(?:www\.)?orchardocd\.org/', '', url).split('?')[0]
-    p = SITE / rel
-    return p if p.exists() and p.stat().st_size > 0 else None
+def sanitize_href(href):
+    href = html.unescape(href or '').strip()
+    if href.lower().startswith(('http://', 'https://', 'mailto:', 'tel:')):
+        return re.sub(r'\s+', '', href)
+    return re.sub(r'\s+', ' ', href).strip()
 
 
-def register_image(url, alt=''):
-    if not url:
-        return None
-    url = strip_size_suffix(url.split('?')[0].replace('\\/', '/'))
-    key = local_upload_path(url)
-    if not key:
-        return None
-    f = mirror_file(url)
-    if f is None:
-        return None
-    entry = images_seen.setdefault(
-        key, {'id': key, 'url': url, 'file': str(f.relative_to(MIRROR)), 'alt': ''}
-    )
-    alt = (alt or '').strip()
-    if alt and not entry['alt']:
-        entry['alt'] = alt
-    return key
-
-
-def register_document(url):
-    url = url.split('?')[0].replace('\\/', '/')
-    key = local_upload_path(url)
-    if not key:
-        return None
-    f = mirror_file(url)
-    if f is None:
-        return None
-    documents_seen.setdefault(key, {'id': key, 'url': url, 'file': str(f.relative_to(MIRROR))})
-    return key
-
-
-def clean_text(s):
-    return re.sub(r'\s+', ' ', s).strip()
-
-
-def strip_tags(html_str):
-    if '<' not in html_str:
-        return clean_text(html_str)
-    return clean_text(BeautifulSoup(html_str, 'html.parser').get_text(' ', strip=True))
-
-
-def is_junk(text):
-    plain = strip_tags(text)
+def is_junk(markup):
+    plain = strip_tags(markup)
     if not plain:
         return True
     if JUNK_SUBSTRINGS.search(plain):
@@ -138,78 +113,174 @@ def is_junk(text):
     return bool(JUNK_TEXT.match(plain))
 
 
-def strip_chrome(el):
-    for node in el.find_all(string=lambda s: isinstance(s, (Comment, Doctype))):
+def strip_size_suffix(url):
+    return re.sub(r'-\d+x\d+(?=\.\w+$)', '', url)
+
+
+def local_upload_path(url):
+    match = re.search(r'wp-content/uploads/(.+)$', url)
+    return 'uploads/' + match.group(1).split('?')[0] if match else None
+
+
+def mirror_file(url):
+    rel = re.sub(r'^https?://(?:www\.)?orchardocd\.org/', '', url).split('?')[0]
+    path = SITE / rel
+    return path if path.exists() and path.stat().st_size > 0 else None
+
+
+def find_by_basename(name):
+    """The mirror sometimes holds an asset under a different date folder."""
+    matches = sorted((SITE / 'wp-content' / 'uploads').rglob(name))
+    for match in matches:
+        if match.stat().st_size > 0:
+            return match
+    return None
+
+
+def register_image(url, alt=''):
+    if not url:
+        return None
+    original = sanitize_href(url).split('?')[0].replace('\\/', '/')
+    url = strip_size_suffix(original)
+    key = local_upload_path(url)
+    if not key:
+        return None
+    path = mirror_file(url) or find_by_basename(Path(key).name)
+    if path is None and original != url:
+        path = mirror_file(original)
+        if path is not None:
+            key = local_upload_path(original) or key
+            url = original
+    if path is None:
+        return None
+    entry = images_seen.setdefault(
+        key, {'id': key, 'url': url, 'file': str(path.relative_to(MIRROR)), 'alt': ''}
+    )
+    alt = clean_text(html.unescape(alt or ''))
+    if alt and not entry['alt']:
+        entry['alt'] = alt
+    return key
+
+
+def register_document(url):
+    url = sanitize_href(url).split('?')[0].replace('\\/', '/')
+    key = local_upload_path(url)
+    if not key:
+        return None
+    path = mirror_file(url)
+    if path is None:
+        return None
+    documents_seen.setdefault(key, {'id': key, 'url': url, 'file': str(path.relative_to(MIRROR))})
+    return key
+
+
+def register_video(url):
+    url = sanitize_href(url).split('?')[0].replace('\\/', '/')
+    key = local_upload_path(url)
+    if not key:
+        return None
+    path = mirror_file(url)
+    if path is None:
+        return None
+    videos_seen.setdefault(key, {'id': key, 'url': url, 'file': str(path.relative_to(MIRROR))})
+    return key
+
+
+def strip_chrome(element):
+    for node in element.find_all(string=lambda s: isinstance(s, (Comment, Doctype))):
         node.extract()
     for selector in CHROME_SELECTORS:
-        for match in el.select(selector):
+        for match in element.select(selector):
             match.decompose()
-    return el
+    for anchor in element.select('a[href*="wp-admin"]'):
+        anchor.decompose()
+    return element
 
 
-def inline_html(el):
+INLINE_TAGS = ('a', 'strong', 'b', 'em', 'i', 'span', 'small', 'sub', 'sup', 'u', 'br', 'code')
+BLOCK_TAGS = ('p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'blockquote', 'table',
+              'figure', 'div', 'section', 'article', 'iframe', 'video')
+
+
+def has_block_child(element):
+    return element.find(BLOCK_TAGS) is not None
+
+
+def inline_parts(element):
+    """Serialize inline content without trimming, so boundary spaces survive nesting."""
     parts = []
-    for node in el.children:
+    for node in element.children:
         if isinstance(node, (Comment, Doctype)):
             continue
         if isinstance(node, NavigableString):
-            parts.append(str(node))
+            parts.append(html.escape(str(node), quote=False))
         elif isinstance(node, Tag):
-            if node.name in ('script', 'style', 'noscript'):
+            if node.name in ('script', 'style', 'noscript', 'img'):
                 continue
             if node.name == 'br':
                 parts.append('<br>')
             elif node.name == 'a' and node.get('href'):
-                href = re.sub(r'\s+', '', node['href'])
-                inner = inline_html(node)
-                if not inner:
+                href = sanitize_href(node['href'])
+                inner = inline_parts(node)
+                if not inner.strip():
                     continue
                 dead_document = (
                     DOC_EXT.search(href) and local_upload_path(href) and not register_document(href)
                 )
+                if DOC_EXT.search(href):
+                    register_document(href)
+                elif IMAGE_EXT.search(href):
+                    register_image(href)
                 if dead_document or not VALID_HREF.match(href) or '"' in href:
                     parts.append(inner)
                 else:
-                    parts.append(f'<a href="{href}">{inner}</a>')
+                    parts.append(f'<a href="{html.escape(href, quote=True)}">{inner}</a>')
             elif node.name in ('strong', 'b'):
-                parts.append(f'<strong>{inline_html(node)}</strong>')
+                inner = inline_parts(node)
+                parts.append(f'<strong>{inner}</strong>' if inner.strip() else inner)
             elif node.name in ('em', 'i'):
-                parts.append(f'<em>{inline_html(node)}</em>')
+                inner = inline_parts(node)
+                parts.append(f'<em>{inner}</em>' if inner.strip() else inner)
             elif node.name in ('sub', 'sup', 'u'):
-                parts.append(f'<{node.name}>{inline_html(node)}</{node.name}>')
-            elif node.name == 'img':
-                continue
+                inner = inline_parts(node)
+                parts.append(f'<{node.name}>{inner}</{node.name}>' if inner.strip() else inner)
             else:
-                parts.append(inline_html(node))
-    out = re.sub(r'\s+', ' ', ''.join(parts))
+                parts.append(inline_parts(node))
+    return ''.join(parts)
+
+
+def inline_html(element):
+    out = inline_parts(element).replace('\xa0', ' ')
+    out = re.sub(r'[ \t\r\n]+', ' ', out)
     out = re.sub(r'(<br>\s*){3,}', '<br><br>', out)
     return out.strip()
 
 
-def split_paragraphs(html_str):
-    """Split on <br> only where the preceding run reads as a finished sentence."""
-    if not html_str:
+def split_paragraphs(markup):
+    """Split only on blank lines; single <br> stays a line break inside the paragraph."""
+    if not markup:
         return []
-    chunks = re.split(r'(?:<br>\s*)+', html_str)
-    paragraphs = []
-    current = ''
-    breaks = re.findall(r'(?:<br>\s*)+', html_str)
-    for index, chunk in enumerate(chunks):
-        chunk = chunk.strip()
-        if not chunk:
-            continue
-        joiner = breaks[index - 1] if 0 < index <= len(breaks) else ''
-        double_break = joiner.count('<br>') > 1
-        if not current:
-            current = chunk
-        elif double_break or SENTENCE_END.search(current):
-            paragraphs.append(current)
-            current = chunk
-        else:
-            current = f'{current} {chunk}'
-    if current:
-        paragraphs.append(current)
-    return [p for p in paragraphs if not is_junk(p)]
+    paragraphs = [chunk.strip() for chunk in re.split(r'(?:<br>\s*){2,}', markup)]
+    trimmed = [re.sub(r'^(?:\s*<br>)+|(?:<br>\s*)+$', '', p).strip() for p in paragraphs]
+    return [p for p in trimmed if p and not is_junk(p)]
+
+
+def list_items(node):
+    items = []
+    for li in node.find_all('li', recursive=False):
+        markup = inline_html(li)
+        if markup and not is_junk(markup):
+            items.append(markup)
+    return items
+
+
+def table_rows(node):
+    rows = []
+    for tr in node.find_all('tr'):
+        cells = [clean_text(td.get_text(' ', strip=True)) for td in tr.find_all(['td', 'th'])]
+        if any(cells):
+            rows.append(cells)
+    return rows
 
 
 def para_blocks(container):
@@ -218,72 +289,78 @@ def para_blocks(container):
 
     def flush():
         if pending:
-            for para in split_paragraphs(' '.join(pending)):
-                blocks.append({'type': 'paragraph', 'html': para})
+            for markup in split_paragraphs(' '.join(pending).strip()):
+                blocks.append({'type': 'paragraph', 'html': markup})
             pending.clear()
 
     for node in container.children:
         if isinstance(node, (Comment, Doctype)):
             continue
         if isinstance(node, NavigableString):
-            text = clean_text(str(node))
-            if text:
-                pending.append(text)
+            text = str(node).replace('\xa0', ' ')
+            if text.strip():
+                pending.append(clean_text(html.escape(text, quote=False)))
             continue
         if not isinstance(node, Tag):
             continue
         if node.name in ('script', 'style', 'noscript'):
             continue
+        classes = node.get('class') or []
+        if 'elementor-widget' in classes:
+            wtype = widget_type(node)
+            if wtype:
+                result = widget_blocks(node, wtype)
+                if result is not None:
+                    flush()
+                    blocks.extend(result)
+                    continue
         if node.name == 'br':
             pending.append('<br>')
             continue
-        if node.name in ('a', 'strong', 'em', 'b', 'i', 'span', 'small', 'sub', 'sup', 'u'):
-            wrapper = BeautifulSoup(f'<x>{node}</x>', 'html.parser').x
-            html = inline_html(wrapper)
-            if html:
-                pending.append(html)
+        if node.name in INLINE_TAGS:
+            markup = inline_html(soup_of(f'<x>{node}</x>').x)
+            if markup:
+                pending.append(markup)
             continue
         if node.name == 'p':
             flush()
-            for para in split_paragraphs(inline_html(node)):
-                blocks.append({'type': 'paragraph', 'html': para})
-            for img in node.find_all('img'):
-                key = register_image(img.get('src'), img.get('alt'))
-                if key:
-                    blocks.append({'type': 'image', 'image': key})
-        elif node.name in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+            if has_block_child(node):
+                blocks.extend(para_blocks(node))
+            else:
+                for markup in split_paragraphs(inline_html(node)):
+                    blocks.append({'type': 'paragraph', 'html': markup})
+                blocks.extend(image_blocks(node))
+        elif re.match(r'^h[1-6]$', node.name):
             flush()
             blocks.extend(heading_blocks(node))
         elif node.name in ('ul', 'ol'):
             flush()
-            items = [inline_html(li) for li in node.find_all('li', recursive=False)]
-            items = [i for i in items if i and not is_junk(i)]
+            items = list_items(node)
             if items:
                 blocks.append({'type': 'list', 'ordered': node.name == 'ol', 'items': items})
         elif node.name == 'blockquote':
             flush()
-            html = inline_html(node)
-            if html and not is_junk(html):
-                blocks.append({'type': 'quote', 'html': html})
+            markup = inline_html(node)
+            if markup and not is_junk(markup):
+                blocks.append({'type': 'quote', 'html': markup})
         elif node.name == 'table':
             flush()
-            rows = [
-                [clean_text(td.get_text(' ', strip=True)) for td in tr.find_all(['td', 'th'])]
-                for tr in node.find_all('tr')
-            ]
-            rows = [r for r in rows if any(c for c in r)]
-            if rows:
+            rows = table_rows(node)
+            if len(rows) <= 1 or max(len(r) for r in rows) <= 1:
+                blocks.extend(para_blocks(node))
+            else:
                 blocks.append({'type': 'table', 'rows': rows})
         elif node.name == 'img':
             flush()
-            key = register_image(node.get('src'), node.get('alt'))
-            if key:
-                blocks.append({'type': 'image', 'image': key})
+            blocks.extend(image_blocks(soup_of(f'<x>{node}</x>').x))
+        elif node.name == 'video':
+            flush()
+            blocks.extend(video_blocks(node))
         elif node.name == 'iframe':
             flush()
             src = node.get('src') or node.get('data-src')
             if src:
-                blocks.append({'type': 'embed', 'url': src})
+                blocks.append({'type': 'embed', 'url': sanitize_href(src)})
         else:
             flush()
             blocks.extend(para_blocks(node))
@@ -291,35 +368,89 @@ def para_blocks(container):
     return blocks
 
 
+def image_blocks(container):
+    blocks = []
+    for img in container.find_all('img'):
+        key = register_image(img.get('src') or img.get('data-src'), img.get('alt'))
+        if not key:
+            continue
+        block = {'type': 'image', 'image': key}
+        caption = img.find_parent('figure')
+        if caption is not None:
+            figcaption = caption.find('figcaption')
+            if figcaption:
+                block['caption'] = clean_text(figcaption.get_text(' ', strip=True))
+        link = img.find_parent('a')
+        if link and link.get('href'):
+            href = sanitize_href(link['href'])
+            if VALID_HREF.match(href) and not IMAGE_EXT.search(href):
+                block['href'] = href
+        blocks.append(block)
+    return blocks
+
+
+def video_blocks(node):
+    src = node.get('src')
+    if not src:
+        source = node.find('source')
+        src = source.get('src') if source else None
+    key = register_video(src) if src else None
+    return [{'type': 'video', 'file': key}] if key else []
+
+
 def heading_blocks(node):
-    """Elementor uses heading widgets for body copy; keep only true headings as headings."""
-    html = inline_html(node)
-    if not html or is_junk(html):
+    if has_block_child(node):
+        return para_blocks(node)
+    markup = inline_html(node)
+    if not markup or is_junk(markup):
         return []
-    text = clean_text(BeautifulSoup(html, 'html.parser').get_text(' ', strip=True))
+    text = strip_tags(markup)
     level = int(node.name[1]) if re.match(r'^h[1-6]$', node.name or '') else 2
-    if len(text) > 110 or '<a href' in html or '<br>' in html:
-        return [{'type': 'paragraph', 'html': para} for para in split_paragraphs(html)]
+    if len(text) > 140 or '<a href' in markup:
+        return [{'type': 'paragraph', 'html': m} for m in split_paragraphs(markup)]
     return [{'type': 'heading', 'level': level, 'text': text}]
 
 
 def widget_type(widget):
-    for c in widget.get('class', []):
-        m = re.match(r'elementor-widget-([a-z0-9-]+)$', c)
-        if m and m.group(1) != 'container':
-            return m.group(1)
+    declared = widget.get('data-widget_type')
+    if declared:
+        return declared.split('.')[0]
+    for name in widget.get('class', []):
+        match = re.match(r'elementor-widget-([a-z0-9_-]+)$', name)
+        if match and match.group(1) != 'container' and '__' not in match.group(1):
+            return match.group(1)
     return None
+
+
+def widget_link(widget):
+    raw = widget.get('data-exad-element-link') or widget.get('data-elementor-element-link')
+    if not raw:
+        return None
+    try:
+        return sanitize_href(json.loads(html.unescape(raw)).get('url', ''))
+    except (json.JSONDecodeError, AttributeError):
+        return None
 
 
 def video_url(widget):
-    ds = widget.get('data-settings', '')
-    m = re.search(r'"(?:youtube_url|vimeo_url|url)":"([^"]+)"', ds)
-    if m:
-        return m.group(1).replace('\\/', '/')
+    settings = widget.get('data-settings', '')
+    overlay = re.search(r'"image_overlay":\{[^}]*?"url":"([^"]+)"', settings)
+    if overlay:
+        register_image(overlay.group(1).replace('\\/', '/'))
+    match = re.search(r'"(?:youtube_url|vimeo_url|url)":"([^"]+)"', settings)
+    if match:
+        return sanitize_href(match.group(1).replace('\\/', '/'))
     iframe = widget.find('iframe')
-    if iframe and iframe.get('src'):
-        return iframe['src']
-    return None
+    return sanitize_href(iframe['src']) if iframe and iframe.get('src') else None
+
+
+def flipbook_documents(markup):
+    blocks = []
+    for source in re.findall(r'"source"\s*:\s*"([^"]+\.pdf)"', markup.replace('\\/', '/')):
+        key = register_document(source)
+        if key:
+            blocks.append({'type': 'document', 'document': key})
+    return blocks
 
 
 def modal_blocks(container):
@@ -329,13 +460,9 @@ def modal_blocks(container):
     blocks = []
     title = container.find(class_=re.compile('modal-element-title|modal-title'))
     if title:
-        text = clean_text(title.get_text(' ', strip=True))
+        text = strip_tags(title.get_text(' ', strip=True))
         if text:
             blocks.append({'type': 'heading', 'level': 3, 'text': text})
-    for img in container.find_all('img'):
-        key = register_image(img.get('src'), img.get('alt'))
-        if key:
-            blocks.append({'type': 'image', 'image': key})
     blocks.extend(para_blocks(body))
     return blocks
 
@@ -349,65 +476,66 @@ def widget_blocks(widget, wtype):
         return modal
 
     if wtype == 'heading':
-        h = container.find(re.compile('^h[1-6]$')) or container.find(class_='elementor-heading-title')
-        return heading_blocks(h) if h else []
+        heading = container.find(re.compile('^h[1-6]$')) or container.find(
+            class_='elementor-heading-title'
+        )
+        blocks = heading_blocks(heading) if heading else []
+        link = widget_link(widget)
+        if link and blocks:
+            blocks.append({'type': 'button', 'label': strip_tags(str(blocks[0].get('text', ''))) or 'Read more', 'href': link})
+        return blocks
     if wtype == 'text-editor':
         return para_blocks(container)
     if wtype in ('image', 'theme-post-featured-image'):
-        img = container.find('img')
-        if not img:
-            return []
-        key = register_image(img.get('src'), img.get('alt'))
-        if not key:
-            return []
-        block = {'type': 'image', 'image': key}
-        cap = container.find('figcaption')
-        if cap:
-            block['caption'] = clean_text(cap.get_text(' ', strip=True))
-        link = img.find_parent('a')
-        if link and link.get('href'):
-            href = link['href']
-            if DOC_EXT.search(href):
-                register_document(href)
-            block['href'] = href
-        return [block]
+        blocks = image_blocks(container)
+        link = widget_link(widget)
+        if link and blocks:
+            blocks[0]['href'] = link
+        return blocks
     if wtype == 'video':
         url = video_url(widget)
-        return [{'type': 'video', 'url': url}] if url else []
-    if wtype == 'button':
-        a = container.find('a')
-        if not a:
+        if not url:
             return []
-        label = clean_text(a.get_text(' ', strip=True))
-        href = a.get('href', '')
+        overlay = re.search(
+            r'"image_overlay":\{[^}]*?"url":"([^"]+)"', widget.get('data-settings', '')
+        )
+        block = {'type': 'video', 'url': url}
+        if overlay:
+            poster = register_image(overlay.group(1).replace('\\/', '/'))
+            if poster:
+                block['poster'] = poster
+        return [block]
+    if wtype in ('button', 'exad-link-anything'):
+        anchor = container.find('a')
+        label = clean_text(anchor.get_text(' ', strip=True)) if anchor else ''
+        href = sanitize_href(anchor.get('href', '')) if anchor else ''
+        link = widget_link(widget)
+        if link and (not href or href == '#'):
+            href = link
         if DOC_EXT.search(href):
             register_document(href)
-        return [{'type': 'button', 'label': label, 'href': href}] if label else []
+        return [{'type': 'button', 'label': label, 'href': href}] if label and href else []
     if wtype == 'icon-list':
-        items = []
-        for li in container.find_all('li'):
-            html = inline_html(li)
-            if html and not is_junk(html):
-                items.append(html)
+        items = [markup for markup in (inline_html(li) for li in container.find_all('li')) if markup and not is_junk(markup)]
         return [{'type': 'list', 'ordered': False, 'items': items}] if items else []
     if wtype in ('icon-box', 'image-box'):
         blocks = []
         title = container.find(class_=re.compile('(icon|image)-box-title'))
-        desc = container.find(class_=re.compile('(icon|image)-box-description'))
+        description = container.find(class_=re.compile('(icon|image)-box-description'))
         if title:
             blocks.extend(heading_blocks(title))
-        if desc:
-            blocks.extend(para_blocks(desc))
+        if description:
+            blocks.extend(para_blocks(description))
         return blocks
     if wtype in ('toggle', 'accordion'):
         blocks = []
         titles = container.find_all(class_=re.compile('(toggle|accordion)-title'))
         bodies = container.find_all(class_=re.compile('(toggle|accordion)-content'))
-        for t, b in zip(titles, bodies):
+        for title, body in zip(titles, bodies):
             blocks.append({
                 'type': 'accordion-item',
-                'title': clean_text(t.get_text(' ', strip=True)),
-                'blocks': para_blocks(b),
+                'title': strip_tags(title.get_text(' ', strip=True)),
+                'blocks': para_blocks(body),
             })
         return blocks
     if wtype == 'testimonial':
@@ -417,129 +545,155 @@ def widget_blocks(widget, wtype):
         block = {'type': 'quote', 'html': inline_html(quote)}
         cite = container.find(class_=re.compile('testimonial-name'))
         if cite:
-            block['cite'] = clean_text(cite.get_text(' ', strip=True))
+            block['cite'] = strip_tags(cite.get_text(' ', strip=True))
         return [block]
     if wtype in ('image-carousel', 'image-gallery', 'gallery', 'media-carousel'):
-        blocks = []
-        for img in container.find_all('img'):
-            key = register_image(img.get('src'), img.get('alt'))
-            if key:
-                blocks.append({'type': 'image', 'image': key})
-        return blocks
+        return image_blocks(container)
+    if wtype == 'google_maps':
+        iframe = container.find('iframe')
+        return [{'type': 'embed', 'url': sanitize_href(iframe['src'])}] if iframe and iframe.get('src') else []
+    if wtype and wtype.startswith('wp-widget-nav_menu'):
+        items = []
+        for anchor in container.find_all('a', href=True):
+            label = clean_text(anchor.get_text(' ', strip=True))
+            href = sanitize_href(anchor['href'])
+            if label and VALID_HREF.match(href):
+                items.append(f'<a href="{html.escape(href, quote=True)}">{label}</a>')
+        return [{'type': 'list', 'ordered': False, 'items': items}] if items else []
     if wtype in ('html', 'shortcode'):
-        blocks = []
+        blocks = flipbook_documents(str(container))
         for iframe in container.find_all('iframe'):
             src = iframe.get('src') or iframe.get('data-src')
             if src:
-                blocks.append({'type': 'embed', 'url': src})
-        for v in container.find_all(class_='elementor-widget-video'):
-            url = video_url(v)
+                blocks.append({'type': 'embed', 'url': sanitize_href(src)})
+        for nested in container.find_all(class_='elementor-widget-video'):
+            url = video_url(nested)
             if url:
                 blocks.append({'type': 'video', 'url': url})
         return blocks or para_blocks(container)
     return None
 
 
-def register_embedded_documents(html_str):
-    for href in re.findall(r'https?:[^"\'\\ ]*?\.(?:pdf|docx?|pptx?|xlsx?)', html_str.replace('\\/', '/'), re.I):
+def register_embedded_assets(markup):
+    normalized = markup.replace('\\/', '/')
+    for href in re.findall(r'https?:[^"\'\\ ]*?\.(?:pdf|docx?|pptx?|xlsx?)', normalized, re.I):
         register_document(href)
-
-
-def elementor_blocks(html_str):
-    register_embedded_documents(html_str)
     for url in re.findall(
-        r'url\((?:&quot;|"|\')?(https?://www\.orchardocd\.org/wp-content/uploads/[^)"\'&]+)', html_str
+        r'url\((?:&quot;|"|\')?(https?://www\.orchardocd\.org/wp-content/uploads/[^)"\'&]+)',
+        normalized,
     ):
         register_image(url)
-    soup = BeautifulSoup(html_str, 'html.parser')
+
+
+def dedupe(blocks):
+    """Drop the collapsed teaser Elementor renders directly before each modal body."""
+    result = []
+    for block in blocks:
+        if result and block == result[-1]:
+            continue
+        if (
+            block['type'] == 'paragraph'
+            and result
+            and result[-1]['type'] == 'paragraph'
+            and TEASER_END.search(strip_tags(result[-1]['html']))
+        ):
+            teaser = strip_tags(result[-1]['html'])
+            stem = TEASER_END.sub('', teaser).strip()
+            if stem and strip_tags(block['html']).startswith(stem[: max(30, len(stem) - 10)]):
+                result[-1] = block
+                continue
+        result.append(block)
+    return result
+
+
+def elementor_blocks(markup):
+    register_embedded_assets(markup)
+    soup = soup_of(markup)
     root = soup.find(attrs={'data-elementor-type': True}) or soup
     strip_chrome(root)
-    blocks = []
-    handled = set()
-    for widget in root.find_all(class_='elementor-widget'):
-        if any(id(a) in handled for a in widget.parents):
-            continue
-        wtype = widget_type(widget)
-        if wtype is None:
-            continue
-        result = widget_blocks(widget, wtype)
-        if result is None:
-            continue
-        handled.add(id(widget))
-        blocks.extend(result)
-    if not blocks:
-        blocks = para_blocks(root)
-    merged = []
-    for b in blocks:
-        if merged and b == merged[-1]:
-            continue
-        merged.append(b)
-    return merged
-
-
-def media_index():
-    index = {}
-    for m in load_api('media'):
-        src = m.get('source_url')
-        if src:
-            index[m['id']] = (src, strip_tags(m.get('alt_text') or ''))
-    return index
+    blocks = flipbook_documents(markup)
+    blocks.extend(para_blocks(root))
+    return dedupe(blocks)
 
 
 MEDIA = {}
 
 
+def media_index():
+    index = {}
+    for item in load_api('media'):
+        source = item.get('source_url')
+        if source:
+            index[item['id']] = (source, strip_tags(item.get('alt_text') or ''))
+    return index
+
+
 def featured_image(item):
-    fid = item.get('featured_media')
-    if fid and fid in MEDIA:
-        src, alt = MEDIA[fid]
-        key = register_image(src, alt)
+    media_id = item.get('featured_media')
+    if media_id and media_id in MEDIA:
+        source, alt = MEDIA[media_id]
+        key = register_image(source, alt)
         if key:
             return key
-    y = item.get('yoast_head_json') or {}
-    for og in y.get('og_image') or []:
-        if og.get('url'):
-            key = register_image(og['url'])
+    yoast = item.get('yoast_head_json') or {}
+    for image in yoast.get('og_image') or []:
+        if image.get('url'):
+            key = register_image(image['url'])
             if key:
                 return key
     return None
 
 
 def yoast_description(item):
-    y = item.get('yoast_head_json') or {}
-    return y.get('og_description') or y.get('description') or ''
+    yoast = item.get('yoast_head_json') or {}
+    return strip_tags(yoast.get('og_description') or yoast.get('description') or '')
+
+
+def slide_scope(details):
+    scope = details
+    while scope is not None and scope.find(class_='bnr-img-wrp') is None:
+        scope = scope.parent
+        if scope is not None and scope.get('class') and any(
+            'banner-section' in name for name in scope.get('class')
+        ):
+            break
+    return scope or details.parent
 
 
 def extract_hero(slug):
-    f = SITE / 'index.html' if slug == 'home' else SITE / slug / 'index.html'
-    if not f.exists():
+    path = SITE / 'index.html' if slug == 'home' else SITE / slug / 'index.html'
+    if not path.exists():
         return []
-    soup = read_soup(f)
-    banner = soup.find(class_=re.compile(r'banner-section'))
+    banner = read_soup(path).find(class_=re.compile(r'banner-section'))
     if not banner:
         return []
     slides = []
     for details in banner.find_all(class_='banner-content-details'):
         strip_chrome(details)
         heading = details.find(['h1', 'h2', 'h3'])
-        title = clean_text(heading.get_text(' ', strip=True)) if heading else ''
+        title = strip_tags(heading.get_text(' ', strip=True)) if heading else ''
         if not title:
             continue
-        if heading:
-            heading.extract()
+        heading.extract()
         links = []
-        for a in details.find_all('a'):
-            label = clean_text(a.get_text(' ', strip=True))
-            if label:
-                links.append({'label': label, 'href': a.get('href', '')})
-            a.extract()
-        body = [b['html'] for b in para_blocks(details) if b['type'] == 'paragraph']
-        scope = details.parent
+        for anchor in details.find_all('a', href=True):
+            label = clean_text(anchor.get_text(' ', strip=True))
+            if not label:
+                continue
+            parent = anchor.parent
+            standalone = clean_text(parent.get_text(' ', strip=True)) == label
+            if standalone:
+                links.append({'label': label, 'href': sanitize_href(anchor['href'])})
+                anchor.extract()
+        body = [block['html'] for block in para_blocks(details) if block['type'] == 'paragraph']
+        scope = slide_scope(details)
         image = None
-        if scope:
-            img = scope.select_one('img.desk-bnr') or scope.find('img')
+        if scope is not None:
+            img = scope.select_one('img.desk-bnr') or scope.select_one('.bnr-img-wrp img')
             if img:
                 image = register_image(img.get('src'), img.get('alt'))
+        if not body and not links and not image:
+            continue
         slide = {'title': title, 'body': body, 'links': links}
         if image:
             slide['image'] = image
@@ -549,17 +703,17 @@ def extract_hero(slug):
 
 def extract_pages():
     pages = []
-    for p in load_api('pages'):
-        slug = p['slug']
-        if slug in UTILITY_SLUGS or p.get('status') != 'publish':
+    for page in load_api('pages'):
+        slug = page['slug']
+        if slug in UTILITY_SLUGS or page.get('status') != 'publish':
             continue
         pages.append({
             'slug': slug,
-            'title': strip_tags(p['title']['rendered']),
-            'description': yoast_description(p),
-            'featuredImage': featured_image(p),
+            'title': strip_tags(page['title']['rendered']),
+            'description': yoast_description(page),
+            'featuredImage': featured_image(page),
             'hero': extract_hero(slug),
-            'blocks': elementor_blocks(p['content']['rendered']),
+            'blocks': elementor_blocks(page['content']['rendered']),
         })
     return pages
 
@@ -567,34 +721,42 @@ def extract_pages():
 def post_byline(soup):
     banner = soup.find(class_=re.compile('single-post-banner'))
     if banner:
-        m = re.search(r'[Bb]y\s+([A-Z][\w.\'-]+(?:\s+[A-Z][\w.\'-]+){0,3})', banner.get_text(' ', strip=True))
-        if m:
-            return m.group(1)
+        match = re.search(
+            r'[Bb]y\s+([A-Z][\w.\'-]+(?:\s+[A-Z][\w.\'-]+){0,3})',
+            banner.get_text(' ', strip=True),
+        )
+        if match:
+            return match.group(1)
     return None
 
 
 def extract_posts(categories):
     posts = []
-    for p in load_api('posts'):
-        if p.get('status') != 'publish':
+    for post in load_api('posts'):
+        if post.get('status') != 'publish':
             continue
-        slug = p['slug']
-        page_file = SITE / slug / 'index.html'
+        slug = post['slug']
+        path = SITE / slug / 'index.html'
         byline = None
-        if page_file.exists():
-            soup = read_soup(page_file)
+        if path.exists():
+            soup = read_soup(path)
             byline = post_byline(soup)
             scope = soup.find(class_='ocd-single-post')
-            blocks = elementor_blocks(str(scope)) if scope else elementor_blocks(p['content']['rendered'])
+            if scope is not None:
+                for image in scope.select('img.wp-post-image'):
+                    image.decompose()
+                blocks = elementor_blocks(str(scope))
+            else:
+                blocks = elementor_blocks(post['content']['rendered'])
         else:
-            blocks = elementor_blocks(p['content']['rendered'])
+            blocks = elementor_blocks(post['content']['rendered'])
         posts.append({
             'slug': slug,
-            'title': strip_tags(p['title']['rendered']),
-            'date': p['date'],
-            'categories': [categories[c] for c in p.get('categories', []) if c in categories],
-            'description': yoast_description(p),
-            'featuredImage': featured_image(p),
+            'title': strip_tags(post['title']['rendered']),
+            'date': post['date'],
+            'categories': [categories[c] for c in post.get('categories', []) if c in categories],
+            'description': yoast_description(post),
+            'featuredImage': featured_image(post),
             'byline': byline,
             'blocks': blocks,
         })
@@ -604,55 +766,42 @@ def extract_posts(categories):
 def extract_studies():
     return [
         {
-            'slug': s['slug'],
-            'title': strip_tags(s['title']['rendered']),
-            'date': s['date'],
-            'description': yoast_description(s),
-            'featuredImage': featured_image(s),
-            'blocks': elementor_blocks(s['content']['rendered']),
+            'slug': study['slug'],
+            'title': strip_tags(study['title']['rendered']),
+            'date': study['date'],
+            'description': yoast_description(study),
+            'featuredImage': featured_image(study),
+            'blocks': elementor_blocks(study['content']['rendered']),
         }
-        for s in load_api('p_in_research')
-        if s.get('status') == 'publish'
+        for study in load_api('p_in_research')
+        if study.get('status') == 'publish'
     ]
 
 
 def extract_research_slides():
     return [
         {
-            'slug': s['slug'],
-            'title': strip_tags(s['title']['rendered']),
-            'image': featured_image(s),
-            'blocks': elementor_blocks(s['content']['rendered']),
+            'slug': slide['slug'],
+            'title': strip_tags(slide['title']['rendered']),
+            'image': featured_image(slide),
+            'blocks': elementor_blocks(slide['content']['rendered']),
         }
-        for s in load_api('research-slider')
-        if s.get('status') == 'publish'
+        for slide in load_api('research-slider')
+        if slide.get('status') == 'publish'
     ]
 
 
 def extract_speakers():
-    speakers = []
-    for s in load_api('speakers'):
-        if s.get('status') != 'publish':
-            continue
-        soup = BeautifulSoup(s['content']['rendered'], 'html.parser')
-        speakers.append({
-            'slug': s['slug'],
-            'name': strip_tags(s['title']['rendered']),
-            'role': clean_text(soup.get_text(' ', strip=True)),
-            'photo': featured_image(s),
-        })
-    return speakers
-
-
-def carousel_heading(card):
-    carousel = card.find_parent(class_=re.compile('owl-carousel'))
-    if carousel is None:
-        return None
-    for prev in carousel.find_all_previous(class_='elementor-widget-heading'):
-        text = clean_text(prev.get_text(' ', strip=True))
-        if text:
-            return text
-    return None
+    return [
+        {
+            'slug': speaker['slug'],
+            'name': strip_tags(speaker['title']['rendered']),
+            'role': strip_tags(speaker['content']['rendered']),
+            'photo': featured_image(speaker),
+        }
+        for speaker in load_api('speakers')
+        if speaker.get('status') == 'publish'
+    ]
 
 
 CARD_CLASS = re.compile(
@@ -661,125 +810,178 @@ CARD_CLASS = re.compile(
 )
 
 
+def carousel_heading(card):
+    carousel = card.find_parent(class_=re.compile('owl-carousel'))
+    if carousel is None:
+        return None
+    for previous in carousel.find_all_previous(class_='elementor-widget-heading'):
+        text = strip_tags(previous.get_text(' ', strip=True))
+        if text:
+            return text
+    return None
+
+
 def extract_people():
     people = {}
-    order_counter = {}
+    group_order = {}
 
-    for d in sorted((SITE / 'employees').iterdir()):
-        f = d / 'index.html'
-        if not f.exists():
+    for directory in sorted((SITE / 'employees').iterdir()):
+        path = directory / 'index.html'
+        if not path.exists():
             continue
-        soup = read_soup(f)
+        soup = read_soup(path)
         entry = strip_chrome(soup.find(class_='entry') or soup)
-        name_el = entry.find('h2') or soup.find('h2')
-        name = clean_text(name_el.get_text(' ', strip=True)) if name_el else d.name
-        if name_el:
-            name_el.extract()
-        people[d.name] = {
-            'slug': d.name, 'name': name, 'bio': para_blocks(entry),
+        name_element = entry.find('h2') or soup.find('h2')
+        name = strip_tags(name_element.get_text(' ', strip=True)) if name_element else directory.name
+        if name_element:
+            name_element.extract()
+        people[directory.name] = {
+            'slug': directory.name, 'name': name, 'bio': para_blocks(entry),
             'photo': None, 'excerpt': '', 'website': None, 'group': None, 'order': 0,
         }
 
-    for page_file in SITE.rglob('index.html'):
-        text = read_text(page_file)
-        if '/employees/' not in text:
+    for path in SITE.rglob('index.html'):
+        markup = read_text(path)
+        if '/employees/' not in markup:
             continue
-        soup = BeautifulSoup(text, 'html.parser')
+        soup = BeautifulSoup(markup, PARSER)
         for card in soup.find_all(class_=CARD_CLASS):
             link = card.find('a', class_='modal-link') or card.find('a', href=re.compile('/employees/'))
             if not link:
                 continue
-            m = re.search(r'/employees/([^/]+)/?', link.get('href', ''))
-            if not m:
+            match = re.search(r'/employees/([^/]+)/?', link.get('href', ''))
+            if not match:
                 continue
-            slug = m.group(1)
+            slug = match.group(1)
             person = people.get(slug)
             if person is None:
-                h = card.find(['h3', 'h4'])
+                heading = card.find(['h3', 'h4'])
                 person = {
-                    'slug': slug, 'name': clean_text(h.get_text(' ', strip=True)) if h else slug,
-                    'bio': [], 'photo': None, 'excerpt': '', 'website': None, 'group': None, 'order': 0,
+                    'slug': slug,
+                    'name': strip_tags(heading.get_text(' ', strip=True)) if heading else slug,
+                    'bio': [], 'photo': None, 'excerpt': '', 'website': None,
+                    'group': None, 'order': 0,
                 }
                 people[slug] = person
-            img = card.find('img')
-            if img and not person['photo']:
-                person['photo'] = register_image(img.get('src'), img.get('alt') or person['name'])
-            p = card.find('p')
-            if p and not person['excerpt']:
-                person['excerpt'] = clean_text(p.get_text(' ', strip=True))
-            for a in card.find_all('a', href=True):
-                href = a['href']
+            image = card.find('img')
+            if image and not person['photo']:
+                person['photo'] = register_image(image.get('src'), image.get('alt') or person['name'])
+            paragraph = card.find('p')
+            if paragraph and not person['excerpt']:
+                person['excerpt'] = strip_tags(paragraph.get_text(' ', strip=True))
+            for anchor in card.find_all('a', href=True):
+                href = sanitize_href(anchor['href'])
                 if '/employees/' not in href and href.startswith('http') and not person['website']:
                     person['website'] = href
             group = carousel_heading(card)
             if group and not person['group']:
                 person['group'] = group
-                person['order'] = order_counter.setdefault(group, 0)
-                order_counter[group] += 1
-    return sorted(people.values(), key=lambda p: (p['group'] or 'zz', p['order']))
+                if group not in group_order:
+                    group_order[group] = len(group_order)
+                person['order'] = sum(1 for p in people.values() if p['group'] == group) - 1
+
+    return sorted(
+        people.values(),
+        key=lambda person: (group_order.get(person['group'], len(group_order)), person['order']),
+    )
 
 
 def widget_title_near(widget):
     column = widget.find_parent(class_=re.compile('elementor-column|elementor-top-section'))
     if column is not None:
-        for sibling in column.find_all(class_=re.compile('elementor-widget-(heading|text-editor)')):
-            text = clean_text(sibling.get_text(' ', strip=True))
-            if text and text.lower() != 'webinars':
-                return text
-    for prev in widget.find_all_previous(class_='elementor-widget-heading'):
-        text = clean_text(prev.get_text(' ', strip=True))
+        for pattern in ('elementor-widget-heading', 'elementor-widget-text-editor'):
+            for sibling in column.find_all(class_=pattern):
+                text = strip_tags(sibling.get_text(' ', strip=True))
+                if text and text.lower() != 'webinars':
+                    return text
+    for previous in widget.find_all_previous(class_='elementor-widget-heading'):
+        text = strip_tags(previous.get_text(' ', strip=True))
         if text and text.lower() != 'webinars':
             return text
     return None
 
 
+def banner_video_titles(soup):
+    """The webinars banner slider carries the canonical title for each video."""
+    titles = {}
+    banner = soup.find(class_=re.compile('banner-section'))
+    if banner is None:
+        return titles
+    for details in banner.find_all(class_='banner-content-details'):
+        heading = details.find(['h1', 'h2', 'h3'])
+        if not heading:
+            continue
+        title = strip_tags(heading.get_text(' ', strip=True))
+        slide = details.find_parent(class_=re.compile(r'slide\d+')) or details.parent
+        iframe = slide.find('iframe') if slide else None
+        source = iframe.get('src') or iframe.get('data-src') if iframe else None
+        if title and source:
+            titles[video_id(source)] = title
+    return titles
+
+
+def video_id(url):
+    match = re.search(r'(?:youtu\.be/|embed/|watch\?v=|vimeo\.com/(?:video/)?)([\w-]{6,})', url or '')
+    return match.group(1) if match else (url or '')
+
+
 def extract_webinars():
     soup = read_soup(SITE / 'webinars' / 'index.html')
+    banner_titles = banner_video_titles(soup)
     webinars = []
     for widget in soup.find_all(class_='elementor-widget-video'):
         url = video_url(widget)
         if not url:
             continue
-        webinars.append({'title': widget_title_near(widget) or 'Webinar', 'url': url})
+        overlay = re.search(
+            r'"image_overlay":\{[^}]*?"url":"([^"]+)"', widget.get('data-settings', '')
+        )
+        webinars.append({
+            'title': banner_titles.get(video_id(url)) or widget_title_near(widget) or 'Webinar',
+            'url': url,
+            'image': register_image(overlay.group(1).replace('\\/', '/')) if overlay else None,
+        })
     return webinars
 
 
 def extract_conference_speakers():
-    names = []
+    speakers = []
     seen = set()
     for slug in ('conference', 'conference-2'):
-        f = SITE / slug / 'index.html'
-        if not f.exists():
+        path = SITE / slug / 'index.html'
+        if not path.exists():
             continue
-        soup = read_soup(f)
-        for el in soup.find_all(class_=re.compile('speakers-title')):
-            text = clean_text(el.get_text(' ', strip=True))
-            if text and text not in seen:
-                seen.add(text)
-                names.append({'name': text, 'page': slug})
-    return names
+        soup = read_soup(path)
+        for element in soup.find_all(class_=re.compile('speakers-title')):
+            name = strip_tags(element.get_text(' ', strip=True))
+            if not name or name in seen:
+                continue
+            seen.add(name)
+            section = None
+            for previous in element.find_all_previous(class_='elementor-widget-heading'):
+                heading = strip_tags(previous.get_text(' ', strip=True))
+                if heading:
+                    section = heading
+                    break
+            speakers.append({'name': name, 'page': slug, 'section': section})
+    return speakers
 
 
 def harvest_alt_text():
-    for page_file in SITE.rglob('*.html'):
-        soup = read_soup(page_file)
-        for img in soup.find_all('img'):
-            alt = (img.get('alt') or '').strip()
+    for path in SITE.rglob('*.html'):
+        for image in read_soup(path).find_all('img'):
+            alt = clean_text(html.unescape(image.get('alt') or ''))
             if not alt:
                 continue
-            src = img.get('src') or ''
-            key = local_upload_path(strip_size_suffix(src.split('?')[0]))
+            key = local_upload_path(strip_size_suffix((image.get('src') or '').split('?')[0]))
             if key and key in images_seen and not images_seen[key]['alt']:
-                images_seen[key]['alt'] = clean_text(alt)
+                images_seen[key]['alt'] = alt
 
 
 def main():
     global MEDIA
     MEDIA = media_index()
-    categories = {
-        c['id']: strip_tags(c['name'])
-        for c in load_api('categories')
-    }
+    categories = {c['id']: strip_tags(c['name']) for c in load_api('categories')}
     data = {
         'pages': extract_pages(),
         'posts': extract_posts(categories),
@@ -791,13 +993,16 @@ def main():
         'conferenceSpeakers': extract_conference_speakers(),
     }
     harvest_alt_text()
-    data['images'] = sorted(images_seen.values(), key=lambda x: x['id'])
-    data['documents'] = sorted(documents_seen.values(), key=lambda x: x['id'])
+    data['images'] = sorted(images_seen.values(), key=lambda item: item['id'])
+    data['documents'] = sorted(documents_seen.values(), key=lambda item: item['id'])
+    data['videos'] = sorted(videos_seen.values(), key=lambda item: item['id'])
 
+    serialized = json.dumps(data)
     bad = sorted({
         href
-        for href in re.findall(r'href="([^"]*)"', json.dumps(data))
-        if not VALID_HREF.match(href) or re.search(r'\s', href)
+        for href in re.findall(r'href=\\"([^\\"]*)\\"|"href": "([^"]*)"', serialized)
+        for href in href
+        if href and (not VALID_HREF.match(href) or re.search(r'\s', href))
     })
     if bad:
         raise SystemExit('Invalid hrefs produced:\n  ' + '\n  '.join(bad))
@@ -805,10 +1010,9 @@ def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT, 'w', encoding='utf-8') as handle:
         json.dump(data, handle, indent=1, ensure_ascii=False)
-    for k, v in data.items():
-        print(f'{k}: {len(v)}')
-    with_alt = sum(1 for i in data['images'] if i['alt'])
-    print(f'images with alt: {with_alt}/{len(data["images"])}')
+    for key, value in data.items():
+        print(f'{key}: {len(value)}')
+    print(f'images with alt: {sum(1 for i in data["images"] if i["alt"])}/{len(data["images"])}')
 
 
 if __name__ == '__main__':

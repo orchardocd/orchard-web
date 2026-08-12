@@ -1,6 +1,10 @@
+import { execFile } from 'node:child_process'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { promisify } from 'node:util'
 import sharp from 'sharp'
+
+const run = promisify(execFile)
 
 const ROOT = path.resolve(import.meta.dirname, '../../..')
 const contentPath = path.join(ROOT, 'web/src/seed/content.json')
@@ -33,19 +37,39 @@ async function encodeImage(src, ext) {
   return candidates.reduce((best, c) => (c.buffer.length < best.buffer.length ? c : best))
 }
 
+const seen = new Set()
 let before = 0
 let after = 0
-for (const kind of ['images', 'documents']) {
+for (const kind of ['images', 'documents', 'videos']) {
   for (const item of content[kind]) {
     const src = path.join(ROOT, 'mirror', item.file)
     const stat = await fs.stat(src)
     before += stat.size
     const ext = path.extname(src).toLowerCase()
-    const encoded =
-      kind === 'images' ? await encodeImage(src, ext) : { buffer: await fs.readFile(src), ext }
-    const asset = item.id.replace(/\.[^.]+$/, '') + encoded.ext
+    let encoded
+    if (kind === 'images') {
+      encoded = await encodeImage(src, ext)
+    } else if (kind === 'videos') {
+      const tmp = path.join(dest, '.transcode.mp4')
+      await fs.mkdir(dest, { recursive: true })
+      await run('ffmpeg', ['-y', '-loglevel', 'error', '-i', src, '-vf',
+        "scale='min(960,iw)':-2", '-c:v', 'libx264', '-preset', 'slower', '-crf', '32',
+        '-c:a', 'aac', '-b:a', '80k', '-ac', '1', '-movflags', '+faststart', tmp])
+      encoded = { buffer: await fs.readFile(tmp), ext: '.mp4' }
+      await fs.rm(tmp, { force: true })
+    } else {
+      encoded = { buffer: await fs.readFile(src), ext }
+    }
+    const asset =
+      item.id
+        .replace(/^uploads\//, '')
+        .replace(/\.[^.]+$/, '')
+        .replace(/[^a-zA-Z0-9]+/g, '-')
+        .replace(/^-|-$/g, '') + encoded.ext
     const out = path.join(dest, asset)
     await fs.mkdir(path.dirname(out), { recursive: true })
+    if (seen.has(asset)) throw new Error(`Asset name collision: ${asset}`)
+    seen.add(asset)
     await fs.writeFile(out, encoded.buffer)
     after += encoded.buffer.length
     item.asset = asset

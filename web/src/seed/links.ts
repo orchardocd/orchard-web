@@ -1,4 +1,4 @@
-import type { SeedContent } from './types.js'
+import type { SeedContent } from '@/seed/types'
 
 const SITE = /^https?:\/\/(?:www\.)?orchardocd\.org/i
 

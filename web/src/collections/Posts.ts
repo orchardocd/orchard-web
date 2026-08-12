@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { contentBlocks } from '../blocks/index.js'
-import { seoFields, slugField } from '../fields/slug.js'
+import { contentBlocks } from '@/blocks/index'
+import { seoFields, slugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',

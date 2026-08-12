@@ -7,18 +7,19 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Categories } from './collections/Categories.js'
-import { Documents } from './collections/Documents.js'
-import { Media } from './collections/Media.js'
-import { Pages } from './collections/Pages.js'
-import { People } from './collections/People.js'
-import { Posts } from './collections/Posts.js'
-import { Speakers } from './collections/Speakers.js'
-import { Studies } from './collections/Studies.js'
-import { Users } from './collections/Users.js'
-import { Webinars } from './collections/Webinars.js'
-import { Navigation } from './globals/Navigation.js'
-import { SiteSettings } from './globals/SiteSettings.js'
+import { Categories } from '@/collections/Categories'
+import { Documents } from '@/collections/Documents'
+import { Media } from '@/collections/Media'
+import { Pages } from '@/collections/Pages'
+import { People } from '@/collections/People'
+import { Posts } from '@/collections/Posts'
+import { Speakers } from '@/collections/Speakers'
+import { Studies } from '@/collections/Studies'
+import { Users } from '@/collections/Users'
+import { Videos } from '@/collections/Videos'
+import { Webinars } from '@/collections/Webinars'
+import { Navigation } from '@/globals/Navigation'
+import { SiteSettings } from '@/globals/SiteSettings'
 
 const fromAddress = process.env.EMAIL_FROM_ADDRESS || 'info@orchardocd.org'
 const fromName = process.env.EMAIL_FROM_NAME || 'Orchard OCD'
@@ -43,6 +44,7 @@ export default buildConfig({
     Categories,
     Media,
     Documents,
+    Videos,
     Users,
   ],
   globals: [SiteSettings, Navigation],

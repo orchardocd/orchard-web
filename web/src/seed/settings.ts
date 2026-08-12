@@ -1,7 +1,9 @@
+import type { NavigationData, SiteSettingsData } from '@/seed/types'
+
 export const DONATE_URL = 'https://checkout.justgiving.com/c/2633482'
 export const REGISTRY_URL = 'https://orchardocdregistry.org/'
 
-export const siteSettings = {
+export const siteSettings: SiteSettingsData = {
   announcement: {
     enabled: true,
     text: 'Donate today to help OCD research',
@@ -27,14 +29,14 @@ export const siteSettings = {
   ],
   stats: [
     {
-      value: '2–3%',
+      value: '2% to 3%',
       description:
-        'of people in Western general populations are affected by OCD, one of the most commonly occurring mental health disorders.',
+        'OCD is one of the most commonly occurring mental health disorders. It affects about 2% to 3% of people in Western general populations.',
     },
     {
-      value: 'Top 10',
+      value: 'WHO',
       description:
-        'The World Health Organization has listed OCD among the world’s 10 most debilitating conditions; at its worst it causes severe depression and suicide.',
+        'World Health Organization named OCD as one of the most disabling of all medical disorders.',
     },
   ],
   newsletter: {
@@ -44,7 +46,7 @@ export const siteSettings = {
   },
 }
 
-export const navigation = {
+export const navigation: NavigationData = {
   main: [
     {
       label: 'About OCD',

@@ -20,7 +20,8 @@
     "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)' src tests",
     "ci": "pnpm lint && pnpm typecheck && pnpm dup && pnpm build && pnpm test",
     "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
-    "seed": "node --import tsx/esm --env-file=.env src/seed/index.ts"
+    "seed": "node --import tsx/esm --env-file=.env src/seed/index.ts",
+    "parity": "python3 ../tools/check_parity.py"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",

@@ -3,11 +3,13 @@ import {
   editorConfigFactory,
   type SanitizedServerEditorConfig,
 } from '@payloadcms/richtext-lexical'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error jsdom ships no type declarations
 import { JSDOM } from 'jsdom'
 import type { Payload } from 'payload'
 
-import { rewriteHref, rewriteHtml, type LinkMap } from './links.js'
-import type { ContentBlock, SeedLayoutBlock } from './types.js'
+import { rewriteHref, rewriteHtml, type LinkMap } from '@/seed/links'
+import type { ContentBlock, SeedAssetIds, SeedLayoutBlock } from '@/seed/types'
 
 const PROSE_TYPES = new Set(['paragraph', 'heading', 'list', 'quote'])
 
@@ -49,9 +51,10 @@ export async function createLexicalConverter(payload: Payload) {
 
 export type Converter = Awaited<ReturnType<typeof createLexicalConverter>>
 
+
 export function buildLayout(
   blocks: ContentBlock[],
-  mediaIds: Map<string, number>,
+  assets: SeedAssetIds,
   toLexical: Converter,
   links: LinkMap,
 ): SeedLayoutBlock[] {
@@ -73,15 +76,31 @@ export function buildLayout(
     flush()
     switch (block.type) {
       case 'image': {
-        const image = mediaIds.get(block.image)
+        const image = assets.media.get(block.image)
         if (image !== undefined) {
           layout.push({ blockType: 'imageBlock', image, caption: block.caption })
         }
         break
       }
-      case 'video':
-        layout.push({ blockType: 'videoBlock', url: block.url })
+      case 'video': {
+        const file = block.file ? assets.videos.get(block.file) : undefined
+        if (block.url || file !== undefined) {
+          layout.push({
+            blockType: 'videoBlock',
+            url: block.url,
+            file,
+            poster: block.poster ? assets.media.get(block.poster) : undefined,
+          })
+        }
         break
+      }
+      case 'document': {
+        const document = assets.documents.get(block.document)
+        if (document !== undefined) {
+          layout.push({ blockType: 'documentBlock', document })
+        }
+        break
+      }
       case 'button':
         layout.push({
           blockType: 'buttonBlock',

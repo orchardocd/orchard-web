@@ -22,8 +22,24 @@ export const VideoBlock: Block = {
   interfaceName: 'VideoBlock',
   labels: { singular: 'Video', plural: 'Videos' },
   fields: [
-    { name: 'url', type: 'text', required: true },
+    {
+      name: 'url',
+      type: 'text',
+      admin: { description: 'YouTube or Vimeo URL. Leave empty when using an uploaded file.' },
+    },
+    { name: 'file', type: 'upload', relationTo: 'videos' },
+    { name: 'poster', type: 'upload', relationTo: 'media' },
     { name: 'title', type: 'text' },
+  ],
+}
+
+export const DocumentBlock: Block = {
+  slug: 'documentBlock',
+  interfaceName: 'DocumentBlock',
+  labels: { singular: 'Document', plural: 'Documents' },
+  fields: [
+    { name: 'document', type: 'upload', relationTo: 'documents', required: true },
+    { name: 'label', type: 'text' },
   ],
 }
 
@@ -98,6 +114,7 @@ export const AccordionBlock: Block = {
 
 export const contentBlocks: Block[] = [
   RichTextBlock,
+  DocumentBlock,
   ImageBlock,
   VideoBlock,
   ButtonBlock,

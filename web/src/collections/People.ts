@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { contentBlocks } from '../blocks/index.js'
-import { slugField } from '../fields/slug.js'
+import { contentBlocks } from '@/blocks/index'
+import { slugField } from '@/fields/slug'
 
 export const People: CollectionConfig = {
   slug: 'people',
@@ -31,6 +31,7 @@ export const People: CollectionConfig = {
     },
     { name: 'order', type: 'number', defaultValue: 0, admin: { position: 'sidebar' } },
     { name: 'role', type: 'text' },
+    { name: 'website', type: 'text' },
     { name: 'photo', type: 'upload', relationTo: 'media' },
     { name: 'excerpt', type: 'textarea' },
     {

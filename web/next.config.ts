@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['workstation'],
+  allowedDevOrigins: ['workstation', 'workstation:3000', 'localhost', 'localhost:3000'],
   images: {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

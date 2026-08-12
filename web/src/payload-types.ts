@@ -76,6 +76,7 @@ export interface Config {
     categories: Category;
     media: Media;
     documents: Document;
+    videos: Video;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -93,6 +94,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -157,14 +159,32 @@ export interface Page {
   hero?:
     | {
         title: string;
-        subtitle?: string | null;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
         ctaLabel?: string | null;
         ctaHref?: string | null;
         image?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
-  layout?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  layout?:
+    | (
+        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
+      )[]
+    | null;
   meta?: {
     description?: string | null;
     image?: (number | null) | Media;
@@ -247,6 +267,36 @@ export interface RichTextBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DocumentBlock".
+ */
+export interface DocumentBlock {
+  document: number | Document;
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'documentBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageBlock".
  */
 export interface ImageBlock {
@@ -261,11 +311,35 @@ export interface ImageBlock {
  * via the `definition` "VideoBlock".
  */
 export interface VideoBlock {
-  url: string;
+  /**
+   * YouTube or Vimeo URL. Leave empty when using an uploaded file.
+   */
+  url?: string | null;
+  file?: (number | null) | Video;
+  poster?: (number | null) | Media;
   title?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'videoBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -351,7 +425,11 @@ export interface Post {
   categories?: (number | Category)[] | null;
   excerpt?: string | null;
   featuredImage?: (number | null) | Media;
-  layout?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  layout?:
+    | (
+        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
+      )[]
+    | null;
   meta?: {
     description?: string | null;
     image?: (number | null) | Media;
@@ -389,7 +467,11 @@ export interface Study {
   publishedAt: string;
   excerpt?: string | null;
   featuredImage?: (number | null) | Media;
-  layout?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  layout?:
+    | (
+        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
+      )[]
+    | null;
   meta?: {
     description?: string | null;
     image?: (number | null) | Media;
@@ -413,6 +495,7 @@ export interface Webinar {
    */
   url: string;
   description?: string | null;
+  image?: (number | null) | Media;
   order?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -431,9 +514,14 @@ export interface Person {
   group: 'trustees' | 'team' | 'scientific-advisory-board' | 'ambassadors' | 'partners';
   order?: number | null;
   role?: string | null;
+  website?: string | null;
   photo?: (number | null) | Media;
   excerpt?: string | null;
-  bio?: (RichTextBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock)[] | null;
+  bio?:
+    | (
+        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -455,25 +543,6 @@ export interface Speaker {
   order?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "documents".
- */
-export interface Document {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -561,6 +630,10 @@ export interface PayloadLockedDocument {
         value: number | Document;
       } | null)
     | ({
+        relationTo: 'videos';
+        value: number | Video;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null);
@@ -618,7 +691,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
-        subtitle?: T;
+        content?: T;
         ctaLabel?: T;
         ctaHref?: T;
         image?: T;
@@ -628,6 +701,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         richText?: T | RichTextBlockSelect<T>;
+        documentBlock?: T | DocumentBlockSelect<T>;
         imageBlock?: T | ImageBlockSelect<T>;
         videoBlock?: T | VideoBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
@@ -655,6 +729,16 @@ export interface RichTextBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DocumentBlock_select".
+ */
+export interface DocumentBlockSelect<T extends boolean = true> {
+  document?: T;
+  label?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ImageBlock_select".
  */
 export interface ImageBlockSelect<T extends boolean = true> {
@@ -669,6 +753,8 @@ export interface ImageBlockSelect<T extends boolean = true> {
  */
 export interface VideoBlockSelect<T extends boolean = true> {
   url?: T;
+  file?: T;
+  poster?: T;
   title?: T;
   id?: T;
   blockName?: T;
@@ -745,6 +831,7 @@ export interface PostsSelect<T extends boolean = true> {
     | T
     | {
         richText?: T | RichTextBlockSelect<T>;
+        documentBlock?: T | DocumentBlockSelect<T>;
         imageBlock?: T | ImageBlockSelect<T>;
         videoBlock?: T | VideoBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
@@ -775,6 +862,7 @@ export interface StudiesSelect<T extends boolean = true> {
     | T
     | {
         richText?: T | RichTextBlockSelect<T>;
+        documentBlock?: T | DocumentBlockSelect<T>;
         imageBlock?: T | ImageBlockSelect<T>;
         videoBlock?: T | VideoBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
@@ -800,6 +888,7 @@ export interface WebinarsSelect<T extends boolean = true> {
   slug?: T;
   url?: T;
   description?: T;
+  image?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -814,12 +903,14 @@ export interface PeopleSelect<T extends boolean = true> {
   group?: T;
   order?: T;
   role?: T;
+  website?: T;
   photo?: T;
   excerpt?: T;
   bio?:
     | T
     | {
         richText?: T | RichTextBlockSelect<T>;
+        documentBlock?: T | DocumentBlockSelect<T>;
         imageBlock?: T | ImageBlockSelect<T>;
         videoBlock?: T | VideoBlockSelect<T>;
         buttonBlock?: T | ButtonBlockSelect<T>;
@@ -911,6 +1002,24 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "documents_select".
  */
 export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
   title?: T;
   updatedAt?: T;
   createdAt?: T;

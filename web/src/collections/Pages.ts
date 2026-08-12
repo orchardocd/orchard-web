@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { contentBlocks } from '../blocks/index.js'
-import { seoFields, slugField } from '../fields/slug.js'
+import { contentBlocks } from '@/blocks/index'
+import { seoFields, slugField } from '@/fields/slug'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -27,7 +27,7 @@ export const Pages: CollectionConfig = {
       labels: { singular: 'Hero slide', plural: 'Hero slides' },
       fields: [
         { name: 'title', type: 'text', required: true },
-        { name: 'subtitle', type: 'text' },
+        { name: 'content', type: 'richText' },
         { name: 'ctaLabel', type: 'text' },
         { name: 'ctaHref', type: 'text' },
         { name: 'image', type: 'upload', relationTo: 'media' },

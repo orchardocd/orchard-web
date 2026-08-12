@@ -1,4 +1,9 @@
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+import type { Page, Person, SiteSetting, Navigation } from '@/payload-types'
+
+export type PayloadLayout = NonNullable<Page['layout']>
+export type PersonGroup = Person['group']
+export type SiteSettingsData = Omit<SiteSetting, 'id' | 'createdAt' | 'updatedAt'>
+export type NavigationData = Omit<Navigation, 'id' | 'createdAt' | 'updatedAt'>
 
 export type ContentBlock =
   | { type: 'paragraph'; html: string }
@@ -6,20 +11,14 @@ export type ContentBlock =
   | { type: 'list'; ordered: boolean; items: string[] }
   | { type: 'quote'; html: string; cite?: string }
   | { type: 'image'; image: string; caption?: string; href?: string }
-  | { type: 'video'; url: string }
+  | { type: 'video'; url?: string; file?: string; poster?: string }
+  | { type: 'document'; document: string }
   | { type: 'button'; label: string; href: string }
   | { type: 'embed'; url: string }
   | { type: 'table'; rows: string[][] }
   | { type: 'accordion-item'; title: string; blocks: ContentBlock[] }
 
-export type SeedLayoutBlock =
-  | { blockType: 'richText'; content: SerializedEditorState }
-  | { blockType: 'imageBlock'; image: number; caption?: string }
-  | { blockType: 'videoBlock'; url: string; title?: string }
-  | { blockType: 'buttonBlock'; label: string; href: string; variant: string }
-  | { blockType: 'embedBlock'; url: string }
-  | { blockType: 'tableBlock'; rows: { cells: { value: string }[] }[] }
-  | { blockType: 'accordionBlock'; items: { title: string; content: SerializedEditorState }[] }
+export type SeedLayoutBlock = PayloadLayout[number]
 
 export type SeedAsset = {
   id: string
@@ -65,6 +64,12 @@ export type SeedStudy = {
   blocks: ContentBlock[]
 }
 
+export type SeedAssetIds = {
+  media: Map<string, number>
+  documents: Map<string, number>
+  videos: Map<string, number>
+}
+
 export type SeedResearchSlide = {
   slug: string
   title: string
@@ -93,6 +98,7 @@ export type SeedPerson = {
 export type SeedWebinar = {
   title: string
   url: string
+  image: string | null
 }
 
 export type SeedContent = {
@@ -106,4 +112,5 @@ export type SeedContent = {
   conferenceSpeakers: { name: string; page: string }[]
   images: SeedAsset[]
   documents: SeedAsset[]
+  videos: SeedAsset[]
 }

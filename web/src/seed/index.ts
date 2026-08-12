@@ -4,16 +4,16 @@ import { fileURLToPath } from 'node:url'
 import type { Payload } from 'payload'
 import { getPayload } from 'payload'
 
-import config from '../payload.config.js'
-import { buildLayout, createLexicalConverter } from './blocks.js'
-import { buildLinkMap, rewriteHref } from './links.js'
-import { navigation, siteSettings } from './settings.js'
-import type { SeedContent } from './types.js'
+import config from '@/payload.config'
+import { buildLayout, createLexicalConverter } from '@/seed/blocks'
+import { buildLinkMap, rewriteHref, rewriteHtml } from '@/seed/links'
+import { navigation, siteSettings } from '@/seed/settings'
+import type { PersonGroup, SeedContent } from '@/seed/types'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const assetsDir = path.join(dirname, 'assets')
 
-const GROUP_SLUGS: Record<string, string> = {
+const GROUP_SLUGS: Record<string, PersonGroup> = {
   'Our Team': 'team',
   'Scientific Advisory Board': 'scientific-advisory-board',
   'Our Supporters': 'partners',
@@ -30,7 +30,44 @@ const COLLECTIONS = [
   'categories',
   'media',
   'documents',
+  'videos',
 ] as const
+
+function assetPath(asset: { id: string; asset?: string }): string {
+  if (!asset.asset) {
+    throw new Error(
+      `Asset ${asset.id} has no optimized file. Run "pnpm content" before seeding.`,
+    )
+  }
+  return path.join(assetsDir, asset.asset)
+}
+
+function excerptFrom(blocks: SeedContent['posts'][number]['blocks'], limit = 220): string {
+  for (const block of blocks) {
+    if (block.type !== 'paragraph') continue
+    const text = block.html
+      .replace(/<br\s*\/?>/g, ' ')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/\s+/g, ' ')
+      .trim()
+    if (text.length < 40) continue
+    if (text.length <= limit) return text
+    const cut = text.slice(0, limit)
+    const stop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '))
+    return stop > 60 ? cut.slice(0, stop + 1) : `${cut.trimEnd()}…`
+  }
+  return ''
+}
+
+function firstImage(blocks: SeedContent['posts'][number]['blocks']): string | undefined {
+  for (const block of blocks) {
+    if (block.type === 'image') return block.image
+  }
+  return undefined
+}
 
 function titleFromFilename(id: string): string {
   const base = path.basename(id, path.extname(id))
@@ -46,9 +83,10 @@ async function wipe(payload: Payload) {
 async function seedAssets(payload: Payload, content: SeedContent) {
   const mediaIds = new Map<string, number>()
   const documentIds = new Map<string, number>()
+  const videoIds = new Map<string, number>()
 
   for (const image of content.images) {
-    const filePath = path.join(assetsDir, image.asset)
+    const filePath = assetPath(image)
     const created = await payload.create({
       collection: 'media',
       data: { alt: image.alt?.trim() || titleFromFilename(image.id) },
@@ -58,7 +96,7 @@ async function seedAssets(payload: Payload, content: SeedContent) {
   }
 
   for (const doc of content.documents) {
-    const filePath = path.join(assetsDir, doc.asset)
+    const filePath = assetPath(doc)
     const created = await payload.create({
       collection: 'documents',
       data: { title: titleFromFilename(doc.id) },
@@ -67,7 +105,17 @@ async function seedAssets(payload: Payload, content: SeedContent) {
     documentIds.set(doc.id, created.id as number)
   }
 
-  return { mediaIds, documentIds }
+  for (const video of content.videos) {
+    const filePath = assetPath(video)
+    const created = await payload.create({
+      collection: 'videos',
+      data: { title: titleFromFilename(video.id) },
+      filePath,
+    })
+    videoIds.set(video.id, created.id as number)
+  }
+
+  return { mediaIds, documentIds, videoIds }
 }
 
 async function seedCategories(payload: Payload, content: SeedContent) {
@@ -110,13 +158,15 @@ export async function seed(payload: Payload) {
   await wipe(payload)
 
   payload.logger.info(
-    `Uploading ${content.images.length} images and ${content.documents.length} documents`,
+    `Uploading ${content.images.length} images, ${content.documents.length} documents, ` +
+      `${content.videos.length} videos`,
   )
-  const { mediaIds } = await seedAssets(payload, content)
+  const { mediaIds, documentIds, videoIds } = await seedAssets(payload, content)
   const categoryIds = await seedCategories(payload, content)
 
+  const assets = { media: mediaIds, documents: documentIds, videos: videoIds }
   const layoutOf = (blocks: SeedContent['pages'][number]['blocks']) =>
-    buildLayout(blocks, mediaIds, toLexical, links)
+    buildLayout(blocks, assets, toLexical, links)
 
   payload.logger.info(`Creating ${content.pages.length} pages`)
   for (const page of content.pages) {
@@ -127,7 +177,9 @@ export async function seed(payload: Payload) {
         slug: page.slug,
         hero: page.hero.map((slide) => ({
           title: slide.title,
-          subtitle: slide.body.join(' ') || undefined,
+          content: slide.body.length
+            ? toLexical(rewriteHtml(slide.body.map((html) => `<p>${html}</p>`).join(''), links))
+            : undefined,
           ctaLabel: slide.links[0]?.label,
           ctaHref: slide.links[0] ? rewriteHref(slide.links[0].href, links) : undefined,
           image: slide.image ? mediaIds.get(slide.image) : undefined,
@@ -154,8 +206,8 @@ export async function seed(payload: Payload) {
         categories: post.categories
           .map((name) => categoryIds.get(name))
           .filter((id): id is number => id !== undefined),
-        excerpt: post.description,
-        featuredImage: post.featuredImage ? mediaIds.get(post.featuredImage) : undefined,
+        excerpt: excerptFrom(post.blocks),
+        featuredImage: mediaIds.get(post.featuredImage ?? firstImage(post.blocks) ?? ''),
         layout: layoutOf(post.blocks),
         meta: { description: post.description },
         },
@@ -173,8 +225,8 @@ export async function seed(payload: Payload) {
         title: study.title,
         slug: study.slug,
         publishedAt: study.date,
-        excerpt: study.description,
-        featuredImage: study.featuredImage ? mediaIds.get(study.featuredImage) : undefined,
+        excerpt: excerptFrom(study.blocks),
+        featuredImage: mediaIds.get(study.featuredImage ?? firstImage(study.blocks) ?? ''),
         layout: layoutOf(study.blocks),
         meta: { description: study.description },
       },
@@ -189,6 +241,7 @@ export async function seed(payload: Payload) {
         title: webinar.title,
         slug: `webinar-${index + 1}`,
         url: webinar.url,
+        image: webinar.image ? mediaIds.get(webinar.image) : undefined,
         order: index,
       },
     })
@@ -204,6 +257,7 @@ export async function seed(payload: Payload) {
         group: GROUP_SLUGS[person.group ?? ''] ?? 'team',
         order: person.order,
         photo: person.photo ? mediaIds.get(person.photo) : undefined,
+        website: person.website ?? undefined,
         excerpt: person.excerpt,
         bio: layoutOf(person.bio),
       },
