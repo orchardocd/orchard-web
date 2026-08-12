@@ -28,7 +28,9 @@ export default async function DynamicPage({ params }: SlugParams) {
       <Container className="py-14">
         <RenderBlocks blocks={page.layout} />
       </Container>
-      {slug === 'about-orchard' ? <PeopleSections /> : null}
+      {slug === 'about-orchard' ? (
+        <PeopleSections only={['team', 'scientific-advisory-board', 'partners', 'ambassadors']} />
+      ) : null}
       {slug === 'about' ? <PeopleSections only={['college']} /> : null}
       {slug === 'participate-research' ? <StudyList /> : null}
       {slug === 'webinars' ? <WebinarList /> : null}
