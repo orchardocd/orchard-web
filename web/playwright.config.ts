@@ -29,7 +29,8 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      // GitHub runners ship Google Chrome; downloading a browser there stalls.
+      use: { ...devices['Desktop Chrome'], channel: process.env.CI ? 'chrome' : undefined },
     },
   ],
   webServer: {
