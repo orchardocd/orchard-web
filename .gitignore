@@ -3,3 +3,7 @@ mirror/
 node_modules/
 web/web.db
 web/media/
+web/documents/
+web/videos/
+web/test-results/
+web/playwright-report/
