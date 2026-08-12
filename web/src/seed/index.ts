@@ -345,6 +345,7 @@ export async function seed(payload: Payload) {
         goalsTitle: home.about.goalsTitle,
         goalsIntro: stripMarkup(home.about.goalsIntro),
         goals: home.about.goals.map((goal) => ({ text: stripMarkup(goal) })),
+        goalsImage: media(home.about.goalsImage),
         ctaHeading: text(home.about.ctaHeading),
         ctaLabel: text(home.about.ctaLabel),
         ctaHref: home.about.ctaHref ? rewriteHref(home.about.ctaHref, links) : undefined,
@@ -358,6 +359,7 @@ export async function seed(payload: Payload) {
         ctaHref: home.participate.ctaHref
           ? rewriteHref(home.participate.ctaHref, links)
           : undefined,
+        images: images(home.participate.images),
       },
       social: {
         heading: home.social.heading,
@@ -375,6 +377,7 @@ export async function seed(payload: Payload) {
           : undefined,
       },
       blog: { heading: home.blog.heading, images: images(home.blog.images) },
+      newsletter: { images: images(home.newsletter.images) },
       webinar: {
         title: text(home.webinar.title),
         image: media(home.webinar.image),

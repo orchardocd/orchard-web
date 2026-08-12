@@ -50,9 +50,11 @@ directions:
 
 - every text unit the old page rendered is present on the new page, down to headings and
   button labels (the floor is 12 characters, so only single words are exempt);
-- every illustration the old page used is present on the new page, sits nearest the same
-  heading it sat nearest to before (resolved by ARIA role, so a card's own title wins over
-  the previous card's), and is never rendered twice on one page;
+- every illustration the old page used is present on the new page, sits under the same
+  heading it sat under before, and is never rendered twice on one page. Headings are
+  resolved by ARIA role, and structurally: a card's own title, which sits below its
+  picture, wins over the heading further above. `pnpm parity --self-test` states those
+  rules as executable examples;
 - no copy exists on the new site that appears nowhere on the old site.
 
 Copy that is genuinely new (UI wording such as "Skip to main content") lives in an

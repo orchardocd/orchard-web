@@ -143,13 +143,20 @@ def heading_text(element) -> str:
     return '' if text == 'add your heading text here' else text
 
 
-def heading_order(html: str, scope_selector: str | None) -> list[str]:
-    """Every heading on a page, in the order it appears."""
+def heading_outline(html: str, scope_selector: str | None) -> list[tuple[int, str]]:
+    """The page's headings with their rank, in the order they appear."""
     soup = BeautifulSoup(html, 'html.parser')
     strip_chrome(soup)
     scope = soup.select_one(scope_selector) if scope_selector else None
     scope = scope or soup.body or soup
-    return [text for text in (heading_text(node) for node in scope.find_all(True)) if text]
+    outline = []
+    for node in scope.find_all(True):
+        text = heading_text(node)
+        if not text:
+            continue
+        level = int(node.name[1]) if node.name in HEADINGS else int(node.get('aria-level') or 2)
+        outline.append((level, text))
+    return outline
 
 
 def image_sections(html: str, scope_selector: str | None, side: str = 'old') -> dict[str, str]:
@@ -166,6 +173,10 @@ def image_sections(html: str, scope_selector: str | None, side: str = 'old') -> 
     order = list(scope.find_all(True))
     positions = {id(element): index for index, element in enumerate(order)}
 
+    first_heading = next(
+        (positions[id(node)] for node in order if heading_text(node)),
+        None,
+    )
     sections: dict[str, str] = {}
     leads: set[str] = set()
     for element in order:
@@ -183,11 +194,14 @@ def image_sections(html: str, scope_selector: str | None, side: str = 'old') -> 
                 if id(node) in positions and heading_text(node)
             ]
             if headings:
-                above = [h for h in headings if h[0] < here]
+                above = [entry for entry in headings if entry[0] < here]
+                # Prose puts the heading before the illustration; a card puts its title
+                # after it, and then the card's own title is the nearest heading there is.
                 chosen = max(above) if above else min(headings)
                 sections[stem.lower()] = chosen[1]
-                if not above:
-                    # No heading above it: this illustration opens its section.
+                if first_heading is not None and here < first_heading:
+                    # No heading precedes it anywhere: it opens the page rather than a
+                    # section, so the rebuild is free to title it.
                     leads.add(stem.lower())
                 break
             ancestor = ancestor.parent if ancestor is not scope else None
@@ -422,26 +436,30 @@ def check_route(route: dict, base: str, expectation: dict | None = None) -> dict
     expected_sections = expectation.get('imageSections', {})
     actual_sections = image_sections(rendered, 'main', side='new')
     leads = set(expected_sections.get('__leads__', '').split())
-    headings = heading_order(rendered, 'main')
+    outline = heading_outline(rendered, 'main')
 
-    def moved(stem: str) -> bool:
-        was, now = expected_sections[stem], actual_sections[stem]
-        if was == now:
-            return False
-        # The old heading may be a card title the rebuild renders from a collection; naming
-        # the section that contains that card is a coarser answer, not a wrong one.
-        if was in headings and now in headings and headings.index(was) > headings.index(now):
-            return False
-        return True
+    def nested_under(inner: str, section: str) -> bool:
+        """The old page's heading is a subheading of the section the rebuild names, so
+        naming the section is a coarser answer rather than a different place."""
+        starts = [index for index, (_, text) in enumerate(outline) if text == section]
+        for start in starts:
+            level = outline[start][0]
+            for following_level, text in outline[start + 1 :]:
+                if following_level <= level:
+                    break
+                if text == inner:
+                    return True
+        return False
 
     misplaced = sorted(
         f'{stem}: was under "{expected_sections[stem]}", now under "{actual_sections[stem]}"'
         for stem in expected_sections
         if stem != '__leads__'
         and stem in actual_sections
-        # An illustration that opened its section on the old page has no heading to keep.
+        # A picture that merely opened the old page has no heading to keep.
         and stem not in leads
-        and moved(stem)
+        and expected_sections[stem] != actual_sections[stem]
+        and not nested_under(expected_sections[stem], actual_sections[stem])
     )
 
 
@@ -469,12 +487,49 @@ def route_id(route: dict) -> dict:
     return {'kind': route['kind'], 'slug': route['slug'], 'route': route['route']}
 
 
+SELF_TEST = """
+<div>
+  <h2>Section</h2>
+  <div><img src="/wp-content/uploads/2022/01/lead.png"></div>
+  <p>Body copy.</p>
+  <div>
+    <div><img src="/wp-content/uploads/2022/01/card.png"></div>
+    <div><h4>Card title</h4></div>
+  </div>
+  <h2>Next section</h2>
+  <p>More copy.</p>
+</div>
+"""
+
+
+def self_test() -> int:
+    """The rules the section check has to get right, spelled out."""
+    raw = image_sections(SELF_TEST, None)
+    sections = {key.rsplit('/', 1)[-1].split('.')[0]: value for key, value in raw.items()}
+    checks = [
+        # A picture with no title of its own belongs to the heading above it.
+        ('lead', 'section'),
+        # A picture whose title follows it inside the same card belongs to that title.
+        ('card', 'card title'),
+    ]
+    failures = [
+        f'{stem}: expected "{expected}", got "{sections.get(stem)}"'
+        for stem, expected in checks
+        if sections.get(stem) != expected
+    ]
+    for failure in failures:
+        print(f'self test failed: {failure}')
+    print('self test: ' + ('failed' if failures else 'passed'))
+    return 1 if failures else 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--base', default='http://localhost:3000')
     parser.add_argument('--json', type=Path)
     parser.add_argument('--only', help='Substring filter on slug')
     parser.add_argument('--quiet', action='store_true')
+    parser.add_argument('--self-test', action='store_true', help='Check the section rules')
     parser.add_argument(
         '--emit-expectations',
         type=Path,
@@ -488,6 +543,9 @@ def main() -> int:
     args = parser.parse_args()
 
     global _corpus
+
+    if args.self_test:
+        return self_test()
 
     if args.emit_expectations:
         payload = {

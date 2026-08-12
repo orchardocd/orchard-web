@@ -1137,6 +1137,7 @@ export interface HomePage {
         }[]
       | null;
     goalsTitle?: string | null;
+    goalsImage?: (number | null) | Media;
     goalsIntro?: string | null;
     goals?:
       | {
@@ -1163,6 +1164,12 @@ export interface HomePage {
     body?: string | null;
     ctaLabel?: string | null;
     ctaHref?: string | null;
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
   };
   social?: {
     heading?: string | null;
@@ -1189,6 +1196,14 @@ export interface HomePage {
   };
   blog?: {
     heading?: string | null;
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  newsletter?: {
     images?:
       | {
           image: number | Media;
@@ -1315,6 +1330,7 @@ export interface HomePageSelect<T extends boolean = true> {
               id?: T;
             };
         goalsTitle?: T;
+        goalsImage?: T;
         goalsIntro?: T;
         goals?:
           | T
@@ -1345,6 +1361,12 @@ export interface HomePageSelect<T extends boolean = true> {
         body?: T;
         ctaLabel?: T;
         ctaHref?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
       };
   social?:
     | T
@@ -1377,6 +1399,16 @@ export interface HomePageSelect<T extends boolean = true> {
     | T
     | {
         heading?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  newsletter?:
+    | T
+    | {
         images?:
           | T
           | {

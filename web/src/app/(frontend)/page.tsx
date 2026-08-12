@@ -107,6 +107,9 @@ export default async function HomePage() {
               </div>
             ))}
             <div className="rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]">
+              {about.goalsImage ? (
+                <MediaImage media={about.goalsImage} className="mb-5 h-16 w-auto" sizes="64px" />
+              ) : null}
               <h3 className="mb-3 text-xl font-bold text-brand-link">{about.goalsTitle}</h3>
               <p className="mb-2 text-base leading-relaxed text-body">{about.goalsIntro}</p>
               <ol className="list-decimal pl-5 text-base leading-relaxed text-body">
@@ -149,10 +152,11 @@ export default async function HomePage() {
               {participate?.body}
             </p>
             {participate?.ctaHref && participate?.ctaLabel ? (
-              <ButtonLink href={participate?.ctaHref} className="mt-7">
-                {participate?.ctaLabel}
+              <ButtonLink href={participate.ctaHref} className="mt-7">
+                {participate.ctaLabel}
               </ButtonLink>
             ) : null}
+            <Illustrations items={participate?.images} className="mt-8" size="h-20" />
           </div>
           <div className="rounded-lg bg-mist p-8">
             <h2 className="text-2xl font-bold text-brand-link">{social?.heading}</h2>
@@ -243,6 +247,7 @@ export default async function HomePage() {
             <p className="mt-4 leading-relaxed text-pretty text-white/92">
               {settings.newsletter?.body}
             </p>
+            <Illustrations items={home.newsletter?.images} className="mt-8" size="h-20" />
           </div>
           <ButtonLink
             href={settings.newsletter?.signupUrl || '/join-our-mailing-list'}

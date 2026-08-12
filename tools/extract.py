@@ -632,6 +632,62 @@ def register_embedded_assets(markup):
         register_image(url)
 
 
+HEADING_TAGS = ('h1', 'h2', 'h3', 'h4', 'h5', 'h6')
+
+
+def is_heading_tag(element):
+    return element.name in HEADING_TAGS or (element.get('role') or '').lower() == 'heading'
+
+
+def headings_below_image(root):
+    """Images whose own title follows them, the way an Elementor card is built."""
+    order = list(root.find_all(True))
+    positions = {id(element): index for index, element in enumerate(order)}
+    below = set()
+    seen = set()
+    for element in order:
+        if element.name != 'img':
+            continue
+        key = local_upload_path(strip_size_suffix((element.get('src') or '').split('?')[0]))
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        here = positions[id(element)]
+        ancestor = element.parent
+        while ancestor is not None:
+            headings = [
+                positions[id(node)]
+                for node in ancestor.find_all(True)
+                if id(node) in positions
+                and is_heading_tag(node)
+                and node.get_text(' ', strip=True)
+            ]
+            if headings:
+                if not any(position < here for position in headings):
+                    below.add(key)
+                break
+            ancestor = ancestor.parent if ancestor is not root else None
+    return below
+
+
+def attach_images_to_their_heading(blocks, titled_below):
+    """A card names its picture with the title underneath it, so emit that title first."""
+    result = list(blocks)
+    index = 0
+    while index < len(result) - 1:
+        current, following = result[index], result[index + 1]
+        if (
+            current['type'] == 'image'
+            and following['type'] == 'heading'
+            and current['image'] in titled_below
+        ):
+            result[index], result[index + 1] = following, current
+            index += 2
+            continue
+        index += 1
+    return result
+
+
 def dedupe(blocks):
     """Drop the collapsed teaser Elementor renders directly before each modal body."""
     result = []
@@ -653,14 +709,16 @@ def dedupe(blocks):
     return result
 
 
-def elementor_blocks(markup):
+def elementor_blocks(markup, titled_below=None):
     register_embedded_assets(markup)
     soup = soup_of(markup)
     root = soup.find(attrs={'data-elementor-type': True}) or soup
     strip_chrome(root)
     blocks = flipbook_documents(markup)
     blocks.extend(para_blocks(root))
-    return dedupe(blocks)
+    if titled_below is None:
+        titled_below = headings_below_image(root)
+    return attach_images_to_their_heading(dedupe(blocks), titled_below)
 
 
 MEDIA = {}
@@ -788,7 +846,12 @@ def extract_pages():
         slug = page['slug']
         if slug in UTILITY_SLUGS or page.get('status') != 'publish':
             continue
-        blocks = elementor_blocks(page['content']['rendered'])
+        # The rendered page is the source of truth for how cards are laid out.
+        rendered = SITE / 'index.html' if slug == 'home' else SITE / slug / 'index.html'
+        titled_below = (
+            headings_below_image(strip_chrome(read_soup(rendered))) if rendered.exists() else None
+        )
+        blocks = elementor_blocks(page['content']['rendered'], titled_below)
         pages.append({
             'slug': slug,
             'title': strip_tags(page['title']['rendered']),
@@ -1101,9 +1164,42 @@ def images_in(blocks):
     return [block['image'] for block in blocks if block['type'] == 'image']
 
 
+def image_headings(root):
+    """Which heading each illustration sits under on the rendered old page."""
+    order = list(root.find_all(True))
+    positions = {id(element): index for index, element in enumerate(order)}
+    associations = {}
+    for element in order:
+        if element.name != 'img':
+            continue
+        key = local_upload_path(strip_size_suffix((element.get('src') or '').split('?')[0]))
+        if not key or key in associations:
+            continue
+        here = positions[id(element)]
+        ancestor = element.parent
+        while ancestor is not None:
+            headings = [
+                (positions[id(node)], clean_text(node.get_text(' ', strip=True)))
+                for node in ancestor.find_all(True)
+                if id(node) in positions and is_heading_tag(node) and node.get_text(strip=True)
+            ]
+            if headings:
+                above = [entry for entry in headings if entry[0] < here]
+                associations[key] = (max(above) if above else min(headings))[1]
+                break
+            ancestor = ancestor.parent if ancestor is not root else None
+    return associations
+
+
 def extract_home(page):
     """The landing page as semantic fields, so the rebuild owns its presentation."""
     blocks = page['blocks']
+    associations = image_headings(strip_chrome(read_soup(SITE / 'index.html')))
+
+    def artwork(heading):
+        """The illustrations the old page showed under a heading."""
+        wanted = heading.strip().lower()
+        return [key for key, value in associations.items() if value.strip().lower() == wanted]
     headings = [b['text'].strip().lower() for b in blocks if b['type'] == 'heading']
     stops = set(headings)
 
@@ -1115,7 +1211,11 @@ def extract_home(page):
     for title in ('Our Vision', 'Our Mission'):
         body = paragraphs(section(title))
         if body:
-            pillars.append({'title': title, 'body': body[0], 'image': first(section(title), 'image', 'image')})
+            pillars.append({
+                'title': title,
+                'body': body[0],
+                'image': (artwork(title) or [None])[0],
+            })
 
     goals_blocks = section('Our Goals')
     goals_text = paragraphs(goals_blocks)
@@ -1138,6 +1238,7 @@ def extract_home(page):
             proposals_body = [proposals_quote[: emphasised.start()].strip()]
             proposals_quote = emphasised.group(1)
 
+    poster = first(blocks, 'video', 'poster')
     hero = next((s for s in page['hero'] if 'develop better treatments' in s['title']), page['hero'][0])
     highlights = [s for s in page['hero'] if s is not hero]
     webinar = next((s for s in page['hero'] if s['title'].lower().startswith('our latest webinar')), None)
@@ -1164,11 +1265,13 @@ def extract_home(page):
             'heading': 'About Orchard OCD',
             'intro': (paragraphs(about) or [''])[0],
             'image': first(about, 'image', 'image'),
-            'ctaImages': images_in(learn),
+            # The video's own poster is shown with the video, not as section artwork.
+            'ctaImages': [key for key in artwork('Learn About Orchard OCD') if key != poster],
             'pillars': pillars,
             'goalsTitle': 'Our Goals',
             'goalsIntro': goals_intro,
             'goals': goal_items,
+            'goalsImage': (artwork('Our Goals') or [None])[0],
             'ctaLabel': first(learn, 'button', 'label'),
             'ctaHref': first(learn, 'button', 'href'),
             'ctaHeading': 'Learn About Orchard OCD',
@@ -1180,14 +1283,14 @@ def extract_home(page):
         'participate': {
             'heading': 'Want To Participate In Brand New OCD Research?',
             'body': (paragraphs(participate) or [''])[0],
-            'images': images_in(participate),
+            'images': artwork('Want To Participate In Brand New OCD Research?'),
             'ctaLabel': first(participate, 'button', 'label'),
             'ctaHref': first(participate, 'button', 'href'),
         },
         'social': {
             'heading': 'Follow Us On Social Media',
             'body': (paragraphs(social) or [''])[0],
-            'images': images_in(social),
+            'images': artwork('Follow Us On Social Media'),
         },
         'proposals': {
             'heading': 'Call For Proposals 2022',
@@ -1195,12 +1298,13 @@ def extract_home(page):
             'quote': proposals_quote,
             'ctaLabel': first(proposals, 'button', 'label'),
             'ctaHref': first(proposals, 'button', 'href'),
-            'image': first(proposals, 'image', 'image'),
+            'image': (artwork('Call For Proposals 2022') or [None])[0],
         },
         'blog': {
             'heading': 'From The Blog',
-            'images': images_in(section('From The Blog')),
+            'images': artwork('From The Blog'),
         },
+        'newsletter': {'images': artwork('Subscribe to our Newsletter')},
         'webinar': {
             'title': webinar['title'] if webinar else None,
             'image': webinar.get('image') if webinar else None,

@@ -69,6 +69,7 @@ export const HomePage: GlobalConfig = {
                   ],
                 },
                 { name: 'goalsTitle', type: 'text' },
+                { name: 'goalsImage', type: 'upload', relationTo: 'media' },
                 { name: 'goalsIntro', type: 'text' },
                 {
                   name: 'goals',
@@ -96,7 +97,7 @@ export const HomePage: GlobalConfig = {
             {
               name: 'participate',
               type: 'group',
-              fields: [...headingAndBody, ...ctaFields],
+              fields: [...headingAndBody, ...ctaFields, illustrations()],
             },
             {
               name: 'social',
@@ -123,6 +124,11 @@ export const HomePage: GlobalConfig = {
               name: 'blog',
               type: 'group',
               fields: [{ name: 'heading', type: 'text' }, illustrations()],
+            },
+            {
+              name: 'newsletter',
+              type: 'group',
+              fields: [illustrations()],
             },
             {
               name: 'webinar',

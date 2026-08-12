@@ -120,13 +120,20 @@ export type SeedHome = {
     goalsTitle: string
     goalsIntro: string
     goals: string[]
+    goalsImage: string | null
     ctaHeading: string | null
     ctaLabel: string | null
     ctaHref: string | null
     ctaImages: string[]
   }
   video: { url: string | null; poster: string | null }
-  participate: { heading: string; body: string; ctaLabel: string | null; ctaHref: string | null }
+  participate: {
+    heading: string
+    body: string
+    ctaLabel: string | null
+    ctaHref: string | null
+    images: string[]
+  }
   social: { heading: string; body: string; images: string[] }
   proposals: {
     heading: string
@@ -137,6 +144,7 @@ export type SeedHome = {
     image: string | null
   }
   blog: { heading: string; images: string[] }
+  newsletter: { images: string[] }
   webinar: {
     title: string | null
     image: string | null
