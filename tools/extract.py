@@ -1092,6 +1092,145 @@ def harvest_alt_text():
                 images_seen[key]['alt'] = alt
 
 
+def section_of(blocks, heading, stop_headings):
+    """Take the blocks that follow a heading, up to the next section heading."""
+    result = []
+    collecting = False
+    for block in blocks:
+        if block['type'] == 'heading':
+            text = block['text'].strip().lower()
+            if text == heading.lower():
+                collecting = True
+                continue
+            if collecting and text in stop_headings:
+                break
+        if collecting:
+            result.append(block)
+    return result
+
+
+def first(blocks, kind, key, default=None):
+    for block in blocks:
+        if block['type'] == kind:
+            return block.get(key, default)
+    return default
+
+
+def paragraphs(blocks):
+    return [block['html'] for block in blocks if block['type'] == 'paragraph']
+
+
+def images_in(blocks):
+    return [block['image'] for block in blocks if block['type'] == 'image']
+
+
+def extract_home(page):
+    """The landing page as semantic fields, so the rebuild owns its presentation."""
+    blocks = page['blocks']
+    headings = [b['text'].strip().lower() for b in blocks if b['type'] == 'heading']
+    stops = set(headings)
+
+    def section(name):
+        return section_of(blocks, name, stops - {name.lower()})
+
+    about = section('About Orchard OCD')
+    pillars = []
+    for title in ('Our Vision', 'Our Mission'):
+        body = paragraphs(section(title))
+        if body:
+            pillars.append({'title': title, 'body': body[0], 'image': first(section(title), 'image', 'image')})
+
+    goals_blocks = section('Our Goals')
+    goals_text = paragraphs(goals_blocks)
+    goals_intro, goal_items = '', []
+    if goals_text:
+        lines = [line.strip() for line in re.split(r'<br>', goals_text[0]) if line.strip()]
+        goals_intro = lines[0] if lines else ''
+        goal_items = [re.sub(r'^\d+[.)]\s*', '', line) for line in lines[1:]]
+
+    learn = section('Learn About Orchard OCD')
+    participate = section('Want To Participate In Brand New OCD Research?')
+    social = section('Follow Us On Social Media')
+    proposals = section('Call For Proposals 2022')
+    proposals_body = paragraphs(proposals)
+    proposals_quote = next((b['html'] for b in proposals if b['type'] == 'quote'), None)
+    if proposals_quote and not proposals_body:
+        # The old page ran the intro and the winning study title together in one block.
+        emphasised = re.search(r'<em>(.*?)</em>\s*$', proposals_quote)
+        if emphasised:
+            proposals_body = [proposals_quote[: emphasised.start()].strip()]
+            proposals_quote = emphasised.group(1)
+
+    hero = next((s for s in page['hero'] if 'develop better treatments' in s['title']), page['hero'][0])
+    highlights = [s for s in page['hero'] if s is not hero]
+    webinar = next((s for s in page['hero'] if s['title'].lower().startswith('our latest webinar')), None)
+    if webinar:
+        highlights = [s for s in highlights if s is not webinar]
+
+    return {
+        'hero': {
+            'title': hero['title'],
+            'ctaLabel': hero['links'][0]['label'] if hero['links'] else None,
+            'ctaHref': hero['links'][0]['href'] if hero['links'] else None,
+            'image': hero.get('image'),
+        },
+        'highlights': [
+            {
+                'title': slide['title'],
+                'ctaLabel': slide['links'][0]['label'] if slide['links'] else None,
+                'ctaHref': slide['links'][0]['href'] if slide['links'] else None,
+                'image': slide.get('image'),
+            }
+            for slide in highlights
+        ],
+        'about': {
+            'heading': 'About Orchard OCD',
+            'intro': (paragraphs(about) or [''])[0],
+            'image': first(about, 'image', 'image'),
+            'ctaImages': images_in(learn),
+            'pillars': pillars,
+            'goalsTitle': 'Our Goals',
+            'goalsIntro': goals_intro,
+            'goals': goal_items,
+            'ctaLabel': first(learn, 'button', 'label'),
+            'ctaHref': first(learn, 'button', 'href'),
+            'ctaHeading': 'Learn About Orchard OCD',
+        },
+        'video': {
+            'url': first(blocks, 'video', 'url'),
+            'poster': first(blocks, 'video', 'poster'),
+        },
+        'participate': {
+            'heading': 'Want To Participate In Brand New OCD Research?',
+            'body': (paragraphs(participate) or [''])[0],
+            'images': images_in(participate),
+            'ctaLabel': first(participate, 'button', 'label'),
+            'ctaHref': first(participate, 'button', 'href'),
+        },
+        'social': {
+            'heading': 'Follow Us On Social Media',
+            'body': (paragraphs(social) or [''])[0],
+            'images': images_in(social),
+        },
+        'proposals': {
+            'heading': 'Call For Proposals 2022',
+            'body': proposals_body,
+            'quote': proposals_quote,
+            'ctaLabel': first(proposals, 'button', 'label'),
+            'ctaHref': first(proposals, 'button', 'href'),
+            'image': first(proposals, 'image', 'image'),
+            'images': images_in(proposals)[1:],
+        },
+        'blog': {'heading': 'From The Blog'},
+        'webinar': {
+            'title': webinar['title'] if webinar else None,
+            'image': webinar.get('image') if webinar else None,
+            'ctaLabel': webinar['links'][0]['label'] if webinar and webinar['links'] else None,
+            'ctaHref': webinar['links'][0]['href'] if webinar and webinar['links'] else None,
+        },
+    }
+
+
 def main():
     global MEDIA
     MEDIA = media_index()
@@ -1106,6 +1245,9 @@ def main():
         'webinars': extract_webinars(),
         'conferenceSpeakers': extract_conference_speakers(),
     }
+    home_page = next(page for page in data['pages'] if page['slug'] == 'home')
+    data['home'] = extract_home(home_page)
+
     harvest_alt_text()
     data['images'] = sorted(images_seen.values(), key=lambda item: item['id'])
     data['documents'] = sorted(documents_seen.values(), key=lambda item: item['id'])

@@ -4,9 +4,11 @@ test.describe('site', () => {
   test('renders the homepage hero and calls to action', async ({ page }) => {
     await page.goto('/')
     await expect(page).toHaveTitle(/Orchard OCD/)
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Advancing global')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(
+      'Obsessive Compulsive Disorder',
+    )
     await expect(
-      page.locator('main').getByRole('link', { name: 'Donate now', exact: true }).first(),
+      page.locator('main').getByRole('link', { name: 'Donate Now', exact: true }).first(),
     ).toBeVisible()
   })
 
@@ -51,6 +53,7 @@ test.describe('site', () => {
 
   test('renders webinars with playable embeds', async ({ page }) => {
     await page.goto('/webinars')
+    await expect(page.getByRole('region', { name: 'Webinars' })).toBeVisible()
     const embeds = page.locator('main iframe')
     expect(await embeds.count()).toBeGreaterThan(10)
     await expect(embeds.first()).toHaveAttribute('title', /\S/)

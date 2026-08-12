@@ -106,10 +106,12 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'home-page': HomePage;
     'site-settings': SiteSetting;
     navigation: Navigation;
   };
   globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
   };
@@ -1096,6 +1098,114 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * The landing page. Every field is content, never layout or markup.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  hero: {
+    title: string;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    image?: (number | null) | Media;
+    id?: string | null;
+  };
+  /**
+   * The cards shown under the hero.
+   */
+  highlights?:
+    | {
+        title: string;
+        ctaLabel?: string | null;
+        ctaHref?: string | null;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  about: {
+    heading: string;
+    intro: string;
+    image?: (number | null) | Media;
+    pillars?:
+      | {
+          title: string;
+          body: string;
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+    goalsTitle?: string | null;
+    goalsIntro?: string | null;
+    goals?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    ctaHeading?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    ctaImages?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  video?: {
+    url?: string | null;
+    poster?: (number | null) | Media;
+  };
+  participate?: {
+    heading?: string | null;
+    body?: string | null;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  social?: {
+    heading?: string | null;
+    body?: string | null;
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  proposals?: {
+    heading?: string | null;
+    body?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    quote?: string | null;
+    image?: (number | null) | Media;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  blog?: {
+    heading?: string | null;
+  };
+  webinar?: {
+    title?: string | null;
+    image?: (number | null) | Media;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
@@ -1120,13 +1230,6 @@ export interface SiteSetting {
     | {
         platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube';
         url: string;
-        id?: string | null;
-      }[]
-    | null;
-  stats?:
-    | {
-        value: string;
-        description: string;
         id?: string | null;
       }[]
     | null;
@@ -1176,6 +1279,125 @@ export interface Navigation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        image?: T;
+        id?: T;
+      };
+  highlights?:
+    | T
+    | {
+        title?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        image?: T;
+        id?: T;
+      };
+  about?:
+    | T
+    | {
+        heading?: T;
+        intro?: T;
+        image?: T;
+        pillars?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              image?: T;
+              id?: T;
+            };
+        goalsTitle?: T;
+        goalsIntro?: T;
+        goals?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaHeading?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        ctaImages?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  video?:
+    | T
+    | {
+        url?: T;
+        poster?: T;
+      };
+  participate?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  social?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  proposals?:
+    | T
+    | {
+        heading?: T;
+        body?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        quote?: T;
+        image?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  blog?:
+    | T
+    | {
+        heading?: T;
+      };
+  webinar?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1203,13 +1425,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         platform?: T;
         url?: T;
-        id?: T;
-      };
-  stats?:
-    | T
-    | {
-        value?: T;
-        description?: T;
         id?: T;
       };
   newsletter?:

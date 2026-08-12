@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+import { headingAndBody } from '@/fields/slug'
+
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site settings',
@@ -61,23 +63,9 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
-      name: 'stats',
-      type: 'array',
-      label: 'Homepage statistics',
-      maxRows: 4,
-      fields: [
-        { name: 'value', type: 'text', required: true },
-        { name: 'description', type: 'textarea', required: true },
-      ],
-    },
-    {
       name: 'newsletter',
       type: 'group',
-      fields: [
-        { name: 'heading', type: 'text' },
-        { name: 'body', type: 'textarea' },
-        { name: 'signupUrl', type: 'text' },
-      ],
+      fields: [...headingAndBody, { name: 'signupUrl', type: 'text' }],
     },
   ],
 }

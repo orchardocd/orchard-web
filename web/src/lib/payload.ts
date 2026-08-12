@@ -30,6 +30,7 @@ const findBySlug = cache(async <T extends CollectionSlug>(collection: T, slug: s
 
 export const getNavigation = () => findGlobal('navigation')
 export const getSiteSettings = () => findGlobal('site-settings')
+export const getHomePage = () => findGlobal('home-page')
 
 export const getPageBySlug = (slug: string) => findBySlug('pages', slug)
 export const getPostBySlug = (slug: string) => findBySlug('posts', slug)

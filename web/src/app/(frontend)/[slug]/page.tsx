@@ -9,9 +9,10 @@ import { PeopleSections } from '@/components/content/PeopleSections'
 import { StudyList } from '@/components/content/StudyList'
 import { WebinarList } from '@/components/content/WebinarList'
 
-export const dynamicParams = false
+// Unknown slugs fall through to our own not-found page rather than Next's internal 404.
+export const dynamicParams = true
 
-const RESERVED = ['home', 'blog']
+const RESERVED = ['blog']
 
 export const generateStaticParams = () => slugParams('pages', [...RESERVED])
 

@@ -7,7 +7,8 @@ import { formatDate } from '@/lib/format'
 import { getPostBySlug } from '@/lib/payload'
 import { slugMetadata, slugParams, type SlugParams } from '@/lib/routes'
 
-export const dynamicParams = false
+// Unknown slugs fall through to our own not-found page rather than Next's internal 404.
+export const dynamicParams = true
 
 export const generateStaticParams = () => slugParams('posts')
 

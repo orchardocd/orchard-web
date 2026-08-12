@@ -18,6 +18,7 @@ import { Studies } from '@/collections/Studies'
 import { Users } from '@/collections/Users'
 import { Videos } from '@/collections/Videos'
 import { Webinars } from '@/collections/Webinars'
+import { HomePage } from '@/globals/HomePage'
 import { Navigation } from '@/globals/Navigation'
 import { SiteSettings } from '@/globals/SiteSettings'
 
@@ -47,7 +48,7 @@ export default buildConfig({
     Videos,
     Users,
   ],
-  globals: [SiteSettings, Navigation],
+  globals: [HomePage, SiteSettings, Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

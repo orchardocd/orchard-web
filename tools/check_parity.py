@@ -45,7 +45,9 @@ IGNORED_TEXT = re.compile(
     r'page \d+ of \d+|posted on|window\.|function\s*\(|jquery|mc4wp|'
     r'this site uses akismet|skip to content|search for:|'
     r'we use cookies|cookie settings|accept all|privacy overview|'
-    r'^tags?\b|^categor(y|ies)\b',
+    r'^tags?\b|^categor(y|ies)\b|'
+    # An unedited Elementor default, not content.
+    r'^add your heading text here$',
     re.I,
 )
 
@@ -56,25 +58,16 @@ IGNORED_IMAGE = re.compile(
     re.I,
 )
 
-MIN_UNIT_CHARS = 45
+# Headings, card titles and button labels are short, and they are exactly the copy a
+# redesign is most likely to reinvent, so the floor only excludes single words.
+MIN_UNIT_CHARS = 12
 
 # Copy that exists only on the new site. Every entry is UI wording with no
 # equivalent on the old site; anything not listed here must come from the old site.
 ALLOWED_NEW_TEXT = [
+    # Navigation affordances the old site had no equivalent for.
     'skip to main content',
-    'advancing global ocd research',
-    'find filter fund',
-    'registered charity number',
-    'follow us on social media',
-    'all studies',
-    'all webinars',
-    'view all posts',
-    'studies you can take part in',
-    'join our mailing list',
-    'learn about orchard ocd',
     'overview',
-    'our latest webinar',
-    'find filter fund',
 ]
 
 QUOTES = {
@@ -175,9 +168,14 @@ def text_units(html: str, scope_selector: str | None) -> list[str]:
     scope = scope or soup.body or soup
 
     units = []
-    for element in scope.find_all(['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'td', 'blockquote']):
-        if element.find(['p', 'li', 'div']):
-            continue
+    # Any leaf element can hold copy: Elementor puts plenty of it in bare divs and spans.
+    leaves = [
+        element
+        for element in scope.find_all(True)
+        if element.name not in ('script', 'style', 'noscript', 'br', 'img', 'svg', 'iframe')
+        and not element.find(True, recursive=False)
+    ]
+    for element in leaves:
         raw = element.get_text(' ', strip=True)
         if IGNORED_TEXT.search(raw):
             continue
@@ -192,25 +190,33 @@ _corpus: str | None = None
 
 
 def old_site_corpus() -> str:
-    """Every word the old site rendered anywhere, for detecting invented copy."""
+    """Every word the old site rendered anywhere, including its own header and footer."""
     global _corpus
     if _corpus is not None:
         return _corpus
     parts = []
     for path in sorted(SITE.rglob('index.html')):
-        text, _ = collect(read_text(path), None)
-        parts.append(text)
+        soup = BeautifulSoup(read_text(path), 'html.parser')
+        for selector in ('script', 'style', 'noscript'):
+            for match in soup.select(selector):
+                match.decompose()
+        parts.append(normalize((soup.body or soup).get_text(' ', strip=True)))
     for name in ('posts', 'pages', 'p_in_research', 'speakers', 'research-slider'):
         for item in load_api(name):
             rendered = item.get('content', {}).get('rendered', '')
             if rendered:
-                text, _ = collect(rendered, None)
-                parts.append(text)
+                parts.append(normalize(BeautifulSoup(rendered, 'html.parser').get_text(' ', strip=True)))
     _corpus = ' \n '.join(parts)
     return _corpus
 
 
+DATE_UNIT = re.compile(r'^\d{1,2} [a-z]+ \d{4}( .*)?$')
+
+
 def is_allowed_new(unit: str) -> bool:
+    # A rendered date is a structured field being formatted, not new copy.
+    if DATE_UNIT.match(unit):
+        return True
     return any(allowed in unit for allowed in ALLOWED_NEW_TEXT)
 
 

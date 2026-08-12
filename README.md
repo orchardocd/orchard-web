@@ -48,7 +48,8 @@ mirror/  ──tools/extract.py──▶  content.json  ──optimize-assets.mj
 `pnpm parity` walks all 142 routes with the production server running and enforces, in both
 directions:
 
-- every text unit the old page rendered is present on the new page;
+- every text unit the old page rendered is present on the new page, down to headings and
+  button labels (the floor is 12 characters, so only single words are exempt);
 - every illustration the old page used is present on the new page;
 - no copy exists on the new site that appears nowhere on the old site.
 
@@ -60,13 +61,21 @@ each old page contained, so the check runs without the mirror. Regenerate it wit
 `pnpm parity:update` after re-extracting; `pnpm parity:mirror` checks against the mirror
 directly.
 
-Current state: **2942/2942 text units, 368/368 images, 0 invented text units, 0 gaps.**
+Current state: **3351/3351 text units, 368/368 images, 0 invented text units, 0 gaps.**
+
+## Editing the landing page
+
+The landing page is not a rich-text document. It is a set of designed sections fed by the
+Home page global, where every field is semantic: a heading, a paragraph, a link label, a
+picture. Editors change words and images; the site owns type, colour, spacing and layout.
+Adding a section means adding fields and a component, not markup in a text box.
 
 ## Content model
 
 | Collection | Count | Notes |
 | --- | --- | --- |
-| Pages | 29 | Body stored as blocks; hero slides carry the old banner sliders |
+| Home page (global) | 1 | The landing page as semantic fields, never markup |
+| Pages | 28 | Body stored as blocks; hero slides carry the old banner sliders |
 | Posts | 84 | The blog, at `/blog/<slug>` |
 | Studies | 32 | "Participate in research", at `/participate-research/<slug>` |
 | Webinars | 15 | Titles from the page's slider, with poster images |

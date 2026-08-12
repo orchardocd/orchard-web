@@ -17,6 +17,20 @@ export const titledContentFields: Field[] = [
   { name: 'content', type: 'richText' },
 ]
 
+export const headingAndBody: Field[] = [
+  { name: 'heading', type: 'text' },
+  { name: 'body', type: 'textarea' },
+]
+
+export function illustrations(name = 'images'): Field {
+  return {
+    name,
+    type: 'array',
+    label: 'Illustrations',
+    fields: [{ name: 'image', type: 'upload', relationTo: 'media', required: true }],
+  }
+}
+
 export const seoFields: Field = {
   name: 'meta',
   type: 'group',

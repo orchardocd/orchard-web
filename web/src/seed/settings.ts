@@ -27,18 +27,6 @@ export const siteSettings: SiteSettingsData = {
     { platform: 'linkedin', url: 'https://www.linkedin.com/company/orchard-ocd' },
     { platform: 'youtube', url: 'https://www.youtube.com/@orchardocd5099' },
   ],
-  stats: [
-    {
-      value: '2% to 3%',
-      description:
-        'OCD is one of the most commonly occurring mental health disorders. It affects about 2% to 3% of people in Western general populations.',
-    },
-    {
-      value: 'WHO',
-      description:
-        'World Health Organization named OCD as one of the most disabling of all medical disorders.',
-    },
-  ],
   newsletter: {
     heading: 'Subscribe to our newsletter',
     body: 'Here at Orchard OCD, we are focusing on developing treatments for patients suffering from obsessive-compulsive disorder (OCD), a serious mental illness. You can help us treat this debilitating disorder, through taking part in research, donating towards crowdfunding campaigns and promoting our work. All of this information will be sent to you through our E-News. Sign up today and you will be part of the future of OCD treatment.',

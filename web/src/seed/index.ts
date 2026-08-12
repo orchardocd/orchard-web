@@ -11,6 +11,16 @@ import { navigation, siteSettings } from '@/seed/settings'
 import type { PersonGroup, SeedContent } from '@/seed/types'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// Payload blocks on an interactive prompt when a stale schema needs destructive changes,
+// so the seed always starts from a fresh database file.
+const databaseUrl = process.env.DATABASE_URL ?? ''
+if (databaseUrl.startsWith('file:')) {
+  const databaseFile = path.resolve(process.cwd(), databaseUrl.slice('file:'.length))
+  await fs.rm(databaseFile, { force: true })
+  await fs.rm(`${databaseFile}-shm`, { force: true })
+  await fs.rm(`${databaseFile}-wal`, { force: true })
+}
 const assetsDir = path.join(dirname, 'assets')
 
 const GROUP_SLUGS: Record<string, PersonGroup> = {
@@ -33,6 +43,18 @@ const COLLECTIONS = [
   'documents',
   'videos',
 ] as const
+
+function stripMarkup(value: string | null | undefined): string {
+  return (value ?? '')
+    .replace(/<br\s*\/?>/g, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
 
 function assetPath(asset: { id: string; asset?: string }): string {
   if (!asset.asset) {
@@ -176,8 +198,10 @@ export async function seed(payload: Payload) {
   const layoutOf = (blocks: SeedContent['pages'][number]['blocks']) =>
     buildLayout(blocks, assets, toLexical, links)
 
-  payload.logger.info(`Creating ${content.pages.length} pages`)
-  for (const page of content.pages) {
+  // The landing page lives in the Home page global, not as an editable blocks page.
+  const pages = content.pages.filter((page) => page.slug !== 'home')
+  payload.logger.info(`Creating ${pages.length} pages`)
+  for (const page of pages) {
     await payload.create({
       collection: 'pages',
       data: {
@@ -286,6 +310,80 @@ export async function seed(payload: Payload) {
       },
     })
   }
+
+  payload.logger.info('Writing the home page')
+  const home = content.home
+  const media = (key: string | null | undefined) => (key ? mediaIds.get(key) : undefined)
+  const text = (value: string | null | undefined) => stripMarkup(value) || undefined
+  const images = (keys: string[]) =>
+    keys.map((key) => mediaIds.get(key)).filter((id): id is number => id !== undefined)
+      .map((image) => ({ image }))
+  await payload.updateGlobal({
+    slug: 'home-page',
+    data: {
+      hero: {
+        title: stripMarkup(home.hero.title),
+        ctaLabel: text(home.hero.ctaLabel),
+        ctaHref: home.hero.ctaHref ? rewriteHref(home.hero.ctaHref, links) : undefined,
+        image: media(home.hero.image),
+      },
+      highlights: home.highlights.map((item) => ({
+        title: stripMarkup(item.title),
+        ctaLabel: text(item.ctaLabel),
+        ctaHref: item.ctaHref ? rewriteHref(item.ctaHref, links) : undefined,
+        image: media(item.image),
+      })),
+      about: {
+        heading: home.about.heading,
+        intro: stripMarkup(home.about.intro),
+        image: media(home.about.image),
+        pillars: home.about.pillars.map((pillar) => ({
+          title: pillar.title,
+          body: stripMarkup(pillar.body),
+          image: media(pillar.image),
+        })),
+        goalsTitle: home.about.goalsTitle,
+        goalsIntro: stripMarkup(home.about.goalsIntro),
+        goals: home.about.goals.map((goal) => ({ text: stripMarkup(goal) })),
+        ctaHeading: text(home.about.ctaHeading),
+        ctaLabel: text(home.about.ctaLabel),
+        ctaHref: home.about.ctaHref ? rewriteHref(home.about.ctaHref, links) : undefined,
+        ctaImages: images(home.about.ctaImages),
+      },
+      video: { url: home.video.url ?? undefined, poster: media(home.video.poster) },
+      participate: {
+        heading: home.participate.heading,
+        body: stripMarkup(home.participate.body),
+        ctaLabel: text(home.participate.ctaLabel),
+        ctaHref: home.participate.ctaHref
+          ? rewriteHref(home.participate.ctaHref, links)
+          : undefined,
+      },
+      social: {
+        heading: home.social.heading,
+        body: stripMarkup(home.social.body),
+        images: images(home.social.images),
+      },
+      proposals: {
+        heading: home.proposals.heading,
+        body: home.proposals.body.map((paragraph) => ({ text: stripMarkup(paragraph) })),
+        quote: text(home.proposals.quote),
+        image: media(home.proposals.image),
+        ctaLabel: text(home.proposals.ctaLabel),
+        ctaHref: home.proposals.ctaHref
+          ? rewriteHref(home.proposals.ctaHref, links)
+          : undefined,
+        images: images(home.proposals.images),
+      },
+      blog: { heading: home.blog.heading },
+      webinar: {
+        title: text(home.webinar.title),
+        image: media(home.webinar.image),
+        ctaLabel: text(home.webinar.ctaLabel),
+        ctaHref: home.webinar.ctaHref ? rewriteHref(home.webinar.ctaHref, links) : undefined,
+      },
+    },
+  })
 
   payload.logger.info('Writing globals')
   await payload.updateGlobal({ slug: 'site-settings', data: siteSettings })

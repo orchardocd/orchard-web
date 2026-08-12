@@ -14,9 +14,11 @@ describe('content', () => {
     const pages = await payload.find({ collection: 'pages', limit: 200 })
     expect(pages.totalDocs).toBeGreaterThanOrEqual(28)
     const slugs = pages.docs.map((page) => page.slug)
-    for (const slug of ['home', 'about-ocd', 'about-orchard', 'get-involved', 'the-work-we-do']) {
+    for (const slug of ['about-ocd', 'about-orchard', 'get-involved', 'the-work-we-do']) {
       expect(slugs).toContain(slug)
     }
+    // The landing page is the Home page global, so it is not an editable blocks page.
+    expect(slugs).not.toContain('home')
   })
 
   it('has every post, study and webinar', async () => {
@@ -45,11 +47,14 @@ describe('content', () => {
     expect(missing.map((item) => item.filename)).toEqual([])
   })
 
-  it('exposes navigation and site settings', async () => {
-    const [navigation, settings] = await Promise.all([
+  it('exposes navigation, site settings and the home page', async () => {
+    const [navigation, settings, home] = await Promise.all([
       payload.findGlobal({ slug: 'navigation' }),
       payload.findGlobal({ slug: 'site-settings' }),
+      payload.findGlobal({ slug: 'home-page' }),
     ])
+    expect(home.hero.title).toMatch(/Obsessive Compulsive Disorder/)
+    expect(home.about.pillars?.length).toBe(2)
     expect(navigation.main?.length).toBeGreaterThan(0)
     expect(settings.donateUrl).toMatch(/^https:\/\//)
     expect(settings.contact.charityNumber).toBe('1174480')

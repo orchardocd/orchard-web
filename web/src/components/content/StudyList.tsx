@@ -6,11 +6,8 @@ export async function StudyList() {
   const studies = await getStudies()
 
   return (
-    <Section labelledBy="studies-heading" className="border-t border-line">
+    <Section label="Participate in research" className="border-t border-line">
       <Container>
-        <h2 id="studies-heading" className="mb-9 text-3xl font-bold text-ink">
-          Studies you can take part in
-        </h2>
         <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {studies.map((study) => (
             <ArticleCard

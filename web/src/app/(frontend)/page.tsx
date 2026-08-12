@@ -1,126 +1,205 @@
-import Link from 'next/link'
-
+import { VideoEmbed } from '@/components/blocks/VideoEmbed'
 import { PostCards } from '@/components/content/ArticleCard'
-import { RenderBlocks } from '@/components/blocks/RenderBlocks'
-import { Banner } from '@/components/layout/Banner'
-import { HeroHighlights } from '@/components/layout/PageHero'
+import { SocialLinks } from '@/components/content/SocialLinks'
+import { Banner, BannerTitle } from '@/components/layout/Banner'
+import { Illustrations } from '@/components/layout/Illustrations'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container, Section } from '@/components/ui/Container'
-import { getPageBySlug, getPosts, getSiteSettings, getWebinars } from '@/lib/payload'
+import { MediaImage } from '@/components/ui/Media'
+import { getHomePage, getPosts, getSiteSettings } from '@/lib/payload'
 
 export default async function HomePage() {
-  const [settings, posts, webinars, page] = await Promise.all([
-    getSiteSettings(),
-    getPosts(3),
-    getWebinars(),
-    getPageBySlug('home'),
-  ])
-  const latestWebinar = webinars[0]
+  const [home, settings, posts] = await Promise.all([getHomePage(), getSiteSettings(), getPosts(3)])
+  const { about, proposals, participate, social, blog, webinar, video } = home
 
   return (
     <>
       <Banner
-        after={
-          (settings.stats ?? []).length > 0 ? (
-            <Container className="relative grid gap-7 pb-20 md:grid-cols-2">
-              {(settings.stats ?? []).map((stat) => (
-                <div
-                  key={stat.id ?? stat.value}
-                  className="flex items-center gap-6 rounded-lg bg-white p-7 shadow-[0_14px_34px_rgba(0,30,27,0.24)]"
-                >
-                  <p className="text-4xl font-bold tracking-tight whitespace-nowrap text-brand md:text-5xl">
-                    {stat.value}
-                  </p>
-                  <p className="text-base leading-relaxed text-body">{stat.description}</p>
-                </div>
-              ))}
-            </Container>
+        aside={
+          home.hero.image ? (
+            <MediaImage
+              media={home.hero.image}
+              className="rounded-lg"
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              priority
+            />
           ) : undefined
         }
       >
-        <p className="mb-5 text-sm font-bold tracking-[0.22em] text-lime-soft uppercase">
-          Find · Filter · Fund
-        </p>
-        <h1 className="max-w-4xl text-5xl leading-[1.02] font-bold tracking-tight text-balance text-white italic md:text-7xl">
-          Advancing global <span className="text-lime">OCD research</span>
-        </h1>
-        <p className="mt-7 max-w-2xl text-xl leading-relaxed text-pretty text-white/92 md:text-2xl">
-          Help us develop better treatments for Obsessive Compulsive Disorder (OCD).
-        </p>
-        <div className="mt-10 flex flex-wrap items-center gap-4">
-          <ButtonLink href={settings.donateUrl} variant="donate" className="px-8 py-4 text-lg">
-            Donate now
+        <BannerTitle>{home.hero.title}</BannerTitle>
+        {home.hero.ctaHref && home.hero.ctaLabel ? (
+          <ButtonLink href={home.hero.ctaHref} variant="donate" className="mt-9 px-8 py-4 text-lg">
+            {home.hero.ctaLabel}
           </ButtonLink>
-          <ButtonLink href={settings.registryUrl} variant="ghost" className="px-8 py-4 text-lg">
-            Join the OCD registry
-          </ButtonLink>
-        </div>
+        ) : null}
       </Banner>
 
-      <Container>
-        <div className="grid gap-6 pt-16 md:grid-cols-3">
-          <a
-            href={settings.donateUrl}
-            className="flex min-h-44 flex-col gap-3 rounded-lg bg-brand-strong p-8 text-white no-underline hover:bg-brand-hover"
-          >
-            <h2 className="text-2xl font-bold">Donate</h2>
-            <p className="text-base leading-relaxed text-white">
-              Donate today to help OCD research.
-            </p>
-            <span aria-hidden="true" className="mt-auto text-2xl font-bold">
-              →
-            </span>
-          </a>
-          <a
-            href={settings.registryUrl}
-            className="flex min-h-44 flex-col gap-3 rounded-lg border-2 border-transparent bg-mist p-8 no-underline hover:border-brand"
-          >
-            <h2 className="text-2xl font-bold text-brand-link">Join the registry</h2>
-            <p className="text-base leading-relaxed text-body">
-              Participate in exciting new OCD research.
-            </p>
-            <span aria-hidden="true" className="mt-auto text-2xl font-bold text-brand">
-              →
-            </span>
-          </a>
-          <Link
-            href="/fundraising-events"
-            className="flex min-h-44 flex-col gap-3 rounded-lg border-2 border-transparent bg-mist p-8 no-underline hover:border-brand"
-          >
-            <h2 className="text-2xl font-bold text-brand-link">Fundraising & events</h2>
-            <p className="text-base leading-relaxed text-body">
-              Volunteer · Work with us · Become a trustee
-            </p>
-            <span aria-hidden="true" className="mt-auto text-2xl font-bold text-brand">
-              →
-            </span>
-          </Link>
-        </div>
-      </Container>
+      {(home.highlights ?? []).length > 0 ? (
+        <Section label={about.heading} className="py-14">
+          <Container>
+            <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              {(home.highlights ?? []).map((item, index) => (
+                <li
+                  key={item.id ?? index}
+                  className="flex flex-col overflow-hidden rounded-lg border border-line"
+                >
+                  {item.image ? (
+                    <MediaImage
+                      media={item.image}
+                      className="aspect-[4/3] bg-mist object-contain"
+                      sizes="(min-width: 1024px) 25vw, 50vw"
+                    />
+                  ) : null}
+                  <div className="flex flex-1 flex-col gap-4 p-6">
+                    <h2 className="text-lg leading-snug font-bold text-ink">{item.title}</h2>
+                    {item.ctaHref && item.ctaLabel ? (
+                      <ButtonLink
+                        href={item.ctaHref}
+                        variant="secondary"
+                        className="mt-auto self-start px-5 py-2.5 text-sm"
+                      >
+                        {item.ctaLabel}
+                      </ButtonLink>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
 
-      <Section label="Highlights" className="pt-4 pb-0">
-        <HeroHighlights slides={page?.hero ?? []} />
+      <Section labelledBy="about-orchard" className="bg-mist">
+        <Container>
+          <div className="grid items-start gap-12 lg:grid-cols-[1.15fr_1fr]">
+            <div>
+              <h2 id="about-orchard" className="text-4xl font-bold text-ink">
+                {about.heading}
+              </h2>
+              <p className="mt-5 max-w-measure text-lg leading-relaxed text-pretty text-body">
+                {about.intro}
+              </p>
+              {about.ctaHref && about.ctaLabel ? (
+                <ButtonLink href={about.ctaHref} className="mt-8">
+                  {about.ctaHeading ?? about.ctaLabel}
+                </ButtonLink>
+              ) : null}
+              <Illustrations items={about.ctaImages} className="mt-8" />
+            </div>
+            {about.image ? (
+              <MediaImage
+                media={about.image}
+                className="mx-auto max-w-sm"
+                sizes="(min-width: 1024px) 33vw, 60vw"
+              />
+            ) : null}
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {(about.pillars ?? []).map((pillar, index) => (
+              <div
+                key={pillar.id ?? index}
+                className="rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]"
+              >
+                {pillar.image ? (
+                  <MediaImage media={pillar.image} className="mb-5 h-16 w-auto" sizes="64px" />
+                ) : null}
+                <h3 className="mb-3 text-xl font-bold text-brand-link">{pillar.title}</h3>
+                <p className="text-base leading-relaxed text-body">{pillar.body}</p>
+              </div>
+            ))}
+            <div className="rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]">
+              <h3 className="mb-3 text-xl font-bold text-brand-link">{about.goalsTitle}</h3>
+              <p className="mb-2 text-base leading-relaxed text-body">{about.goalsIntro}</p>
+              <ol className="list-decimal pl-5 text-base leading-relaxed text-body">
+                {(about.goals ?? []).map((goal, index) => (
+                  <li key={goal.id ?? index}>{goal.text}</li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </Container>
       </Section>
 
-      <Section label="About Orchard OCD" className="bg-mist">
-        <Container>
-          <RenderBlocks blocks={page?.layout} />
+      {video?.url ? (
+        <Section label={about.heading} className="py-14">
+          <Container>
+            <VideoEmbed url={video.url} title={about.heading} poster={video.poster} />
+          </Container>
+        </Section>
+      ) : null}
+
+      <Section labelledBy="participate">
+        <Container className="grid items-center gap-10 lg:grid-cols-[1.2fr_1fr]">
+          <div>
+            <h2 id="participate" className="text-3xl leading-tight font-bold text-ink">
+              {participate?.heading}
+            </h2>
+            <p className="mt-4 max-w-measure text-lg leading-relaxed text-body">
+              {participate?.body}
+            </p>
+            {participate?.ctaHref && participate?.ctaLabel ? (
+              <ButtonLink href={participate?.ctaHref} className="mt-7">
+                {participate?.ctaLabel}
+              </ButtonLink>
+            ) : null}
+          </div>
+          <div className="rounded-lg bg-mist p-8">
+            <h2 className="text-2xl font-bold text-brand-link">{social?.heading}</h2>
+            <p className="mt-3 text-base leading-relaxed text-body">{social?.body}</p>
+            <Illustrations items={social?.images} className="mt-6" size="h-20" />
+            <SocialLinks
+              items={settings.social}
+              className="mt-5"
+              linkClassName="inline-block rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-link no-underline hover:bg-brand-strong hover:text-white"
+            />
+          </div>
+        </Container>
+      </Section>
+
+      <Section labelledBy="proposals" className="bg-brand-deep">
+        <Container className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <h2 id="proposals" className="text-3xl font-bold text-white">
+              {proposals?.heading}
+            </h2>
+            {(proposals?.body ?? []).map((paragraph, index) => (
+              <p
+                key={paragraph.id ?? index}
+                className="mt-5 max-w-measure leading-relaxed text-pretty text-white/92"
+              >
+                {paragraph.text}
+              </p>
+            ))}
+            {proposals?.ctaHref && proposals.ctaLabel ? (
+              <ButtonLink href={proposals.ctaHref} variant="donate" className="mt-8">
+                {proposals.ctaLabel}
+              </ButtonLink>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-8">
+            {proposals?.quote ? (
+              <blockquote className="rounded-lg bg-white/10 p-9 text-2xl leading-snug font-semibold text-pretty text-white">
+                <p>{proposals.quote}</p>
+              </blockquote>
+            ) : null}
+            {proposals?.image ? (
+              <MediaImage
+                media={proposals.image}
+                className="mx-auto max-w-xs"
+                sizes="(min-width: 1024px) 25vw, 50vw"
+              />
+            ) : null}
+            <Illustrations items={proposals?.images} className="justify-center" />
+          </div>
         </Container>
       </Section>
 
       <Section labelledBy="from-the-blog" className="border-t border-line">
         <Container>
-          <div className="mb-10 flex flex-wrap items-baseline justify-between gap-6">
-            <h2 id="from-the-blog" className="text-4xl font-bold text-ink">
-              From the <span className="text-brand">blog</span>
-            </h2>
-            <Link
-              href="/blog"
-              className="text-base font-bold text-brand-link no-underline hover:text-brand-link-hover hover:underline"
-            >
-              View all posts →
-            </Link>
-          </div>
+          <h2 id="from-the-blog" className="mb-10 text-4xl font-bold text-ink">
+            {blog?.heading}
+          </h2>
           <PostCards
             posts={posts.docs}
             className="grid gap-6 md:grid-cols-3"
@@ -128,14 +207,17 @@ export default async function HomePage() {
             showImages={false}
           />
 
-          {latestWebinar ? (
+          {webinar?.title ? (
             <div className="mt-8 flex flex-wrap items-center justify-between gap-6 rounded-lg bg-brand-deep px-9 py-7">
-              <p className="text-lg text-white">
-                Our latest webinar: <span className="font-bold">{latestWebinar.title}</span>
-              </p>
-              <ButtonLink href="/webinars" variant="donate">
-                Watch now
-              </ButtonLink>
+              {webinar.image ? (
+                <MediaImage media={webinar.image} className="h-20 w-auto rounded" sizes="120px" />
+              ) : null}
+              <p className="flex-1 text-lg font-semibold text-white">{webinar.title}</p>
+              {webinar.ctaHref && webinar.ctaLabel ? (
+                <ButtonLink href={webinar.ctaHref} variant="donate">
+                  {webinar.ctaLabel}
+                </ButtonLink>
+              ) : null}
             </div>
           ) : null}
         </Container>
@@ -145,21 +227,19 @@ export default async function HomePage() {
         <Container className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <h2 id="newsletter" className="text-3xl font-bold text-white">
-              {settings.newsletter?.heading || 'Subscribe to our newsletter'}
+              {settings.newsletter?.heading}
             </h2>
             <p className="mt-4 leading-relaxed text-pretty text-white/92">
               {settings.newsletter?.body}
             </p>
           </div>
-          <div>
-            <ButtonLink
-              href={settings.newsletter?.signupUrl || '/join-our-mailing-list'}
-              variant="donate"
-              className="px-8 py-4 text-lg"
-            >
-              Join our mailing list
-            </ButtonLink>
-          </div>
+          <ButtonLink
+            href={settings.newsletter?.signupUrl || '/join-our-mailing-list'}
+            variant="donate"
+            className="justify-self-start px-8 py-4 text-lg"
+          >
+            Join Our Mailing List
+          </ButtonLink>
         </Container>
       </Section>
     </>

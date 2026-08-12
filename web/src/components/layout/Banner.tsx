@@ -33,6 +33,18 @@ export function Banner({
   )
 }
 
+/** A banner headline followed by page content: the shape of every simple page. */
+export function BannerPage({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <>
+      <Banner>
+        <BannerTitle>{title}</BannerTitle>
+      </Banner>
+      <Container className="py-14">{children}</Container>
+    </>
+  )
+}
+
 export function BannerTitle({ children }: { children: ReactNode }) {
   return (
     <h1 className="max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight text-balance text-white italic md:text-6xl">

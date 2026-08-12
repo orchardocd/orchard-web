@@ -3,14 +3,7 @@ import Link from 'next/link'
 
 import type { Navigation, SiteSetting } from '@/payload-types'
 import { Container } from '@/components/ui/Container'
-
-const PLATFORM_LABELS: Record<string, string> = {
-  facebook: 'Facebook',
-  instagram: 'Instagram',
-  twitter: 'X / Twitter',
-  linkedin: 'LinkedIn',
-  youtube: 'YouTube',
-}
+import { SocialLinks } from '@/components/content/SocialLinks'
 
 export function Footer({
   navigation,
@@ -38,18 +31,10 @@ export function Footer({
             <h2 className="mt-6 mb-3 text-[0.8rem] font-bold tracking-[0.14em] text-white/55 uppercase">
               Follow us on social media
             </h2>
-            <ul className="flex flex-wrap gap-2">
-              {(settings.social ?? []).map((item) => (
-                <li key={item.id ?? item.url}>
-                  <a
-                    href={item.url}
-                    className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-[0.8rem] font-semibold text-white no-underline hover:bg-white/22"
-                  >
-                    {PLATFORM_LABELS[item.platform] ?? item.platform}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <SocialLinks
+              items={settings.social}
+              linkClassName="inline-block rounded-full bg-white/10 px-4 py-1.5 text-[0.8rem] font-semibold text-white no-underline hover:bg-white/22"
+            />
           </div>
 
           {columns.map((column) => (

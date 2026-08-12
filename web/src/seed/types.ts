@@ -102,7 +102,52 @@ export type SeedWebinar = {
   image: string | null
 }
 
+export type SeedPromo = {
+  title: string
+  ctaLabel: string | null
+  ctaHref: string | null
+  image: string | null
+}
+
+export type SeedHome = {
+  hero: SeedPromo
+  highlights: SeedPromo[]
+  about: {
+    heading: string
+    intro: string
+    image: string | null
+    pillars: { title: string; body: string; image: string | null }[]
+    goalsTitle: string
+    goalsIntro: string
+    goals: string[]
+    ctaHeading: string | null
+    ctaLabel: string | null
+    ctaHref: string | null
+    ctaImages: string[]
+  }
+  video: { url: string | null; poster: string | null }
+  participate: { heading: string; body: string; ctaLabel: string | null; ctaHref: string | null }
+  social: { heading: string; body: string; images: string[] }
+  proposals: {
+    heading: string
+    body: string[]
+    quote: string | null
+    ctaLabel: string | null
+    ctaHref: string | null
+    image: string | null
+    images: string[]
+  }
+  blog: { heading: string }
+  webinar: {
+    title: string | null
+    image: string | null
+    ctaLabel: string | null
+    ctaHref: string | null
+  }
+}
+
 export type SeedContent = {
+  home: SeedHome
   pages: SeedPage[]
   posts: SeedPost[]
   studies: SeedStudy[]
