@@ -753,27 +753,6 @@ def extract_hero(slug):
     return slides
 
 
-# Section furniture the rebuilt design owns: the copy still renders, from the
-# blog listing and the newsletter settings rather than from page blocks.
-DESIGN_OWNED_HEADINGS = re.compile(r'^(from the blog|subscribe to our newsletter)$', re.I)
-
-
-def drop_design_owned(blocks):
-    result = []
-    skipping = False
-    for block in blocks:
-        if block['type'] == 'heading':
-            skipping = bool(DESIGN_OWNED_HEADINGS.match(block['text']))
-            if skipping:
-                continue
-        elif skipping and block['type'] == 'paragraph':
-            continue
-        else:
-            skipping = False
-        result.append(block)
-    return result
-
-
 def drop_webinar_listing(blocks):
     """The webinars page is a listing: the rebuild renders it from the collection."""
     result = []
@@ -790,8 +769,6 @@ LISTING_HEADINGS = {'about': 'our members'}
 
 
 def page_blocks(slug, blocks):
-    if slug == 'home':
-        return drop_design_owned(blocks)
     if slug == 'webinars':
         return drop_webinar_listing(blocks)
     heading = LISTING_HEADINGS.get(slug)
@@ -1219,9 +1196,11 @@ def extract_home(page):
             'ctaLabel': first(proposals, 'button', 'label'),
             'ctaHref': first(proposals, 'button', 'href'),
             'image': first(proposals, 'image', 'image'),
-            'images': images_in(proposals)[1:],
         },
-        'blog': {'heading': 'From The Blog'},
+        'blog': {
+            'heading': 'From The Blog',
+            'images': images_in(section('From The Blog')),
+        },
         'webinar': {
             'title': webinar['title'] if webinar else None,
             'image': webinar.get('image') if webinar else None,

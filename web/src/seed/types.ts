@@ -135,9 +135,8 @@ export type SeedHome = {
     ctaLabel: string | null
     ctaHref: string | null
     image: string | null
-    images: string[]
   }
-  blog: { heading: string }
+  blog: { heading: string; images: string[] }
   webinar: {
     title: string | null
     image: string | null

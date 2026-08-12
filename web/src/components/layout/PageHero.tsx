@@ -3,17 +3,25 @@ import { Banner, BannerTitle } from '@/components/layout/Banner'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { MediaImage } from '@/components/ui/Media'
-import type { Page } from '@/payload-types'
+import { withoutRepeats } from '@/lib/unique-images'
+import type { Media, Page } from '@/payload-types'
 
 type HeroSlide = NonNullable<Page['hero']>[number]
 
-export function HeroHighlights({ slides }: { slides: HeroSlide[] }) {
-  if (slides.length === 0) return null
+export function HeroHighlights({
+  slides,
+  alreadyShown = [],
+}: {
+  slides: HeroSlide[]
+  alreadyShown?: (number | Media | null | undefined)[]
+}) {
+  const items = withoutRepeats(slides, alreadyShown)
+  if (items.length === 0) return null
 
   return (
     <Container className="py-14">
       <ul className="grid gap-10 md:grid-cols-2">
-        {slides.map((slide, index) => (
+        {items.map((slide, index) => (
           <li key={slide.id ?? index} className="flex flex-col gap-4">
             {slide.image ? (
               <MediaImage
@@ -74,7 +82,7 @@ export function PageHero({
         ) : null}
       </Banner>
 
-      <HeroHighlights slides={all.slice(1)} />
+      <HeroHighlights slides={all.slice(1)} alreadyShown={[intro?.image]} />
     </>
   )
 }

@@ -49,7 +49,7 @@ export default async function StudyPage({ params }: SlugParams) {
       ) : null}
 
       <Container className="pb-16">
-        <RenderBlocks blocks={study.layout} />
+        <RenderBlocks blocks={study.layout} alreadyShown={[study.featuredImage]} />
       </Container>
     </article>
   )

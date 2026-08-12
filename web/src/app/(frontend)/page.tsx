@@ -6,6 +6,7 @@ import { Illustrations } from '@/components/layout/Illustrations'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container, Section } from '@/components/ui/Container'
 import { MediaImage } from '@/components/ui/Media'
+import { sentenceCase } from '@/lib/format'
 import { getHomePage, getPosts, getSiteSettings } from '@/lib/payload'
 
 export default async function HomePage() {
@@ -27,11 +28,23 @@ export default async function HomePage() {
         }
       >
         <BannerTitle>{home.hero.title}</BannerTitle>
-        {home.hero.ctaHref && home.hero.ctaLabel ? (
-          <ButtonLink href={home.hero.ctaHref} variant="donate" className="mt-9 px-8 py-4 text-lg">
-            {home.hero.ctaLabel}
-          </ButtonLink>
+        {about.intro ? (
+          <p className="mt-7 max-w-measure text-lg leading-relaxed text-pretty text-white/92">
+            {sentenceCase(about.intro)}
+          </p>
         ) : null}
+        <div className="mt-9 flex flex-wrap items-center gap-4">
+          {home.hero.ctaHref && home.hero.ctaLabel ? (
+            <ButtonLink href={home.hero.ctaHref} variant="donate" className="px-8 py-4 text-lg">
+              {home.hero.ctaLabel}
+            </ButtonLink>
+          ) : null}
+          {about.ctaHref && (about.ctaHeading || about.ctaLabel) ? (
+            <ButtonLink href={about.ctaHref} variant="ghost" className="px-8 py-4 text-lg">
+              {about.ctaHeading ?? about.ctaLabel}
+            </ButtonLink>
+          ) : null}
+        </div>
       </Banner>
 
       {(home.highlights ?? []).length > 0 ? (
@@ -71,31 +84,17 @@ export default async function HomePage() {
 
       <Section labelledBy="about-orchard" className="bg-mist">
         <Container>
-          <div className="grid items-start gap-12 lg:grid-cols-[1.15fr_1fr]">
-            <div>
-              <h2 id="about-orchard" className="text-4xl font-bold text-ink">
-                {about.heading}
-              </h2>
-              <p className="mt-5 max-w-measure text-lg leading-relaxed text-pretty text-body">
-                {about.intro}
-              </p>
-              {about.ctaHref && about.ctaLabel ? (
-                <ButtonLink href={about.ctaHref} className="mt-8">
-                  {about.ctaHeading ?? about.ctaLabel}
-                </ButtonLink>
-              ) : null}
-              <Illustrations items={about.ctaImages} className="mt-8" />
-            </div>
+          <div className="flex flex-wrap items-center justify-between gap-8">
+            <h2 id="about-orchard" className="text-4xl font-bold text-ink">
+              {about.heading}
+            </h2>
+            <Illustrations items={about.ctaImages} />
             {about.image ? (
-              <MediaImage
-                media={about.image}
-                className="mx-auto max-w-sm"
-                sizes="(min-width: 1024px) 33vw, 60vw"
-              />
+              <MediaImage media={about.image} className="max-w-40" sizes="160px" />
             ) : null}
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {(about.pillars ?? []).map((pillar, index) => (
               <div
                 key={pillar.id ?? index}
@@ -190,7 +189,7 @@ export default async function HomePage() {
                 sizes="(min-width: 1024px) 25vw, 50vw"
               />
             ) : null}
-            <Illustrations items={proposals?.images} className="justify-center" />
+
           </div>
         </Container>
       </Section>
@@ -206,6 +205,7 @@ export default async function HomePage() {
             accents={['#B6BF00', '#00877C']}
             showImages={false}
           />
+          <Illustrations items={blog?.images} className="mt-10 justify-center" />
 
           {webinar?.title ? (
             <div className="mt-8 flex flex-wrap items-center justify-between gap-6 rounded-lg bg-brand-deep px-9 py-7">

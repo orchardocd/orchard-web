@@ -43,7 +43,7 @@ export default async function PostPage({ params }: SlugParams) {
       ) : null}
 
       <Container className="pb-16">
-        <RenderBlocks blocks={post.layout} />
+        <RenderBlocks blocks={post.layout} alreadyShown={[post.featuredImage]} />
       </Container>
     </article>
   )

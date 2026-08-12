@@ -47,14 +47,25 @@ function BlockTable({ block }: { block: Extract<LayoutBlock, { blockType: 'table
   )
 }
 
+function mediaKey(value: unknown): string | null {
+  if (typeof value === 'number') return String(value)
+  if (value && typeof value === 'object' && 'id' in value) return String((value as { id: unknown }).id)
+  return null
+}
+
 export function RenderBlocks({
   blocks,
   className,
+  alreadyShown = [],
 }: {
   blocks: LayoutBlock[] | null | undefined
   className?: string
+  /** Illustrations the page has already rendered, so none of them appears twice. */
+  alreadyShown?: unknown[]
 }) {
   if (!blocks || blocks.length === 0) return null
+
+  const shown = new Set(alreadyShown.map(mediaKey).filter((key): key is string => key !== null))
 
   return (
     <div className={cn('flex flex-col gap-8', className)}>
@@ -63,7 +74,12 @@ export function RenderBlocks({
         switch (block.blockType) {
           case 'richText':
             return <RichText key={key} data={block.content} />
-          case 'imageBlock':
+          case 'imageBlock': {
+            const key2 = mediaKey(block.image)
+            if (key2 !== null) {
+              if (shown.has(key2)) return null
+              shown.add(key2)
+            }
             return (
               <figure key={key} className="mx-auto max-w-2xl">
                 <MediaImage media={block.image} className="rounded-lg" />
@@ -72,6 +88,7 @@ export function RenderBlocks({
                 ) : null}
               </figure>
             )
+          }
           case 'videoBlock':
             return <VideoPlayer key={key} block={block} />
           case 'embedBlock':

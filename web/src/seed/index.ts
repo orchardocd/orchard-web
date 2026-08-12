@@ -315,7 +315,7 @@ export async function seed(payload: Payload) {
   const home = content.home
   const media = (key: string | null | undefined) => (key ? mediaIds.get(key) : undefined)
   const text = (value: string | null | undefined) => stripMarkup(value) || undefined
-  const images = (keys: string[]) =>
+  const images = (keys: string[] = []) =>
     keys.map((key) => mediaIds.get(key)).filter((id): id is number => id !== undefined)
       .map((image) => ({ image }))
   await payload.updateGlobal({
@@ -373,9 +373,8 @@ export async function seed(payload: Payload) {
         ctaHref: home.proposals.ctaHref
           ? rewriteHref(home.proposals.ctaHref, links)
           : undefined,
-        images: images(home.proposals.images),
       },
-      blog: { heading: home.blog.heading },
+      blog: { heading: home.blog.heading, images: images(home.blog.images) },
       webinar: {
         title: text(home.webinar.title),
         image: media(home.webinar.image),

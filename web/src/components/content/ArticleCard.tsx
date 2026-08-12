@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { MediaImage, type MediaValue } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 import { formatDate } from '@/lib/format'
+import { withoutRepeats } from '@/lib/unique-images'
 
 export type ArticleCardProps = {
   href: string
@@ -82,9 +83,13 @@ export function PostCards({
   accents?: [string, string]
   showImages?: boolean
 }) {
+  const items = withoutRepeats(
+    posts.map((post) => ({ ...post, image: showImages ? post.featuredImage : undefined })),
+  )
+
   return (
     <ul className={className}>
-      {posts.map((post, index) => (
+      {items.map((post, index) => (
         <ArticleCard
           key={post.id}
           href={`/blog/${post.slug}`}
@@ -92,7 +97,7 @@ export function PostCards({
           date={post.publishedAt}
           byline={post.byline}
           excerpt={post.excerpt}
-          image={showImages ? post.featuredImage : undefined}
+          image={post.image}
           accent={accents ? accents[index % accents.length] : undefined}
         />
       ))}

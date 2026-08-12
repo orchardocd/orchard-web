@@ -17,3 +17,9 @@ export function isoDate(value: string | null | undefined): string {
   const date = new Date(value)
   return Number.isNaN(date.getTime()) ? '' : date.toISOString().slice(0, 10)
 }
+
+/** Presentational only: copy that used to sit under a heading can start lowercase. */
+export function sentenceCase(value: string | null | undefined): string {
+  if (!value) return ''
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}

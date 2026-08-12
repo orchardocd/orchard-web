@@ -1186,15 +1186,15 @@ export interface HomePage {
     image?: (number | null) | Media;
     ctaLabel?: string | null;
     ctaHref?: string | null;
+  };
+  blog?: {
+    heading?: string | null;
     images?:
       | {
           image: number | Media;
           id?: string | null;
         }[]
       | null;
-  };
-  blog?: {
-    heading?: string | null;
   };
   webinar?: {
     title?: string | null;
@@ -1372,17 +1372,17 @@ export interface HomePageSelect<T extends boolean = true> {
         image?: T;
         ctaLabel?: T;
         ctaHref?: T;
+      };
+  blog?:
+    | T
+    | {
+        heading?: T;
         images?:
           | T
           | {
               image?: T;
               id?: T;
             };
-      };
-  blog?:
-    | T
-    | {
-        heading?: T;
       };
   webinar?:
     | T

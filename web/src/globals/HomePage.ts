@@ -117,13 +117,12 @@ export const HomePage: GlobalConfig = {
                 { name: 'quote', type: 'textarea' },
                 { name: 'image', type: 'upload', relationTo: 'media' },
                 ...ctaFields,
-                illustrations(),
               ],
             },
             {
               name: 'blog',
               type: 'group',
-              fields: [{ name: 'heading', type: 'text' }],
+              fields: [{ name: 'heading', type: 'text' }, illustrations()],
             },
             {
               name: 'webinar',
