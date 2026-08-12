@@ -22,7 +22,6 @@ jobs:
       PAYLOAD_ADMIN_EMAIL: admin@example.com
       PAYLOAD_ADMIN_PASSWORD: ci-only-password
       DEBIAN_FRONTEND: noninteractive
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.playwright
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -44,12 +43,12 @@ jobs:
         id: playwright-cache
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/.playwright
+          path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('web/pnpm-lock.yaml') }}
       # ubuntu-latest already ships Chromium's system libraries; --with-deps hangs on apt.
       - name: Install Playwright browser
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        timeout-minutes: 8
+        timeout-minutes: 12
         run: pnpm exec playwright install chromium
 
       - name: Tests
