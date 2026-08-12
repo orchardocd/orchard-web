@@ -20,7 +20,7 @@ export async function StudyList() {
               date={study.publishedAt}
               excerpt={study.excerpt}
               image={study.featuredImage}
-              imageClassName="aspect-video object-cover"
+              imageClassName="aspect-video bg-mist object-contain"
             />
           ))}
         </ul>
