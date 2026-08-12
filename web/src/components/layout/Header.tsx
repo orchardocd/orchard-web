@@ -23,6 +23,31 @@ type NavItem = NonNullable<Navigation['main']>[number]
 const LINK_CLASSES =
   'text-[0.97rem] font-semibold text-ink no-underline hover:text-brand-link'
 
+function DropdownLinks({
+  item,
+  parentClassName,
+  childClassName,
+  parentLabel,
+}: {
+  item: NavItem
+  parentClassName: string
+  childClassName: string
+  parentLabel: string
+}) {
+  return (
+    <>
+      <CloseButton as={Link} href={item.href} className={parentClassName}>
+        {parentLabel}
+      </CloseButton>
+      {(item.children ?? []).map((child) => (
+        <CloseButton key={child.id ?? child.href} as={Link} href={child.href} className={childClassName}>
+          {child.label}
+        </CloseButton>
+      ))}
+    </>
+  )
+}
+
 function TopLevelLink({ item }: { item: NavItem }) {
   const children = item.children ?? []
 
@@ -46,23 +71,12 @@ function TopLevelLink({ item }: { item: NavItem }) {
         transition
         className="absolute left-0 z-50 mt-3 w-72 rounded-lg border border-line bg-white p-2 shadow-xl transition data-closed:opacity-0"
       >
-        <CloseButton
-          as={Link}
-          href={item.href}
-          className="block rounded px-4 py-2.5 text-[0.95rem] font-bold text-brand-link no-underline hover:bg-mist"
-        >
-          {item.label} overview
-        </CloseButton>
-        {children.map((child) => (
-          <CloseButton
-            key={child.id ?? child.href}
-            as={Link}
-            href={child.href}
-            className="block rounded px-4 py-2.5 text-[0.95rem] text-body no-underline hover:bg-mist hover:text-brand-link"
-          >
-            {child.label}
-          </CloseButton>
-        ))}
+        <DropdownLinks
+          item={item}
+          parentLabel={`${item.label} overview`}
+          parentClassName="block rounded px-4 py-2.5 text-[0.95rem] font-bold text-brand-link no-underline hover:bg-mist"
+          childClassName="block rounded px-4 py-2.5 text-[0.95rem] text-body no-underline hover:bg-mist hover:text-brand-link"
+        />
       </PopoverPanel>
     </Popover>
   )
@@ -135,23 +149,12 @@ export function Header({
                   <nav aria-label="Main" className="flex flex-col gap-1 p-4">
                     {items.map((item) => (
                       <div key={item.id ?? item.href} className="border-b border-line pb-2">
-                        <CloseButton
-                          as={Link}
-                          href={item.href}
-                          className="block py-2.5 font-bold text-ink no-underline"
-                        >
-                          {item.label}
-                        </CloseButton>
-                        {(item.children ?? []).map((child) => (
-                          <CloseButton
-                            key={child.id ?? child.href}
-                            as={Link}
-                            href={child.href}
-                            className="block py-2 pl-4 text-body no-underline"
-                          >
-                            {child.label}
-                          </CloseButton>
-                        ))}
+                        <DropdownLinks
+                          item={item}
+                          parentLabel={item.label}
+                          parentClassName="block py-2.5 font-bold text-ink no-underline"
+                          childClassName="block py-2 pl-4 text-body no-underline"
+                        />
                       </div>
                     ))}
                     <ButtonLink href={settings.donateUrl} className="mt-3">

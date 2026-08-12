@@ -1,33 +1,20 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { Container } from '@/components/ui/Container'
-import { Image } from '@/components/ui/Media'
+import { MediaImage } from '@/components/ui/Media'
 import { formatDate } from '@/lib/format'
-import { getClient, getStudyBySlug } from '@/lib/payload'
+import { getStudyBySlug } from '@/lib/payload'
+import { slugMetadata, slugParams, type SlugParams } from '@/lib/routes'
 
 export const dynamicParams = false
 
-export async function generateStaticParams() {
-  const payload = await getClient()
-  const studies = await payload.find({ collection: 'studies', limit: 200, select: { slug: true } })
-  return studies.docs.map((study) => ({ slug: study.slug }))
-}
+export const generateStaticParams = () => slugParams('studies')
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-  const study = await getStudyBySlug(slug)
-  if (!study) return {}
-  return { title: study.title, description: study.excerpt ?? undefined }
-}
+export const generateMetadata = slugMetadata(getStudyBySlug)
 
-export default async function StudyPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function StudyPage({ params }: SlugParams) {
   const { slug } = await params
   const study = await getStudyBySlug(slug)
   if (!study) notFound()
@@ -51,7 +38,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
 
       {study.featuredImage ? (
         <Container className="pb-10">
-          <Image
+          <MediaImage
             media={study.featuredImage}
             className="max-h-[32rem] rounded-lg object-contain"
             sizes="(min-width: 1240px) 1200px, 100vw"

@@ -1,32 +1,19 @@
-import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { Container } from '@/components/ui/Container'
-import { Image } from '@/components/ui/Media'
+import { MediaImage } from '@/components/ui/Media'
 import { formatDate } from '@/lib/format'
-import { getClient, getPostBySlug } from '@/lib/payload'
+import { getPostBySlug } from '@/lib/payload'
+import { slugMetadata, slugParams, type SlugParams } from '@/lib/routes'
 
 export const dynamicParams = false
 
-export async function generateStaticParams() {
-  const payload = await getClient()
-  const posts = await payload.find({ collection: 'posts', limit: 500, select: { slug: true } })
-  return posts.docs.map((post) => ({ slug: post.slug }))
-}
+export const generateStaticParams = () => slugParams('posts')
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-  const post = await getPostBySlug(slug)
-  if (!post) return {}
-  return { title: post.title, description: post.excerpt ?? undefined }
-}
+export const generateMetadata = slugMetadata(getPostBySlug)
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PostPage({ params }: SlugParams) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) notFound()
@@ -45,7 +32,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       {post.featuredImage ? (
         <Container className="pb-10">
-          <Image
+          <MediaImage
             media={post.featuredImage}
             className="max-h-[32rem] rounded-lg object-cover"
             sizes="(min-width: 1240px) 1200px, 100vw"

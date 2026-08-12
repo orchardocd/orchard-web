@@ -9,6 +9,7 @@ const GROUPS: { value: Person['group']; label: string }[] = [
   { value: 'scientific-advisory-board', label: 'Scientific advisory board' },
   { value: 'partners', label: 'Our supporters' },
   { value: 'ambassadors', label: 'Our volunteers' },
+  { value: 'college', label: 'Our members' },
 ]
 
 function PersonCard({ person }: { person: Person }) {
@@ -35,12 +36,13 @@ function PersonCard({ person }: { person: Person }) {
   )
 }
 
-export async function PeopleSections() {
+export async function PeopleSections({ only }: { only?: Person['group'][] } = {}) {
   const people = await getPeople()
+  const groups = only ? GROUPS.filter((group) => only.includes(group.value)) : GROUPS
 
   return (
     <>
-      {GROUPS.map((group, index) => {
+      {groups.map((group, index) => {
         const members = people.filter((person) => person.group === group.value)
         if (members.length === 0) return null
         const headingId = `people-${group.value}`

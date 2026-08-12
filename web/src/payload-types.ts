@@ -511,7 +511,7 @@ export interface Person {
    * URL path segment. Lowercase words separated by hyphens.
    */
   slug: string;
-  group: 'trustees' | 'team' | 'scientific-advisory-board' | 'ambassadors' | 'partners';
+  group: 'trustees' | 'team' | 'scientific-advisory-board' | 'ambassadors' | 'partners' | 'college';
   order?: number | null;
   role?: string | null;
   website?: string | null;

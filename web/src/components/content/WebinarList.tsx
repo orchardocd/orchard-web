@@ -1,7 +1,7 @@
 import { getWebinars } from '@/lib/payload'
 import { VideoEmbed } from '@/components/blocks/VideoEmbed'
 import { Container, Section } from '@/components/ui/Container'
-import { Image } from '@/components/ui/Media'
+import { MediaImage } from '@/components/ui/Media'
 
 export async function WebinarList() {
   const webinars = await getWebinars()
@@ -17,7 +17,7 @@ export async function WebinarList() {
             <li key={webinar.id} className="flex flex-col gap-4">
               <h3 className="text-xl leading-snug font-bold text-ink">{webinar.title}</h3>
               {webinar.image ? (
-                <Image
+                <MediaImage
                   media={webinar.image}
                   className="rounded-lg"
                   sizes="(min-width: 1024px) 50vw, 100vw"

@@ -126,10 +126,11 @@ def image_stem(src: str, side: str) -> str | None:
         match = re.search(r'wp-content/uploads/([^"\')\s?]+)', src)
         if not match:
             return None
-        path = re.sub(r'-\d+x\d+(?=\.\w+$)', '', match.group(1))
+        path = re.sub(r'(?:-\d+x\d+|-scaled)(?=\.\w+$)', '', match.group(1))
         if IGNORED_IMAGE.search(Path(path).name):
             return None
-        return media_stem('uploads/' + path)
+        # An unmapped upload was never extracted, so it cannot be on the new site.
+        return media_stem('uploads/' + path) or f'unextracted:{path}'
     match = re.search(r'/api/media/file/([^/"\')\s?&]+?)\.\w+(?:$|[?&])', src)
     if not match:
         return None

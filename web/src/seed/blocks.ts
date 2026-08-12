@@ -3,7 +3,6 @@ import {
   editorConfigFactory,
   type SanitizedServerEditorConfig,
 } from '@payloadcms/richtext-lexical'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error jsdom ships no type declarations
 import { JSDOM } from 'jsdom'
 import type { Payload } from 'payload'

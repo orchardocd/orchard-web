@@ -30,6 +30,13 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm dup
+      - run: pnpm seed
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test
+      - name: Content parity with the previous site
+        run: |
+          pnpm start -H 127.0.0.1 &
+          npx --yes wait-on http://127.0.0.1:3000 -t 120000
+          pip install --quiet beautifulsoup4 lxml
+          pnpm parity

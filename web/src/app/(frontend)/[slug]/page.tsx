@@ -1,41 +1,23 @@
-import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { PageHero } from '@/components/layout/PageHero'
 import { Container } from '@/components/ui/Container'
-import { getClient, getPageBySlug } from '@/lib/payload'
+import { getPageBySlug } from '@/lib/payload'
+import { slugMetadata, slugParams, type SlugParams } from '@/lib/routes'
 import { PeopleSections } from '@/components/content/PeopleSections'
 import { StudyList } from '@/components/content/StudyList'
 import { WebinarList } from '@/components/content/WebinarList'
 
 export const dynamicParams = false
 
-const RESERVED = new Set(['home', 'blog'])
+const RESERVED = ['home', 'blog']
 
-export async function generateStaticParams() {
-  const payload = await getClient()
-  const pages = await payload.find({ collection: 'pages', limit: 200, select: { slug: true } })
-  return pages.docs
-    .filter((page) => !RESERVED.has(page.slug))
-    .map((page) => ({ slug: page.slug }))
-}
+export const generateStaticParams = () => slugParams('pages', [...RESERVED])
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-  const page = await getPageBySlug(slug)
-  if (!page) return {}
-  return {
-    title: page.title,
-    description: page.meta?.description ?? undefined,
-  }
-}
+export const generateMetadata = slugMetadata(getPageBySlug)
 
-export default async function DynamicPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function DynamicPage({ params }: SlugParams) {
   const { slug } = await params
   const page = await getPageBySlug(slug)
   if (!page) notFound()
@@ -47,6 +29,7 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
         <RenderBlocks blocks={page.layout} />
       </Container>
       {slug === 'about-orchard' ? <PeopleSections /> : null}
+      {slug === 'about' ? <PeopleSections only={['college']} /> : null}
       {slug === 'participate-research' ? <StudyList /> : null}
       {slug === 'webinars' ? <WebinarList /> : null}
     </>

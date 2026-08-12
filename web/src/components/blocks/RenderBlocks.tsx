@@ -2,7 +2,7 @@ import { cn } from '@/lib/cn'
 import type { Page } from '@/payload-types'
 import { RichText } from '@/components/RichText'
 import { ButtonLink, type ButtonVariant } from '@/components/ui/Button'
-import { Image } from '@/components/ui/Media'
+import { MediaImage } from '@/components/ui/Media'
 import { Accordion } from '@/components/blocks/Accordion'
 import { DocumentLink } from '@/components/blocks/DocumentLink'
 import { VideoEmbed, VideoPlayer } from '@/components/blocks/VideoEmbed'
@@ -66,7 +66,7 @@ export function RenderBlocks({
           case 'imageBlock':
             return (
               <figure key={key} className="mx-auto max-w-4xl">
-                <Image media={block.image} className="rounded-lg" />
+                <MediaImage media={block.image} className="rounded-lg" />
                 {block.caption ? (
                   <figcaption className="mt-3 text-sm text-faint">{block.caption}</figcaption>
                 ) : null}

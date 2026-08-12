@@ -12,6 +12,11 @@ export const slugField: Field = {
   },
 }
 
+export const titledContentFields: Field[] = [
+  { name: 'title', type: 'text', required: true },
+  { name: 'content', type: 'richText' },
+]
+
 export const seoFields: Field = {
   name: 'meta',
   type: 'group',

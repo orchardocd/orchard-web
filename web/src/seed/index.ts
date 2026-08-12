@@ -18,6 +18,7 @@ const GROUP_SLUGS: Record<string, PersonGroup> = {
   'Scientific Advisory Board': 'scientific-advisory-board',
   'Our Supporters': 'partners',
   'Our Volunteers': 'ambassadors',
+  'Our Members': 'college',
 }
 
 const COLLECTIONS = [

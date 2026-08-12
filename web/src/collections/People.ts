@@ -27,6 +27,7 @@ export const People: CollectionConfig = {
         { label: 'Scientific Advisory Board', value: 'scientific-advisory-board' },
         { label: 'Ambassadors', value: 'ambassadors' },
         { label: 'Partners', value: 'partners' },
+        { label: 'College members', value: 'college' },
       ],
     },
     { name: 'order', type: 'number', defaultValue: 0, admin: { position: 'sidebar' } },

@@ -34,6 +34,8 @@ CHROME_SELECTORS = [
     '.post-tags', '.tags-links', '.entry-footer',
     '.home-recent-blogs', '.ocd-blogg', '.all-blogs', '.recent-blog-section',
     '.ocd-research-listing', '.participate-research-listing',
+    '.about-orchard-team', '.about-orchard-scientificadvisory',
+    '.about-orchardsupporters', '.about-orchardvolunteers',
 ]
 
 JUNK_TEXT = re.compile(
@@ -114,7 +116,7 @@ def is_junk(markup):
 
 
 def strip_size_suffix(url):
-    return re.sub(r'-\d+x\d+(?=\.\w+$)', '', url)
+    return re.sub(r'(?:-\d+x\d+|-scaled)(?=\.\w+$)', '', url)
 
 
 def local_upload_path(url):
@@ -130,11 +132,29 @@ def mirror_file(url):
 
 def find_by_basename(name):
     """The mirror sometimes holds an asset under a different date folder."""
-    matches = sorted((SITE / 'wp-content' / 'uploads').rglob(name))
-    for match in matches:
+    for match in sorted((SITE / 'wp-content' / 'uploads').rglob(name)):
         if match.stat().st_size > 0:
             return match
     return None
+
+
+def find_largest_variant(url):
+    """wget sometimes captured only WordPress's resized copies of an image."""
+    key = local_upload_path(url)
+    if not key:
+        return None
+    target = SITE / 'wp-content' / key
+    folder = target.parent
+    if not folder.is_dir():
+        return None
+    stem, _, suffix = target.name.rpartition('.')
+    pattern = re.compile(rf'{re.escape(stem)}-\d+x\d+\.{re.escape(suffix)}$')
+    candidates = [
+        match
+        for match in folder.iterdir()
+        if pattern.fullmatch(match.name) and match.is_file() and match.stat().st_size > 0
+    ]
+    return max(candidates, key=lambda match: match.stat().st_size) if candidates else None
 
 
 def register_image(url, alt=''):
@@ -145,12 +165,12 @@ def register_image(url, alt=''):
     key = local_upload_path(url)
     if not key:
         return None
-    path = mirror_file(url) or find_by_basename(Path(key).name)
-    if path is None and original != url:
-        path = mirror_file(original)
-        if path is not None:
-            key = local_upload_path(original) or key
-            url = original
+    path = (
+        mirror_file(url)
+        or (mirror_file(original) if original != url else None)
+        or find_by_basename(Path(key).name)
+        or find_largest_variant(url)
+    )
     if path is None:
         return None
     entry = images_seen.setdefault(
@@ -321,6 +341,9 @@ def para_blocks(container):
             markup = inline_html(soup_of(f'<x>{node}</x>').x)
             if markup:
                 pending.append(markup)
+            if node.find('img'):
+                flush()
+                blocks.extend(image_blocks(node))
             continue
         if node.name == 'p':
             flush()
@@ -649,9 +672,12 @@ def yoast_description(item):
     return strip_tags(yoast.get('og_description') or yoast.get('description') or '')
 
 
+BANNER_IMAGE_WRAPPER = re.compile(r'bnr-img-wrp|banner-inner-img|banner-img')
+
+
 def slide_scope(details):
     scope = details
-    while scope is not None and scope.find(class_='bnr-img-wrp') is None:
+    while scope is not None and scope.find(class_=BANNER_IMAGE_WRAPPER) is None:
         scope = scope.parent
         if scope is not None and scope.get('class') and any(
             'banner-section' in name for name in scope.get('class')
@@ -689,7 +715,9 @@ def extract_hero(slug):
         scope = slide_scope(details)
         image = None
         if scope is not None:
-            img = scope.select_one('img.desk-bnr') or scope.select_one('.bnr-img-wrp img')
+            img = scope.select_one('img.desk-bnr') or scope.find(class_=BANNER_IMAGE_WRAPPER)
+            if img is not None and img.name != 'img':
+                img = img.find('img')
             if img:
                 image = register_image(img.get('src'), img.get('alt'))
         if not body and not links and not image:
@@ -738,12 +766,14 @@ def extract_posts(categories):
         slug = post['slug']
         path = SITE / slug / 'index.html'
         byline = None
+        theme_image = None
         if path.exists():
             soup = read_soup(path)
             byline = post_byline(soup)
             scope = soup.find(class_='ocd-single-post')
             if scope is not None:
                 for image in scope.select('img.wp-post-image'):
+                    theme_image = register_image(image.get('src'), image.get('alt'))
                     image.decompose()
                 blocks = elementor_blocks(str(scope))
             else:
@@ -756,7 +786,7 @@ def extract_posts(categories):
             'date': post['date'],
             'categories': [categories[c] for c in post.get('categories', []) if c in categories],
             'description': yoast_description(post),
-            'featuredImage': featured_image(post),
+            'featuredImage': theme_image or featured_image(post),
             'byline': byline,
             'blocks': blocks,
         })
@@ -842,17 +872,19 @@ def extract_people():
 
     for path in SITE.rglob('index.html'):
         markup = read_text(path)
-        if '/employees/' not in markup:
+        if '/employees/' not in markup and '/members/' not in markup:
             continue
         soup = BeautifulSoup(markup, PARSER)
         for card in soup.find_all(class_=CARD_CLASS):
-            link = card.find('a', class_='modal-link') or card.find('a', href=re.compile('/employees/'))
+            link = card.find('a', class_='modal-link') or card.find(
+                'a', href=re.compile('/(employees|members)/')
+            )
             if not link:
                 continue
-            match = re.search(r'/employees/([^/]+)/?', link.get('href', ''))
+            match = re.search(r'/(employees|members)/([^/]+)/?', link.get('href', ''))
             if not match:
                 continue
-            slug = match.group(1)
+            slug = match.group(2) if match.group(1) == 'employees' else f'member-{match.group(2)}'
             person = people.get(slug)
             if person is None:
                 heading = card.find(['h3', 'h4'])

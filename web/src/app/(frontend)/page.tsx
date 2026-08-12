@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
+import { PostCards } from '@/components/content/ArticleCard'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
-import { DashPattern } from '@/components/layout/DashPattern'
+import { Banner } from '@/components/layout/Banner'
 import { HeroHighlights } from '@/components/layout/PageHero'
 import { ButtonLink } from '@/components/ui/Button'
 import { Container, Section } from '@/components/ui/Container'
-import { formatDate } from '@/lib/format'
 import { getPageBySlug, getPosts, getSiteSettings, getWebinars } from '@/lib/payload'
 
 export default async function HomePage() {
@@ -19,53 +19,52 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-brand-deep">
-        <DashPattern className="pointer-events-none absolute -top-8 -right-10 opacity-18" />
-        <Container className="relative pt-20 pb-16 md:pt-24">
-          <p className="mb-5 text-sm font-bold tracking-[0.22em] text-lime-soft uppercase">
-            Find · Filter · Fund
-          </p>
-          <h1 className="max-w-4xl text-5xl leading-[1.02] font-bold tracking-tight text-balance text-white italic md:text-7xl">
-            Advancing global <span className="text-lime">OCD research</span>
-          </h1>
-          <p className="mt-7 max-w-2xl text-xl leading-relaxed text-pretty text-white/92 md:text-2xl">
-            Help us develop better treatments for Obsessive Compulsive Disorder (OCD).
-          </p>
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <ButtonLink href={settings.donateUrl} variant="donate" className="px-8 py-4 text-lg">
-              Donate now
-            </ButtonLink>
-            <ButtonLink href={settings.registryUrl} variant="ghost" className="px-8 py-4 text-lg">
-              Join the OCD registry
-            </ButtonLink>
-          </div>
-        </Container>
-
-        {(settings.stats ?? []).length > 0 ? (
-          <Container className="relative grid gap-7 pb-20 md:grid-cols-2">
-            {(settings.stats ?? []).map((stat) => (
-              <div
-                key={stat.id ?? stat.value}
-                className="flex items-center gap-6 rounded-lg bg-white p-7 shadow-[0_14px_34px_rgba(0,30,27,0.24)]"
-              >
-                <p className="text-4xl font-bold tracking-tight whitespace-nowrap text-brand md:text-5xl">
-                  {stat.value}
-                </p>
-                <p className="text-base leading-relaxed text-body">{stat.description}</p>
-              </div>
-            ))}
-          </Container>
-        ) : null}
-      </section>
+      <Banner
+        after={
+          (settings.stats ?? []).length > 0 ? (
+            <Container className="relative grid gap-7 pb-20 md:grid-cols-2">
+              {(settings.stats ?? []).map((stat) => (
+                <div
+                  key={stat.id ?? stat.value}
+                  className="flex items-center gap-6 rounded-lg bg-white p-7 shadow-[0_14px_34px_rgba(0,30,27,0.24)]"
+                >
+                  <p className="text-4xl font-bold tracking-tight whitespace-nowrap text-brand md:text-5xl">
+                    {stat.value}
+                  </p>
+                  <p className="text-base leading-relaxed text-body">{stat.description}</p>
+                </div>
+              ))}
+            </Container>
+          ) : undefined
+        }
+      >
+        <p className="mb-5 text-sm font-bold tracking-[0.22em] text-lime-soft uppercase">
+          Find · Filter · Fund
+        </p>
+        <h1 className="max-w-4xl text-5xl leading-[1.02] font-bold tracking-tight text-balance text-white italic md:text-7xl">
+          Advancing global <span className="text-lime">OCD research</span>
+        </h1>
+        <p className="mt-7 max-w-2xl text-xl leading-relaxed text-pretty text-white/92 md:text-2xl">
+          Help us develop better treatments for Obsessive Compulsive Disorder (OCD).
+        </p>
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <ButtonLink href={settings.donateUrl} variant="donate" className="px-8 py-4 text-lg">
+            Donate now
+          </ButtonLink>
+          <ButtonLink href={settings.registryUrl} variant="ghost" className="px-8 py-4 text-lg">
+            Join the OCD registry
+          </ButtonLink>
+        </div>
+      </Banner>
 
       <Container>
         <div className="grid gap-6 pt-16 md:grid-cols-3">
           <a
             href={settings.donateUrl}
-            className="flex min-h-44 flex-col gap-3 rounded-lg bg-brand p-8 text-white no-underline hover:bg-brand-hover"
+            className="flex min-h-44 flex-col gap-3 rounded-lg bg-brand-strong p-8 text-white no-underline hover:bg-brand-hover"
           >
             <h2 className="text-2xl font-bold">Donate</h2>
-            <p className="text-base leading-relaxed text-white/90">
+            <p className="text-base leading-relaxed text-white">
               Donate today to help OCD research.
             </p>
             <span aria-hidden="true" className="mt-auto text-2xl font-bold">
@@ -125,33 +124,12 @@ export default async function HomePage() {
               View all posts →
             </Link>
           </div>
-          <ul className="grid gap-6 md:grid-cols-3">
-            {posts.docs.map((post, index) => (
-              <li
-                key={post.id}
-                className="flex flex-col gap-3 rounded-lg border border-line border-t-6 p-7"
-                style={{ borderTopColor: index % 2 === 0 ? '#B6BF00' : '#00877C' }}
-              >
-                <p className="text-xs font-bold tracking-[0.1em] text-faint uppercase">
-                  {formatDate(post.publishedAt)}
-                  {post.byline ? ` · ${post.byline}` : ''}
-                </p>
-                <h3 className="text-xl leading-snug font-bold">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-ink no-underline hover:text-brand-link"
-                  >
-                    {post.title}
-                  </Link>
-                </h3>
-                {post.excerpt ? (
-                  <p className="line-clamp-4 text-[0.97rem] leading-relaxed text-body">
-                    {post.excerpt}
-                  </p>
-                ) : null}
-              </li>
-            ))}
-          </ul>
+          <PostCards
+            posts={posts.docs}
+            className="grid gap-6 md:grid-cols-3"
+            accents={['#B6BF00', '#00877C']}
+            showImages={false}
+          />
 
           {latestWebinar ? (
             <div className="mt-8 flex flex-wrap items-center justify-between gap-6 rounded-lg bg-brand-deep px-9 py-7">
@@ -166,7 +144,7 @@ export default async function HomePage() {
         </Container>
       </Section>
 
-      <Section labelledBy="newsletter" className="bg-brand">
+      <Section labelledBy="newsletter" className="bg-brand-strong">
         <Container className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <h2 id="newsletter" className="text-3xl font-bold text-white">

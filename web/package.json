@@ -14,14 +14,14 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
-    "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
+    "test:e2e": "cross-env NODE_OPTIONS=--no-deprecation playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "typecheck": "tsc --noEmit",
     "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)' src tests",
-    "ci": "pnpm lint && pnpm typecheck && pnpm dup && pnpm build && pnpm test",
     "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
     "seed": "node --import tsx/esm --env-file=.env src/seed/index.ts",
-    "parity": "python3 ../tools/check_parity.py"
+    "parity": "python3 ../tools/check_parity.py",
+    "verify": "pnpm lint && pnpm typecheck && pnpm dup && pnpm seed && pnpm build && pnpm test"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
@@ -55,7 +55,6 @@
     "@vitejs/plugin-react": "4.5.2",
     "eslint": "^9.16.0",
     "eslint-config-next": "16.3.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
     "jsdom": "28.0.0",
     "prettier": "^3.4.2",
     "tsx": "4.23.12",

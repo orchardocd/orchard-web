@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { contentBlocks } from '@/blocks/index'
-import { seoFields, slugField } from '@/fields/slug'
+import { articleFields } from '@/fields/document'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -14,15 +13,7 @@ export const Posts: CollectionConfig = {
     group: 'Content',
   },
   defaultSort: '-publishedAt',
-  fields: [
-    { name: 'title', type: 'text', required: true },
-    slugField,
-    {
-      name: 'publishedAt',
-      type: 'date',
-      required: true,
-      admin: { position: 'sidebar', date: { pickerAppearance: 'dayOnly' } },
-    },
+  fields: articleFields([
     { name: 'byline', type: 'text', admin: { position: 'sidebar' } },
     {
       name: 'categories',
@@ -31,13 +22,5 @@ export const Posts: CollectionConfig = {
       hasMany: true,
       admin: { position: 'sidebar' },
     },
-    { name: 'excerpt', type: 'textarea' },
-    { name: 'featuredImage', type: 'upload', relationTo: 'media' },
-    {
-      name: 'layout',
-      type: 'blocks',
-      blocks: contentBlocks,
-    },
-    seoFields,
-  ],
+  ]),
 }
