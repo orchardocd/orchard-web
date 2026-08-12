@@ -768,127 +768,6 @@
    "blocks": [
     {
      "type": "heading",
-     "level": 2,
-     "text": "OCD & Future-Forward Treatment with Sunday Times Bestseller David Adam"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/UxdnYYceYKU"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "OCD, Bulimia & More with Daily Telegraph Author Byrony Gordon"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/-yZ5vyQB7SU"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Can Psilocybin Help Treat OCD? A Conversation with Prof. David Nutt"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/vJaOGdSjHGE"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Current and Future OCD Treatments with OCD Expert Professor Naomi Fineberg"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/PZj0b9Nrw90"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "The Brain on OCD with Professor Trevor Robbins"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/6TO8DtEjuI4"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Treating OCD during the COVID Pandemic with Professor Naomi Fineberg"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/81LLsQXO6sE"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Deep Brain Stimulation for OCD: A Conversation With Dr Himanshu Tyagi and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/douavdKAW7A"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "OCD and Hoarding: A Conversation With Dr. Sharon Morein and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/BY66TfzzqmU"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "\"Everything you need to know about OCD\": A Conversation With Dr Lynne Drummond and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://www.youtube.com/watch?v=6x59KTFuRZ4"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Can Ultrasound Become and Effective OCD Treatment? A Conversation With Prof Elsa Fouragnan and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/apd_T2mg2dw",
-     "poster": "uploads/2025/04/OCD-Conversations-Elsa-Fouragnan-Cover.jpg"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "Doubt in OCD: A Conversation With Dr Tricia Seow and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/jhx4jAnQfLM",
-     "poster": "uploads/2025/06/THE-ORCHARD-CONVOS-2-Cover.jpg"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "What are Glutamate and GABA and do they hold the key to treating OCD? A Conversation With Professor Amy Milton and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://youtu.be/MSiovmM2nJg",
-     "poster": "uploads/2025/06/clip-4-cost-orchard-milton1-Cover.jpg"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "The neurochemical basis of OCD: A Conversation With Dr Marjan Biria and Sean Fletcher"
-    },
-    {
-     "type": "video",
-     "url": "https://www.youtube.com/watch?v=1kZOJmex5qM&ab_channel=OrchardOCD",
-     "poster": "uploads/2025/09/IMG-20250904-WA0009-1.jpg"
-    },
-    {
-     "type": "heading",
      "level": 1,
      "text": "Webinars"
     },
@@ -900,24 +779,6 @@
      "type": "image",
      "image": "uploads/2022/06/logo-MadeofMillions.svg",
      "href": "https://www.madeofmillions.com/"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "BAP: OCD Public Lecture a personal account of living with OCD with Nick Sireau"
-    },
-    {
-     "type": "video",
-     "url": "https://www.youtube.com/watch?v=FXxIdBomAHs"
-    },
-    {
-     "type": "heading",
-     "level": 2,
-     "text": "BAP: Public OCD Lecture “I just can’t stop” with Professor Naomi Fineberg + Q&A"
-    },
-    {
-     "type": "video",
-     "url": "https://www.youtube.com/watch?v=vO7EuSueXAI&t=1s"
     }
    ]
   },
@@ -12272,76 +12133,91 @@
  "webinars": [
   {
    "title": "OCD & Future-Forward Treatment with Sunday Times Bestseller David Adam",
+   "description": null,
    "url": "https://youtu.be/UxdnYYceYKU",
    "image": null
   },
   {
    "title": "OCD, Bulimia & More with Daily Telegraph Author Byrony Gordon",
+   "description": null,
    "url": "https://youtu.be/-yZ5vyQB7SU",
    "image": null
   },
   {
    "title": "Can Psilocybin Help Treat OCD? A Conversation with Prof. David Nutt",
+   "description": null,
    "url": "https://youtu.be/vJaOGdSjHGE",
    "image": null
   },
   {
    "title": "Current and Future OCD Treatments with OCD Expert Professor Naomi Fineberg",
+   "description": null,
    "url": "https://youtu.be/PZj0b9Nrw90",
    "image": null
   },
   {
    "title": "The Brain on OCD with Professor Trevor Robbins",
+   "description": null,
    "url": "https://youtu.be/6TO8DtEjuI4",
    "image": null
   },
   {
    "title": "Treating OCD during the COVID Pandemic with Professor Naomi Fineberg",
+   "description": null,
    "url": "https://youtu.be/81LLsQXO6sE",
    "image": null
   },
   {
    "title": "Deep Brain Stimulation for OCD: A Conversation With Dr Himanshu Tyagi and Sean Fletcher",
+   "description": null,
    "url": "https://youtu.be/douavdKAW7A",
    "image": null
   },
   {
    "title": "OCD and Hoarding: A Conversation With Dr. Sharon Morein and Sean Fletcher",
+   "description": null,
    "url": "https://youtu.be/BY66TfzzqmU",
    "image": null
   },
   {
    "title": "“Everything You Need To Know About OCD”: A Conversation With Dr. Lynne Drummond and Sean Fletcher",
+   "description": "\"Everything you need to know about OCD\": A Conversation With Dr Lynne Drummond and Sean Fletcher",
    "url": "https://www.youtube.com/watch?v=6x59KTFuRZ4",
    "image": null
   },
   {
    "title": "Can Ultrasound Become an Effective OCD Treatment: A Conversation With Dr Elsa Fouragnan and Sean Fletcher",
+   "description": "Can Ultrasound Become and Effective OCD Treatment? A Conversation With Prof Elsa Fouragnan and Sean Fletcher",
    "url": "https://youtu.be/apd_T2mg2dw",
    "image": "uploads/2025/04/OCD-Conversations-Elsa-Fouragnan-Cover.jpg"
   },
   {
    "title": "Doubt in OCD: A Conversation With Dr Tricia Seow and Sean Fletcher",
+   "description": null,
    "url": "https://youtu.be/jhx4jAnQfLM",
    "image": "uploads/2025/06/THE-ORCHARD-CONVOS-2-Cover.jpg"
   },
   {
    "title": "What are Glutamate and GABA and do they hold the key to treating OCD? A Conversation With Professor Amy Milton and Sean Fletcher",
+   "description": null,
    "url": "https://youtu.be/MSiovmM2nJg",
    "image": "uploads/2025/06/clip-4-cost-orchard-milton1-Cover.jpg"
   },
   {
    "title": "The neurochemical basis of OCD: A Conversation With Dr Marjan Biria and Sean Fletcher",
+   "description": null,
    "url": "https://www.youtube.com/watch?v=1kZOJmex5qM&ab_channel=OrchardOCD",
    "image": "uploads/2025/09/IMG-20250904-WA0009-1.jpg"
   },
   {
    "title": "BAP: OCD Public Lecture a personal account of living with OCD with Nick Sireau",
+   "description": null,
    "url": "https://www.youtube.com/watch?v=FXxIdBomAHs",
    "image": null
   },
   {
    "title": "BAP: Public OCD Lecture “I just can’t stop” with Professor Naomi Fineberg + Q&A",
+   "description": null,
    "url": "https://www.youtube.com/watch?v=vO7EuSueXAI&t=1s",
    "image": null
   }

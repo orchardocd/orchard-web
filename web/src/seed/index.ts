@@ -249,6 +249,7 @@ export async function seed(payload: Payload) {
         title: webinar.title,
         slug: `webinar-${index + 1}`,
         url: webinar.url,
+        description: webinar.description ?? undefined,
         image: webinar.image ? mediaIds.get(webinar.image) : undefined,
         order: index,
       },

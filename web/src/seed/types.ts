@@ -97,6 +97,7 @@ export type SeedPerson = {
 
 export type SeedWebinar = {
   title: string
+  description: string | null
   url: string
   image: string | null
 }

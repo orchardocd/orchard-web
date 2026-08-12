@@ -1,7 +1,6 @@
-import { getWebinars } from '@/lib/payload'
 import { VideoEmbed } from '@/components/blocks/VideoEmbed'
 import { Container, Section } from '@/components/ui/Container'
-import { MediaImage } from '@/components/ui/Media'
+import { getWebinars } from '@/lib/payload'
 
 export async function WebinarList() {
   const webinars = await getWebinars()
@@ -16,14 +15,7 @@ export async function WebinarList() {
           {webinars.map((webinar) => (
             <li key={webinar.id} className="flex flex-col gap-4">
               <h3 className="text-xl leading-snug font-bold text-ink">{webinar.title}</h3>
-              {webinar.image ? (
-                <MediaImage
-                  media={webinar.image}
-                  className="rounded-lg"
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                />
-              ) : null}
-              <VideoEmbed url={webinar.url} title={webinar.title} />
+              <VideoEmbed url={webinar.url} title={webinar.title} poster={webinar.image} />
               {webinar.description ? (
                 <p className="text-[0.97rem] leading-relaxed text-body">{webinar.description}</p>
               ) : null}

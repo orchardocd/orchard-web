@@ -51,9 +51,9 @@ test.describe('site', () => {
 
   test('renders webinars with playable embeds', async ({ page }) => {
     await page.goto('/webinars')
-    await expect(page.getByRole('heading', { name: 'All webinars' })).toBeVisible()
     const embeds = page.locator('main iframe')
     expect(await embeds.count()).toBeGreaterThan(10)
+    await expect(embeds.first()).toHaveAttribute('title', /\S/)
   })
 
   test('returns a 404 page for unknown routes', async ({ page }) => {

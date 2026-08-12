@@ -774,6 +774,26 @@ def drop_design_owned(blocks):
     return result
 
 
+def drop_webinar_listing(blocks):
+    """The webinars page is a listing: the rebuild renders it from the collection."""
+    result = []
+    for block in blocks:
+        if block['type'] == 'video':
+            if result and result[-1]['type'] == 'heading':
+                result.pop()
+            continue
+        result.append(block)
+    return result
+
+
+def page_blocks(slug, blocks):
+    if slug == 'home':
+        return drop_design_owned(blocks)
+    if slug == 'webinars':
+        return drop_webinar_listing(blocks)
+    return blocks
+
+
 def extract_pages():
     pages = []
     for page in load_api('pages'):
@@ -787,7 +807,7 @@ def extract_pages():
             'description': yoast_description(page),
             'featuredImage': featured_image(page),
             'hero': extract_hero(slug),
-            'blocks': blocks if slug != 'home' else drop_design_owned(blocks),
+            'blocks': page_blocks(slug, blocks),
         })
     return pages
 
@@ -1014,8 +1034,13 @@ def extract_webinars():
         overlay = re.search(
             r'"image_overlay":\{[^}]*?"url":"([^"]+)"', widget.get('data-settings', '')
         )
+        listed = widget_title_near(widget)
+        title = banner_titles.get(video_id(url)) or listed or 'Webinar'
         webinars.append({
-            'title': banner_titles.get(video_id(url)) or widget_title_near(widget) or 'Webinar',
+            'title': title,
+            # The old page sometimes worded a title differently in the list than in
+            # the slider; keep the alternate wording so nothing is lost.
+            'description': listed if listed and listed != title else None,
             'url': url,
             'image': register_image(overlay.group(1).replace('\\/', '/')) if overlay else None,
         })
