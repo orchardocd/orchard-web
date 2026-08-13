@@ -127,7 +127,7 @@ export default async function HomePage() {
           We build a community of interdisciplinary professionals and work with them closely to
           progress together in developing new and better treatments for patients suffering from OCD.
         </p>
-        <ButtonLink href="/about-ocd" variant="secondary" className="mt-8">
+        <ButtonLink href="/about-orchard" variant="secondary" className="mt-8">
           About us
         </ButtonLink>
 
