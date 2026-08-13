@@ -11,7 +11,7 @@ export function SocialLinks({
   linkClassName: string
 }) {
   return (
-    <ul className={cn('grid grid-cols-2 gap-2 sm:flex sm:flex-wrap', className)}>
+    <ul className={cn('flex flex-wrap gap-2', className)}>
       {items.map((item) => (
         <li key={item.url}>
           <a href={item.url} className={linkClassName}>

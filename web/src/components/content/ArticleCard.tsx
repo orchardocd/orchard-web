@@ -2,11 +2,13 @@ import Link from 'next/link'
 
 import { CARD_TITLE_CLASSES } from '@/components/layout/Banner'
 import { DashRule } from '@/components/layout/DashPattern'
-import { isWideMedia, MediaImage, type MediaValue } from '@/components/ui/Media'
+import { LABEL_CLASSES } from '@/components/site'
+import { MediaImage, type MediaValue } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 import { formatDate } from '@/lib/format'
 
-const PLATE_CLASSES = 'aspect-[16/9] border-b border-line bg-mist'
+const BAND_CLASSES = 'aspect-[16/9] border-b border-line bg-mist'
+const CARD_GRID_CLASSES = 'grid items-stretch gap-x-6 gap-y-10'
 
 type ArticleCardProps = {
   href: string
@@ -31,7 +33,6 @@ export function ArticleCard({
   placeholder = true,
   headingLevel = 2,
 }: ArticleCardProps) {
-  const wide = isWideMedia(image)
   const Heading = headingLevel === 3 ? 'h3' : 'h2'
 
   return (
@@ -45,19 +46,19 @@ export function ArticleCard({
       {image ? (
         <MediaImage
           media={image}
-          fills={!wide}
-          className={cn(PLATE_CLASSES, wide ? 'object-contain p-6' : 'object-cover object-top')}
+          fills
+          className={cn(BAND_CLASSES, 'object-contain')}
           sizes="(min-width: 1024px) 33vw, 100vw"
         />
       ) : placeholder ? (
         // Without a picture the card still needs the same opening band, or the row goes ragged.
-        <div className={cn(PLATE_CLASSES, 'hidden items-center justify-center md:flex')}>
+        <div className={cn(BAND_CLASSES, 'hidden items-center justify-center md:flex')}>
           <DashRule className="scale-150" tone="brand-deep" />
         </div>
       ) : null}
       <div className="flex flex-col gap-2 p-5 md:p-7">
         {date || byline ? (
-          <p className="text-xs font-bold tracking-[0.1em] text-faint uppercase">
+          <p className={cn(LABEL_CLASSES, 'text-faint')}>
             {date ? <time dateTime={date}>{formatDate(date)}</time> : null}
             {date && byline ? ' · ' : ''}
             {byline}
@@ -107,7 +108,7 @@ export function ArticleCards({
   headingLevel?: 2 | 3
 }) {
   return (
-    <ul className={className}>
+    <ul className={cn(className, CARD_GRID_CLASSES)}>
       {articles.map((article, index) => (
         <ArticleCard
           key={article.id}

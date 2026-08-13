@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-import { Figure, PageBanner, PageSection, Photo, Prose, TextWithFigure } from '@/components/site'
+import { Figure, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 import { CONTACT, DONATE_URL } from '@/lib/site'
 
@@ -74,32 +74,27 @@ export default function GetInvolvedPage() {
       </PageSection>
 
       <PageSection heading="Volunteer" tone="mist">
-        <div className="w-full flow:grid flow:grid-cols-[1fr_40rem] flow:items-start flow:gap-x-12">
-          <div className="w-full max-w-measure flow:order-2">
-            <Prose>
-              <p>
-                We treasure our volunteers here at Orchard OCD. Even the smallest support can make a
-                big difference to our work; we certainly wouldn’t be in the position we are
-                currently without the commitment and kindness of our volunteers.
-              </p>
-            </Prose>
-            <div className="mt-8">
-              <ButtonLink
-                href="/volunteer"
-                variant="secondary"
-                detail="about volunteering"
-              >
-                Learn More
-              </ButtonLink>
-            </div>
-          </div>
-          <div className="mt-10 flow:order-1 flow:mt-0">
-            <Photo
+        <TextWithFigure
+          figure={
+            <Figure
               file="2022-04-get-involved-volunteer-img.svg"
               alt="Five volunteers seen from above, joining hands in a circle"
             />
+          }
+        >
+          <Prose>
+            <p>
+              We treasure our volunteers here at Orchard OCD. Even the smallest support can make a
+              big difference to our work; we certainly wouldn’t be in the position we are currently
+              without the commitment and kindness of our volunteers.
+            </p>
+          </Prose>
+          <div className="mt-8">
+            <ButtonLink href="/volunteer" variant="secondary" detail="about volunteering">
+              Learn More
+            </ButtonLink>
           </div>
-        </div>
+        </TextWithFigure>
       </PageSection>
     </>
   )

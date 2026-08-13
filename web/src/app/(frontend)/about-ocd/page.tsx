@@ -129,7 +129,7 @@ export default function AboutOcdPage() {
           </ul>
         </Prose>
 
-        <div className="mt-4 flex flex-col gap-14">
+        <div className="mt-10 flex flex-col gap-10">
           <TextWithFigure
             figure={
               <Figure
@@ -256,18 +256,18 @@ export default function AboutOcdPage() {
         </div>
       </PageSection>
 
-      <PageSection label="First line treatment" tone="mist">
+      <PageSection heading="First line treatment" tone="mist">
         <Prose>
           <p>
-            First line treatmentThe reader must be aware that the following information about
-            treatment options is intended only as a range of treatment approaches available for
-            people with OCD. The goal is to provide an overall understanding of these therapies
-            sufficient to enable more informed interactions with physicians and therapists. The
-            numerous OCD treatment options currently available, and the variability of specific OCD
-            characteristics, are taken into account by physicians and therapists when making
-            treatment recommendations. Better insights into these factors will, hopefully, allow
-            patients and families to be more active participants in discussions and treatment
-            decision-making with their OCD specialists.
+            The reader must be aware that the following information about treatment options is
+            intended only as a range of treatment approaches available for people with OCD. The goal
+            is to provide an overall understanding of these therapies sufficient to enable more
+            informed interactions with physicians and therapists. The numerous OCD treatment options
+            currently available, and the variability of specific OCD characteristics, are taken into
+            account by physicians and therapists when making treatment recommendations. Better
+            insights into these factors will, hopefully, allow patients and families to be more
+            active participants in discussions and treatment decision-making with their OCD
+            specialists.
           </p>
           <p>
             The two principal types of OCD treatment are cognitive behavioural therapy (CBT) and

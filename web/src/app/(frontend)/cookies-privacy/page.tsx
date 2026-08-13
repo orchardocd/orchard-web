@@ -11,6 +11,8 @@ export const metadata: Metadata = {
 
 const POLICY_FILE = '2022-06-Orchard-Privacy-Policy-1.pdf'
 
+const SENTENCE_CASE_HEADING = '[&_h2]:lowercase [&_h2]:first-letter:uppercase'
+
 async function policyDocumentUrl() {
   const payload = await getClient()
   const found = await payload.find({
@@ -36,7 +38,7 @@ export default async function CookiesPrivacyPage() {
         </p>
       </PageBanner>
 
-      <PageSection label="Privacy policy document" className="py-10 md:py-12">
+      <PageSection heading="Privacy policy document">
         <Prose>
           <p>
             <a href={policy}>Orchard-Privacy-Policy-1</a>
@@ -44,7 +46,7 @@ export default async function CookiesPrivacyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="VISITOR INFORMATION" tone="ruled">
+      <PageSection heading="VISITOR INFORMATION" tone="ruled" className={SENTENCE_CASE_HEADING}>
         <Prose>
           <p>
             Every computer connected to the Internet is provided with a domain name and an IP
@@ -68,7 +70,7 @@ export default async function CookiesPrivacyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="COOKIES" tone="mist">
+      <PageSection heading="COOKIES" tone="mist" className={SENTENCE_CASE_HEADING}>
         <Prose>
           <p>
             When we provide services, we want to make them easy, useful and reliable. Where services
@@ -97,7 +99,7 @@ export default async function CookiesPrivacyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="THIRD PARTY COOKIES">
+      <PageSection heading="THIRD PARTY COOKIES" className={SENTENCE_CASE_HEADING}>
         <Prose>
           <p>
             We use a number of suppliers who may also set cookies on their websites’ on its behalf.
@@ -124,7 +126,11 @@ export default async function CookiesPrivacyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="WHAT OTHER INFORMATION DO WE REQUEST?" tone="mist">
+      <PageSection
+        heading="WHAT OTHER INFORMATION DO WE REQUEST?"
+        tone="mist"
+        className={SENTENCE_CASE_HEADING}
+      >
         <Prose>
           <p>
             We may also request your email address or mailing address for the purposes of conducting
@@ -135,7 +141,7 @@ export default async function CookiesPrivacyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="ANTI-SPAM POLICY">
+      <PageSection heading="ANTI-SPAM POLICY" className={SENTENCE_CASE_HEADING}>
         <Prose>
           <p>
             We enforce a strict ‘Anti-Spam’ policy that means we do not intend to sell, rent, or

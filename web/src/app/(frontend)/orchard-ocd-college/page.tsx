@@ -12,6 +12,7 @@ export default function OrchardOcdCollegePage() {
       title="Orchard OCD college"
       image="2025-06-1-1.jpg"
       imageAlt="The Orchard OCD College emblem: a brain drawn as a leafy tree"
+      imageKind="mark"
     />
   )
 }

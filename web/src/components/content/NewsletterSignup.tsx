@@ -41,8 +41,8 @@ export function NewsletterSignup() {
   }
 
   return (
-    <form onSubmit={submit} className="max-w-measure rounded-lg bg-mist p-6 sm:p-8 lg:max-w-none">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <form onSubmit={submit} className="max-w-measure rounded-lg bg-mist p-6 sm:p-8">
+      <div className="grid gap-4 sm:grid-cols-2">
         {FIELDS.map((field) => (
           <label key={field.name} className="flex flex-col gap-2">
             <span className="text-sm font-bold text-ink">{field.label}</span>
@@ -58,7 +58,7 @@ export function NewsletterSignup() {
         <button
           type="submit"
           disabled={state === 'sending'}
-          className={buttonClasses('primary', 'mt-2 self-end sm:mt-0')}
+          className={buttonClasses('primary', 'justify-self-start')}
         >
           Sign up
         </button>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { PageBanner, PageSection, Photo, Prose, TextWithFigure } from '@/components/site'
+import { Figure, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
 
 export const metadata: Metadata = {
   title: 'Brain Stimulation',
@@ -65,7 +65,7 @@ export default function BrainStimulationPage() {
       </PageSection>
 
       <PageSection heading="REPETITIVE TRANSCRANIAL MAGNETIC STIMULATION (RTMS)">
-        <TextWithFigure figure={<Photo file="2022-06-bs2.jpg" alt="A horseshoe magnet" />}>
+        <TextWithFigure figure={<Figure file="2022-06-bs2.jpg" alt="A horseshoe magnet" />}>
           <Prose>
             <p>
               <em>Repetitive Transcranial Magnetic Stimulation</em> is a promising option for those
@@ -131,7 +131,7 @@ export default function BrainStimulationPage() {
       <PageSection heading="TRANSCRANIAL DIRECT CURRENT (OR ELECTRIC) STIMULATION" tone="ruled">
         <TextWithFigure
           figure={
-            <Photo
+            <Figure
               file="2022-06-bs4.jpg"
               alt="A head in profile with two lightning bolts drawn inside the brain"
             />
@@ -197,77 +197,78 @@ export default function BrainStimulationPage() {
       </PageSection>
 
       <PageSection heading="ELECTROCONVULSIVE THERAPY (ECT)" tone="ruled">
-        <TextWithFigure figure={<Photo file="2022-06-bs1.jpg" alt="A lightning bolt" />}>
+        <TextWithFigure figure={<Figure file="2022-06-bs1.jpg" alt="A lightning bolt" />}>
           <Prose>
             <p>
               ECT is a procedure by which a small and precise pulse of electricity is passed into
               the brain from the scalp.
             </p>
-            <h3>INTRODUCTION</h3>
-            <p>
-              ECT is a procedure by which a small and precise pulse of electricity is passed into
-              the brain from the scalp. Patients and families’ anxiety or fear when ECT therapy is
-              raised may arise from public perception of it being an archaic procedure. The current
-              ECT protocols are anything but horrifying, although many still remember the images of
-              Jack Nicolson undergoing ECT treatment in the 1975 movie{' '}
-              <u>One Flew Over the Cuckoo’s Nest</u>.
-            </p>
-            <p>
-              Unlike tDCS, ECT effects require that the electrical pulse results in a brief
-              convulsion (seizure). Since those who undergo ECT usually receive general anaesthesia
-              and muscle relaxants, the convulsion is not seen physically, but it is monitored using
-              an <em>electroencephalogram (a.k.a. “EEG”) </em>(134). ECT has undergone a substantial
-              amount of research and has been used to treat several types of mental illnesses for
-              decades. The procedure results in altered balances of neurotransmitters and/or other
-              chemical substances in the brain. However, it remains unclear how these changes modify
-              clinical symptoms in several mental health disorders. Among these, ECT has
-              consistently shown safety and effectiveness in depressive and bipolar disorders and
-              schizophrenia.
-            </p>
-            <p>
-              From a safety standpoint, ECT is considered to be generally safe, but potential
-              adverse effects may occur. There are always risks associated with anaesthesia. This
-              risk varies with the type of anaesthetics used, ongoing treatment with other drugs,
-              and other individual health problems.
-            </p>
-            <p>
-              Other possible side effects following ECT include short-term confusion, loss of memory
-              of events occurring days or weeks before the procedure (referred to as retrograde
-              amnesia), and nausea, headaches, or muscle pain immediately following the procedure.
-              ECT safety in recent years was studied in a group of 107 patients who underwent more
-              than 1,000 ECT procedures. There were no deaths, life-threatening events, or permanent
-              injuries attributable to ECT. Approximately 67% of patients 60 years old or younger,
-              and 42% of these aged more than 60 experienced no side effects. The most frequent side
-              effect in the younger group was headache (13%), while in the older group it was memory
-              loss (23%). ECT does not cause epilepsy.
-            </p>
-            <h3>ECT IN OCD</h3>
-            <p>
-              Largely because of its effectiveness in the treatment of mood disorders, ECT has been
-              used for OCD patients, but quite uncommonly. Although some specialists consider ECT to
-              have potential benefit in patients with treatment-resistant OCD, there is considerable
-              uncertainty surrounding its direct benefit. There have been no formal studies of ECT
-              in OCD and virtually all of the data is based on case reports or small case series.
-              Almost all of the patients in these reports, including those whose OCD symptoms
-              appeared to improve following ECT, had severe and treatment unresponsive conditions.
-              However, the vast majority of these patients also had coexistent and significant mood
-              disorders, mostly depressive. Other reports describe improvement of OCD symptoms that
-              often arise in primary bipolar disorder and schizophrenia.
-            </p>
-            <p>
-              At this time, most clinical scientists believe that there is little evidence that ECT
-              is effective for treating primary OCD. The complex relationships between OCD and
-              several other important mental disorders, and the lack of quality data, make
-              conclusions about effectiveness unrealistic. Since experienced specialists can
-              administer ECT with relative safety, it may be an option for those who remain ill
-              despite numerous other therapies.
-            </p>
           </Prose>
         </TextWithFigure>
+        <Prose className="mt-10">
+          <h3>INTRODUCTION</h3>
+          <p>
+            ECT is a procedure by which a small and precise pulse of electricity is passed into the
+            brain from the scalp. Patients and families’ anxiety or fear when ECT therapy is raised
+            may arise from public perception of it being an archaic procedure. The current ECT
+            protocols are anything but horrifying, although many still remember the images of Jack
+            Nicolson undergoing ECT treatment in the 1975 movie{' '}
+            <u>One Flew Over the Cuckoo’s Nest</u>.
+          </p>
+          <p>
+            Unlike tDCS, ECT effects require that the electrical pulse results in a brief convulsion
+            (seizure). Since those who undergo ECT usually receive general anaesthesia and muscle
+            relaxants, the convulsion is not seen physically, but it is monitored using an{' '}
+            <em>electroencephalogram (a.k.a. “EEG”) </em>(134). ECT has undergone a substantial
+            amount of research and has been used to treat several types of mental illnesses for
+            decades. The procedure results in altered balances of neurotransmitters and/or other
+            chemical substances in the brain. However, it remains unclear how these changes modify
+            clinical symptoms in several mental health disorders. Among these, ECT has consistently
+            shown safety and effectiveness in depressive and bipolar disorders and schizophrenia.
+          </p>
+          <p>
+            From a safety standpoint, ECT is considered to be generally safe, but potential adverse
+            effects may occur. There are always risks associated with anaesthesia. This risk varies
+            with the type of anaesthetics used, ongoing treatment with other drugs, and other
+            individual health problems.
+          </p>
+          <p>
+            Other possible side effects following ECT include short-term confusion, loss of memory
+            of events occurring days or weeks before the procedure (referred to as retrograde
+            amnesia), and nausea, headaches, or muscle pain immediately following the procedure. ECT
+            safety in recent years was studied in a group of 107 patients who underwent more than
+            1,000 ECT procedures. There were no deaths, life-threatening events, or permanent
+            injuries attributable to ECT. Approximately 67% of patients 60 years old or younger, and
+            42% of these aged more than 60 experienced no side effects. The most frequent side
+            effect in the younger group was headache (13%), while in the older group it was memory
+            loss (23%). ECT does not cause epilepsy.
+          </p>
+          <h3>ECT IN OCD</h3>
+          <p>
+            Largely because of its effectiveness in the treatment of mood disorders, ECT has been
+            used for OCD patients, but quite uncommonly. Although some specialists consider ECT to
+            have potential benefit in patients with treatment-resistant OCD, there is considerable
+            uncertainty surrounding its direct benefit. There have been no formal studies of ECT in
+            OCD and virtually all of the data is based on case reports or small case series. Almost
+            all of the patients in these reports, including those whose OCD symptoms appeared to
+            improve following ECT, had severe and treatment unresponsive conditions. However, the
+            vast majority of these patients also had coexistent and significant mood disorders,
+            mostly depressive. Other reports describe improvement of OCD symptoms that often arise
+            in primary bipolar disorder and schizophrenia.
+          </p>
+          <p>
+            At this time, most clinical scientists believe that there is little evidence that ECT is
+            effective for treating primary OCD. The complex relationships between OCD and several
+            other important mental disorders, and the lack of quality data, make conclusions about
+            effectiveness unrealistic. Since experienced specialists can administer ECT with
+            relative safety, it may be an option for those who remain ill despite numerous other
+            therapies.
+          </p>
+        </Prose>
       </PageSection>
 
       <PageSection heading="DEEP BRAIN STIMULATION" tone="ruled">
-        <TextWithFigure figure={<Photo file="2022-06-bs3.jpg" alt="A brain" />}>
+        <TextWithFigure figure={<Figure file="2022-06-bs3.jpg" alt="A brain" />}>
           <Prose>
             <p>
               A growing number of DBS studies focus on treating OCD. The typical patient treated

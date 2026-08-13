@@ -33,12 +33,12 @@ export default function TheWorkWeDoPage() {
             <a href="https://www.madeofmillions.com/">Made of Millions</a>, hosted by Orchard OCD
             trustee &amp; journalist, Sean Fletcher.
           </p>
-          <p>Our current funded research projects include:</p>
         </Prose>
       </PageSection>
 
-      <PageSection heading="Psilocybin:" tone="mist">
+      <PageSection heading="Our current funded research projects include:" tone="mist">
         <Prose>
+          <h3>Psilocybin:</h3>
           <p>
             According to a research project in 2006, psilocybin has been reported to significantly
             reduce OCD symptoms in OCD patients. Despite positive results, no further research has
@@ -50,11 +50,7 @@ export default function TheWorkWeDoPage() {
             which was match funded by a foundation. The study has now started and will last 18
             months, recruiting and following up 15 patients.
           </p>
-        </Prose>
-      </PageSection>
-
-      <PageSection heading="Transcranial Direct Current Stimulation (TDCS):">
-        <Prose>
+          <h3>Transcranial Direct Current Stimulation (TDCS):</h3>
           <p>
             We received funding for our second research project in September 2020. Research at the{' '}
             <a href="https://www.herts.ac.uk/">University of Hertfordshire</a> involves working on a
@@ -62,14 +58,7 @@ export default function TheWorkWeDoPage() {
             current into brain areas connected to OCD. This may help people with OCD think and
             behave differently and could help treatments work better.
           </p>
-        </Prose>
-      </PageSection>
-
-      <PageSection
-        heading="Double-Blind Randomised Placebo-controlled study of Tolcapone for OCD:"
-        tone="mist"
-      >
-        <Prose>
+          <h3>Double-Blind Randomised Placebo-controlled study of Tolcapone for OCD:</h3>
           <p>
             Tolcapone is currently used to manage Parkinson’s disease. A team at the{' '}
             <a href="https://www.uchicago.edu/">University of Chicago</a> have test tolcapone out in
@@ -82,11 +71,7 @@ export default function TheWorkWeDoPage() {
           <p>
             Find out more <Link href="/blog/call-for-proposals-2022">here</Link>.
           </p>
-        </Prose>
-      </PageSection>
-
-      <PageSection heading="OCD Registry">
-        <Prose>
+          <h3>OCD Registry</h3>
           <p>
             Orchard OCD is very pleased to be receiving funding from the{' '}
             <a href="https://www.ballysfoundation.org/">Bally’s Foundation</a> for a two-year

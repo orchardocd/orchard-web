@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { EmbedFrame } from '@/components/blocks/EmbedFrame'
 import { SpeakerGrid } from '@/components/content/SpeakerGrid'
-import { Figure, PageBanner, PageSection, Photo } from '@/components/site'
+import { Figure, PageBanner, PageSection } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
@@ -72,17 +72,18 @@ export default function ConferenceCallForPostersPage() {
 
       <PageSection heading="Secure Your Spot!">
         <div className="grid gap-12 flow:grid-cols-[1fr_24rem] flow:items-start">
-          <div className="flex flex-col items-start gap-9">
+          <div className="flex flex-col items-start gap-8">
             <Figure
               file="2024-08-Group-8.svg"
               alt="A speaker at a lectern addressing a seated audience under a conference banner"
+              sizes="(min-width: 57rem) 43.5rem, calc(100vw - 3rem)"
             />
             <ButtonLink href={TICKETS_URL}>Get Your Ticket</ButtonLink>
           </div>
-          <div className="flex w-full flex-col items-start gap-6">
-            <Photo
+          <div className="flex w-full flex-col items-start gap-8">
+            <Figure
               file="2026-03-Copy-of-POSTERS.jpg"
-              sizes="(min-width: 57rem) 24rem, calc(100vw - 3rem)"
+              sizes="(min-width: 57rem) 21rem, calc(100vw - 3rem)"
             />
             <ButtonLink href={GUIDELINES_URL} variant="secondary">
               Download Guidelines

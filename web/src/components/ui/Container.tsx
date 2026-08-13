@@ -30,7 +30,11 @@ export function Section({
   children: ReactNode
 }) {
   return (
-    <section aria-labelledby={labelledBy} aria-label={label} className={cn('py-16 md:py-20', className)}>
+    <section
+      aria-labelledby={labelledBy}
+      aria-label={label}
+      className={cn('py-16 md:py-20', className)}
+    >
       {children}
     </section>
   )

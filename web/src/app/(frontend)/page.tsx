@@ -38,7 +38,7 @@ function Highlight({
         className="aspect-[5/4] rounded-none border-b border-line bg-mist object-contain p-5"
       />
       <div className="flex flex-1 flex-col gap-4 p-6">
-        <h2 className={cn(CARD_TITLE_CLASSES, 'text-ink')}>{title}</h2>
+        <h2 className={cn(CARD_TITLE_CLASSES, 'line-clamp-4 text-ink')}>{title}</h2>
         <ButtonLink
           href={href}
           variant="secondary"
@@ -122,7 +122,7 @@ export default async function HomePage() {
           We build a community of interdisciplinary professionals and work with them closely to
           progress together in developing new and better treatments for patients suffering from OCD.
         </p>
-        <ButtonLink href="/about-ocd" variant="secondary" className="mt-7">
+        <ButtonLink href="/about-ocd" variant="secondary" className="mt-8">
           About us
         </ButtonLink>
 
@@ -162,15 +162,12 @@ export default async function HomePage() {
         </ul>
 
         <div className="mt-16">
-          <div className="flex flex-wrap items-center gap-6">
-            <h3 className="text-2xl font-bold text-ink md:text-3xl">Learn About Orchard OCD</h3>
-            <Photo file="2022-05-e.svg" alt="" sizes="160px" className="h-24 w-auto rounded-none" />
-          </div>
+          <h3 className="text-xl font-bold text-brand-link">Learn About Orchard OCD</h3>
           <Video
             url="https://player.vimeo.com/video/306831655?h=924cbb2311"
             title="Learn About Orchard OCD"
             poster="2022-05-Untitled-1.png"
-            className="mt-6 max-w-4xl"
+            className="mt-6"
           />
         </div>
       </PageSection>
@@ -181,7 +178,7 @@ export default async function HomePage() {
         </p>
         <ButtonLink
           href="/participate-research"
-          className="mt-7"
+          className="mt-8"
           detail="about current OCD studies looking for participants"
         >
           Learn more
@@ -204,7 +201,7 @@ export default async function HomePage() {
             If you want to keep up-to-date on the latest work Orchard is doing then please follow us
             on our social media platforms.
           </p>
-          <SocialLinks items={SOCIAL} className="mt-6" linkClassName={SOCIAL_LINK} />
+          <SocialLinks items={SOCIAL} className="mt-8" linkClassName={SOCIAL_LINK} />
         </TextWithFigure>
       </PageSection>
 
@@ -242,7 +239,7 @@ export default async function HomePage() {
           headingLevel={3}
           articles={posts.docs}
           basePath="/blog"
-          className="grid items-stretch gap-x-6 gap-y-10 md:grid-cols-3"
+          className="md:grid-cols-3"
           accents={['#00655C', '#00655C']}
           showImages={false}
           placeholder={false}

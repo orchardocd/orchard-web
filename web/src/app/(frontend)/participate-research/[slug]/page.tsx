@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation'
 
 import { ARTICLE_FIGURE_SIZES, ArticleHeader } from '@/components/content/ArticleHeader'
 import { RichText } from '@/components/RichText'
+import { Plate } from '@/components/site'
 import { Container } from '@/components/ui/Container'
-import { MediaImage } from '@/components/ui/Media'
 import { formatDate } from '@/lib/format'
 import { getStudyBySlug } from '@/lib/payload'
 import { slugMetadata, slugParams, type SlugParams } from '@/lib/routes'
@@ -36,14 +36,7 @@ export default async function StudyPage({ params }: SlugParams) {
         eyebrow={<time dateTime={study.publishedAt}>{formatDate(study.publishedAt)}</time>}
         figure={
           study.featuredImage ? (
-            <div className="flex items-center justify-center rounded-lg bg-mist p-6">
-              <MediaImage
-                media={study.featuredImage}
-                className="max-h-56 w-auto object-contain"
-                sizes={ARTICLE_FIGURE_SIZES}
-                priority
-              />
-            </div>
+            <Plate media={study.featuredImage} sizes={ARTICLE_FIGURE_SIZES} priority />
           ) : null
         }
       />

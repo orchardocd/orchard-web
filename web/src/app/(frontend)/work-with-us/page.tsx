@@ -9,25 +9,22 @@ export const metadata: Metadata = {
 export default function WorkWithUsPage() {
   return (
     <>
-      <PageBanner title="Work With Us" />
+      <PageBanner title="Work With Us" eyebrow="Get Involved" />
 
       <PageSection heading="Fundraising Officer">
         <Prose>
-          <p>
-            <strong>Position:</strong> £14,000
-          </p>
-          <p>
-            <strong>Status</strong> : Part time
-          </p>
-          <p>
-            <strong>Reports to</strong> : Head of Fundraising and Communications
-          </p>
-          <p>
-            <strong>Based</strong> : Remote
-          </p>
-          <p>
-            <strong>Hours </strong> : 20.5/week
-          </p>
+          <dl>
+            <dt>Position</dt>
+            <dd>£14,000</dd>
+            <dt>Status</dt>
+            <dd>Part time</dd>
+            <dt>Reports to</dt>
+            <dd>Head of Fundraising and Communications</dd>
+            <dt>Based</dt>
+            <dd>Remote</dd>
+            <dt>Hours</dt>
+            <dd>20.5/week</dd>
+          </dl>
         </Prose>
       </PageSection>
 

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'First line treatment',
 }
 
+const CAPS_HEADING = '[&_h2]:leading-none [&_h2]:tracking-[-0.02em]'
+
 export default function FirstLineTreatmentPage() {
   return (
     <>
@@ -16,17 +18,14 @@ export default function FirstLineTreatmentPage() {
         imageAlt="Three people in distress: one bent double, one curled up with a hand over their face, and one standing with their arms raised"
       >
         <p>
-          <em>
-            The reader must be aware that the following information about treatment options is
-            intended only as a range of treatment approaches available for people with OCD. The goal
-            is to provide an overall understanding of these therapies sufficient to enable more
-            informed interactions with physicians and therapists. The numerous OCD treatment options
-            currently available, and the variability of specific OCD characteristics, are taken into
-            account by physicians and therapists when making treatment recommendations. Better
-            insights into these factors will, hopefully, allow patients and families to be more
-            active participants in discussions and treatment decision-making with their OCD
-            specialists.
-          </em>
+          The reader must be aware that the following information about treatment options is
+          intended only as a range of treatment approaches available for people with OCD. The goal
+          is to provide an overall understanding of these therapies sufficient to enable more
+          informed interactions with physicians and therapists. The numerous OCD treatment options
+          currently available, and the variability of specific OCD characteristics, are taken into
+          account by physicians and therapists when making treatment recommendations. Better
+          insights into these factors will, hopefully, allow patients and families to be more active
+          participants in discussions and treatment decision-making with their OCD specialists.
         </p>
       </PageBanner>
 
@@ -72,7 +71,10 @@ export default function FirstLineTreatmentPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="FIRST LINE TREATMENT WITH COGNITIVE BEHAVIOURAL THERAPY">
+      <PageSection
+        heading="FIRST LINE TREATMENT WITH COGNITIVE BEHAVIOURAL THERAPY"
+        className={CAPS_HEADING}
+      >
         <TextWithFigure
           figure={
             <Figure
@@ -125,7 +127,11 @@ export default function FirstLineTreatmentPage() {
         </TextWithFigure>
       </PageSection>
 
-      <PageSection heading="NEUROTRANSMITTERS AS TARGETS FOR DRUG THERAPY" tone="mist">
+      <PageSection
+        heading="NEUROTRANSMITTERS AS TARGETS FOR DRUG THERAPY"
+        tone="mist"
+        className={CAPS_HEADING}
+      >
         <TextWithFigure
           figure={
             <Figure
@@ -197,7 +203,7 @@ export default function FirstLineTreatmentPage() {
         </TextWithFigure>
       </PageSection>
 
-      <PageSection heading="FIRST LINE DRUG TREATMENT OF OCD">
+      <PageSection heading="FIRST LINE DRUG TREATMENT OF OCD" className={CAPS_HEADING}>
         <TextWithFigure figure={<Figure file="2022-06-flti1.jpg" alt="A capsule and a tablet" />}>
           <Prose>
             <p>
@@ -212,13 +218,11 @@ export default function FirstLineTreatmentPage() {
               strategy is eventually found for most.
             </p>
             <p>
-              <em>
-                The reader must be aware that the information that follows for all types of
-                treatments is intended to provide an overall understanding of potentially useful
-                treatment approaches for people with OCD. Beyond this, there are numerous other
-                aspects of every patient’s case that will be considered by your OCD specialist in
-                order to make tailored treatment recommendations.
-              </em>
+              The reader must be aware that the information that follows for all types of treatments
+              is intended to provide an overall understanding of potentially useful treatment
+              approaches for people with OCD. Beyond this, there are numerous other aspects of every
+              patient’s case that will be considered by your OCD specialist in order to make
+              tailored treatment recommendations.
             </p>
             <p>
               The majority of published guidelines for treatment of OCD recommend using a selective
@@ -233,7 +237,7 @@ export default function FirstLineTreatmentPage() {
           </Prose>
         </TextWithFigure>
 
-        <Prose className="mt-8">
+        <Prose className="mt-6">
           <p>
             The results of treatment with different SSRIs are essentially comparable and there is no
             current consensus about which SSRI is most effective for OCD treatment. There are,
@@ -255,8 +259,10 @@ export default function FirstLineTreatmentPage() {
             that there is lack of efficacy. Numerous patients will prematurely consider their SSRI
             treatment ineffective and discontinue treatment too soon.
           </p>
+        </Prose>
+
+        <div className="mt-10">
           <Table
-            className="[&_table]:text-sm [&_td]:px-2 [&_th]:px-2"
             caption="Serotonin reuptake inhibitor doses for OCD, in milligrams per day"
             head={[
               'Serotonin reuptake inhibitor',
@@ -282,9 +288,14 @@ export default function FirstLineTreatmentPage() {
               ],
             ]}
           />
-          <p>
-            *From Seibel P &amp; Hollander E (2014). <em>F1000 Prime Rep, 6, 68</em>. (41)
-          </p>
+          <Prose className="max-w-none">
+            <p>
+              *From Seibel P &amp; Hollander E (2014). <em>F1000 Prime Rep, 6, 68</em>. (41)
+            </p>
+          </Prose>
+        </div>
+
+        <Prose className="mt-10">
           <p>
             As already stated, clomipramine has demonstrated effectiveness as first line therapy for
             OCD. This medication is in a different drug class (tricyclic antidepressant) but also

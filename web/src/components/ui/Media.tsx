@@ -9,30 +9,6 @@ export function resolveMedia(value: MediaValue): Media | null {
   return typeof value === 'object' && value !== null ? value : null
 }
 
-type MediaMetrics = {
-  width: number
-  height: number
-  ratio: number
-}
-
-function mediaMetrics(value: MediaValue): MediaMetrics | null {
-  const resolved = resolveMedia(value)
-  if (!resolved?.width || !resolved.height) return null
-
-  return {
-    width: resolved.width,
-    height: resolved.height,
-    ratio: resolved.width / resolved.height,
-  }
-}
-
-const WIDE_RATIO = 1.4
-
-export function isWideMedia(value: MediaValue): boolean {
-  const metrics = mediaMetrics(value)
-  return metrics !== null && metrics.ratio >= WIDE_RATIO
-}
-
 type MediaImageProps = {
   media: MediaValue
   className?: string

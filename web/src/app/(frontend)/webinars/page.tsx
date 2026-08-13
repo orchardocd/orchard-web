@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { WebinarList } from '@/components/content/WebinarList'
-import { Figure, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
+import { Mark, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
 
 export const metadata: Metadata = {
   title: 'Webinars',
@@ -19,7 +19,7 @@ export default function WebinarsPage() {
       <PageSection label="Made of Millions" tone="ruled">
         <TextWithFigure
           figure={
-            <Figure
+            <Mark
               file="2022-06-logo-MadeofMillions.svg"
               alt="Made of Millions"
               href={MADE_OF_MILLIONS}

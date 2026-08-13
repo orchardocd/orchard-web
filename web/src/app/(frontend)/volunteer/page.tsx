@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { PageBanner, PageSection, Photo, Prose, TextWithFigure } from '@/components/site'
+import { Figure, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
 
 export const metadata: Metadata = {
   title: 'Volunteer',
@@ -38,14 +38,11 @@ export default function VolunteerPage() {
       <PageSection heading="Volunteer Testimony" tone="mist">
         <TextWithFigure
           figure={
-            <figure className="w-full">
-              <Photo
-                file="2022-06-Picture-1-1.png"
-                alt="Tracy, a volunteer with Orchard OCD"
-                sizes="(min-width: 57rem) 27rem, calc(100vw - 3rem)"
-              />
-              <figcaption className="mt-3 text-sm text-faint">Tracy - Orchard Volunteer</figcaption>
-            </figure>
+            <Figure
+              file="2022-06-Picture-1-1.png"
+              alt="Tracy, a volunteer with Orchard OCD"
+              caption="Tracy - Orchard Volunteer"
+            />
           }
         >
           <Prose>

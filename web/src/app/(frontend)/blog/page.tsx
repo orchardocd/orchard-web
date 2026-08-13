@@ -23,9 +23,13 @@ export default async function BlogIndex({ searchParams }: PagedParams) {
         <ArticleCards
           articles={posts.docs}
           basePath="/blog"
-          className="grid items-start gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3"
+          className="md:grid-cols-2 lg:grid-cols-3"
         />
-        <Pagination current={posts.page ?? current} total={posts.totalPages ?? 1} basePath="/blog" />
+        <Pagination
+          current={posts.page ?? current}
+          total={posts.totalPages ?? 1}
+          basePath="/blog"
+        />
       </PageSection>
     </>
   )

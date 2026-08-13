@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Figure, PageBanner, PageSection, Photo, Prose, TextWithFigure } from '@/components/site'
+import { Figure, Mark, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export default function ResearchPage() {
       <PageSection heading="Psilocybin Campaign" tone="mist">
         <TextWithFigure
           figure={
-            <Photo
+            <Figure
               file="2020-11-Psilocybin-study-continues-to-aim-for-launch-in-early-2021-1.png"
               alt="A researcher speaking behind the chemical structure of psilocybin"
             />
@@ -51,7 +51,12 @@ export default function ResearchPage() {
             </p>
           </Prose>
           <div className="mt-8">
-            <ButtonLink href="/psilocybin-crowdfunding-campaign">learn more</ButtonLink>
+            <ButtonLink
+              href="/psilocybin-crowdfunding-campaign"
+              detail="about our psilocybin project"
+            >
+              learn more
+            </ButtonLink>
           </div>
         </TextWithFigure>
       </PageSection>
@@ -91,7 +96,7 @@ export default function ResearchPage() {
       <PageSection heading="Foundation of OCD Research (FFOR)" tone="ruled">
         <TextWithFigure
           figure={
-            <Figure
+            <Mark
               file="2022-06-FFOR-Logo-Website.png"
               alt="FFOR, the Foundation for OCD Research"
             />

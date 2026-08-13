@@ -1,20 +1,28 @@
-import { MediaImage, type MediaValue } from '@/components/ui/Media'
+import { MediaImage, resolveMedia, type MediaValue } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 
-const PLATE = 'flex w-full items-center justify-center overflow-hidden rounded-lg bg-mist p-6'
-const PLATE_ART = 'mx-auto max-h-56 w-auto max-w-full rounded-lg object-contain'
+const PLATE =
+  'flex w-full grow items-center justify-center overflow-hidden rounded-lg border border-line bg-white p-6'
+const PLATE_ART = 'mx-auto max-h-plate w-full rounded-lg object-contain'
 
 export const PLATE_SIZES =
   '(min-width: 57rem) 32.25rem, (min-width: 768px) 40rem, calc(100vw - 3rem)'
 export const BAND_SIZES = '(min-width: 57rem) 70.5rem, (min-width: 768px) 40rem, calc(100vw - 3rem)'
 
-export type FigureSize = 'plate' | 'band'
+export type FigureSize = 'plate' | 'band' | 'mark'
+
+const PLATE_VARIANTS: Record<FigureSize, { box: string; art: string; sizes: string }> = {
+  plate: { box: 'flow:min-h-plate', art: 'flow:max-h-80', sizes: PLATE_SIZES },
+  band: { box: 'flow:min-h-plate', art: 'flow:max-h-band-art', sizes: BAND_SIZES },
+  mark: { box: '', art: 'flow:max-h-plate', sizes: PLATE_SIZES },
+}
 
 export type PlateProps = {
   caption?: string | null
   href?: string | null
   size?: FigureSize
   sizes?: string
+  priority?: boolean
   className?: string
 }
 
@@ -24,20 +32,23 @@ export function Plate({
   href,
   size = 'plate',
   sizes,
+  priority = false,
   className,
 }: PlateProps & { media: MediaValue }) {
-  const band = size === 'band'
+  const variant = PLATE_VARIANTS[size]
   const art = (
     <MediaImage
       media={media}
-      className={cn(PLATE_ART, band ? 'flow:max-h-band-art' : 'flow:max-h-full')}
-      sizes={sizes ?? (band ? BAND_SIZES : PLATE_SIZES)}
+      fills={resolveMedia(media)?.mimeType === 'image/svg+xml'}
+      priority={priority}
+      className={cn(PLATE_ART, variant.art)}
+      sizes={sizes ?? variant.sizes}
     />
   )
 
   return (
-    <figure className={cn('w-full', className)}>
-      <div className={cn(PLATE, band ? 'flow:min-h-plate' : 'flow:h-plate')}>
+    <figure className={cn('flex w-full flex-col', className)}>
+      <div className={cn(PLATE, variant.box)}>
         {href ? (
           <a
             href={href}

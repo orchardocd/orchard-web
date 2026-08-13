@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { PeopleSections } from '@/components/content/PeopleSections'
 import { CARD_TITLE_CLASSES } from '@/components/layout/Banner'
-import { PageBanner, PageSection, Photo, Prose } from '@/components/site'
+import { LABEL_CLASSES, PageBanner, PageSection, Photo, Prose } from '@/components/site'
 import { cn } from '@/lib/cn'
 
 export const metadata: Metadata = {
@@ -13,10 +13,17 @@ export const metadata: Metadata = {
 
 function Officer({ file, title, name }: { file: string; title: string; name: string }) {
   return (
-    <li className="flex flex-col items-center gap-4 rounded-lg border border-line p-6 text-center">
-      <Photo file={file} alt={name} sizes="200px" className="w-40" />
-      <h2 className={cn(CARD_TITLE_CLASSES, 'text-brand-link')}>{title}</h2>
-      <p className="text-base leading-relaxed text-body">{name}</p>
+    <li className="flex flex-col items-center gap-4 rounded-lg border border-line p-5 text-center md:p-7">
+      <div className="w-36 overflow-hidden rounded-full bg-mist ring-1 ring-line">
+        <Photo
+          file={file}
+          alt={name}
+          sizes="300px"
+          className="aspect-square scale-[2.08] object-cover grayscale"
+        />
+      </div>
+      <p className={cn(LABEL_CLASSES, 'text-faint')}>{title}</p>
+      <p className={cn(CARD_TITLE_CLASSES, 'text-brand-link')}>{name}</p>
     </li>
   )
 }
@@ -41,7 +48,7 @@ export default function AboutCollegePage() {
             collaborations, raising awareness about OCRDs, and informing public policies.
           </p>
         </Prose>
-        <ul className="mt-12 grid max-w-2xl gap-8 sm:grid-cols-2">
+        <ul className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
           <Officer file="2025-06-1.png" title="Chair" name="Naomi Fineberg" />
           <Officer file="2025-06-2.png" title="Secretary" name="Ana Maria Pereira de Souza" />
         </ul>

@@ -16,7 +16,7 @@ export function Table({
   className?: string
 }) {
   if (rows.length === 0) return null
-  const wide = [head ?? [], ...rows].some((row) => row.length > WIDE_COLUMNS)
+  const wide = [head ?? [], ...rows].some((row) => row.length >= WIDE_COLUMNS)
   const cell = cn('px-4 py-2', wide ? undefined : 'first:pl-0')
 
   return (
@@ -30,7 +30,12 @@ export function Table({
       aria-label={wide ? caption : undefined}
       tabIndex={wide ? 0 : undefined}
     >
-      <table className={cn('w-full border-collapse text-left', wide ? 'text-sm' : 'text-base')}>
+      <table
+        className={cn(
+          'w-full border-collapse text-left',
+          wide ? 'text-sm md:text-base' : 'text-base',
+        )}
+      >
         <caption className="sr-only">{caption}</caption>
         {head ? (
           <thead>

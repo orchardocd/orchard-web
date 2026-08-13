@@ -14,12 +14,14 @@ export function TextWithFigure({
   return (
     <div
       className={cn(
-        'w-full flow:grid flow:grid-cols-[40rem_1fr] flow:items-start flow:gap-x-12',
+        'flex w-full flex-col flow:grid flow:grid-cols-[40rem_1fr] flow:gap-x-12',
         className,
       )}
     >
       <div className="w-full max-w-measure">{children}</div>
-      <div className="mt-6 flex w-full flex-col gap-6 flow:mt-0">{figure}</div>
+      <div className="-order-1 mb-6 w-full flow:order-none flow:mb-0">
+        <div className="flex w-full flex-col gap-6 flow:sticky flow:top-24">{figure}</div>
+      </div>
     </div>
   )
 }

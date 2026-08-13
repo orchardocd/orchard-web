@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: 'Beyond first line therapy',
 }
 
+const CAPS_HEADING = '[&_h2]:leading-none [&_h2]:tracking-[-0.02em]'
+
 export default function BeyondFirstLineTherapyPage() {
   return (
     <>
@@ -85,7 +87,11 @@ export default function BeyondFirstLineTherapyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="FACTORS THAT MAY PLAY A ROLE IN FAILED TREATMENT" tone="mist">
+      <PageSection
+        heading="FACTORS THAT MAY PLAY A ROLE IN FAILED TREATMENT"
+        tone="mist"
+        className={CAPS_HEADING}
+      >
         <TextWithFigure
           figure={
             <Figure file="2022-06-flt4.jpg" alt="A hand holding a single jigsaw puzzle piece" />
@@ -125,7 +131,10 @@ export default function BeyondFirstLineTherapyPage() {
         </TextWithFigure>
       </PageSection>
 
-      <PageSection heading="DRUG CLASS: ATYPICAL ANTIPSYCHOTIC DRUGS (AAP)">
+      <PageSection
+        heading="DRUG CLASS: ATYPICAL ANTIPSYCHOTIC DRUGS (AAP)"
+        className={CAPS_HEADING}
+      >
         <TextWithFigure
           figure={
             <Figure
@@ -182,7 +191,7 @@ export default function BeyondFirstLineTherapyPage() {
         </TextWithFigure>
 
         <div className="mt-10">
-          <Prose>
+          <Prose className="max-w-none">
             <p>
               Table 2. Comparisons of side effects from atypical antipsychotic drugs frequently used
               for OCD treatment*
@@ -208,7 +217,7 @@ export default function BeyondFirstLineTherapyPage() {
               ['ziprasidone', 'Geodon', '+', '+', '++', '+', '+', '+++'],
             ]}
           />
-          <Prose>
+          <Prose className="max-w-none">
             <p>
               * The indicators range from “+” = minimal to none up to “++++” which is at least a 30%
               risk
@@ -217,7 +226,11 @@ export default function BeyondFirstLineTherapyPage() {
         </div>
       </PageSection>
 
-      <PageSection heading="AMISULPRIDE & D-CYCLOSERINE (SEROMYCIN)" tone="mist">
+      <PageSection
+        heading="AMISULPRIDE & D-CYCLOSERINE (SEROMYCIN)"
+        tone="mist"
+        className={CAPS_HEADING}
+      >
         <TextWithFigure
           figure={<Figure file="2022-06-flt3.jpg" alt="An outline drawing of a capsule" />}
         >
@@ -266,7 +279,10 @@ export default function BeyondFirstLineTherapyPage() {
         </TextWithFigure>
       </PageSection>
 
-      <PageSection heading="MEMANTINE (NAMENDA), RILUZOLE (RILUTEK) & OTHER DRUGS">
+      <PageSection
+        heading="MEMANTINE (NAMENDA), RILUZOLE (RILUTEK) & OTHER DRUGS"
+        className={CAPS_HEADING}
+      >
         <TextWithFigure
           figure={<Figure file="2022-06-flt1.jpg" alt="A circle filled in a little past halfway" />}
         >
@@ -280,76 +296,78 @@ export default function BeyondFirstLineTherapyPage() {
               groups, suggesting that memantine might be better tolerated in patients intolerant to
               other agents.
             </p>
-            <h3>RILUZOLE (RILUTEK)</h3>
-            <p>
-              Riluzole is another glutamate-modulating drug for OCD that affords significant symptom
-              improvements in about half of patients whose OCD was not controlled with SSRI
-              treatment. As with most of the other drugs used to treat OCD it is, as yet, unknown
-              why some patients respond to specific drugs and others do not. This also is why drug
-              trial and error for treatment-resistant patients is highly advisable for those whose
-              symptoms continue to be distressing.
-            </p>
-            <h3>UPDATE ON OTHER DRUGS</h3>
-            <p>
-              Among other drugs of several classes that have been used to treat OCD, several have
-              attracted interest. Although limited in scope and still preliminary, current
-              information about patients and /or data from recently completed clinical trials
-              follows.
-            </p>
-            <h3>TOPIRAMATE (TOPAMAX)</h3>
-            <p>
-              This drug is an anti-seizure medication and is also used for bipolar disorder and the
-              prevention of migraine headaches. The use of topiramate as an add-on treatment for OCD
-              is based on several of its actions that result in diminished glutamate activity and
-              increased GABA actions. There are, however, conflicting results from several recent
-              controlled studies. Also, troublesome side effects include influenza-like symptoms,
-              difficulties with memory, and distorted taste sensation. It is also worth noting that
-              the average treatment time until full drug effect may take several months.
-            </p>
-            <h3>LAMOTRIGINE (LAMICTAL AND OTHER BRAND NAMES)</h3>
-            <p>
-              Lamotrigine is an anti-seizure drug and mood stabiliser. Its actions result in
-              decreased glutamate levels and interference with glutamate neurotransmission. It has
-              been used successfully in bipolar disorder. Reports of lamotrigine as an effective
-              add-on treatment for OCD show mixed results. Side effects were observed in 5% to 20%
-              of the patients. These were generally mild and transient, and included sedation,
-              fatigue, headache, and skin rash.
-            </p>
-            <p>
-              The optimal OCD lamotrigine doses remain unclear, although higher doses may result in
-              better responses. Given the levels of overall improvement generally observed, and its
-              modest side effect profile, lamotrigine appears to merit consideration when other
-              drugs are ineffective.
-            </p>
-            <h3>ONDANSETRON (ZOFRAN)</h3>
-            <p>
-              This drug is mainly used to control nausea and vomiting, especially when associated
-              with cancer chemotherapy, radiotherapy and other conditions. The interest in
-              ondansetron as a possible OCD drug is due to its actions that result in reduced nerve
-              transmission by dopamine. As an augmentation agent, several uncontrolled studies
-              showed, at best, only modest improvement from the addition of ondansetron to an SSRI.
-            </p>
-            <p>
-              Common side effects seen with treatment include headache, constipation, and abdominal
-              pain. The high doses of ondansetron that have shown efficacy in clinical trials also
-              increase the possibility of long QTc heart arrhythmias in at-risk patients.
-            </p>
-            <h3>GRANISETRON (SANCUSO, GRANISOL)</h3>
-            <p>
-              Although granisetron has actions similar to ondansetron, it differs in its ability to
-              cross readily from the blood into the spinal fluid that bathes the brain. There
-              appears to be only one study of granisetron in moderate to severe OCD in which one
-              group of patients received granisetron and fluvoxamine and another fluvoxamine alone
-              for eight week. At the end of the study period, a significant and substantial
-              percentage of those receiving granisetron had complete responses (35% or greater
-              reduction of Y-BOCS scores) and remission (Y-BOCS score 16 or less). More modestly
-              improved scores were also seen in the fluvoxamine-only group.
-            </p>
           </Prose>
         </TextWithFigure>
+
+        <Prose className="mt-6">
+          <h3>RILUZOLE (RILUTEK)</h3>
+          <p>
+            Riluzole is another glutamate-modulating drug for OCD that affords significant symptom
+            improvements in about half of patients whose OCD was not controlled with SSRI treatment.
+            As with most of the other drugs used to treat OCD it is, as yet, unknown why some
+            patients respond to specific drugs and others do not. This also is why drug trial and
+            error for treatment-resistant patients is highly advisable for those whose symptoms
+            continue to be distressing.
+          </p>
+          <h3>UPDATE ON OTHER DRUGS</h3>
+          <p>
+            Among other drugs of several classes that have been used to treat OCD, several have
+            attracted interest. Although limited in scope and still preliminary, current information
+            about patients and /or data from recently completed clinical trials follows.
+          </p>
+          <h3>TOPIRAMATE (TOPAMAX)</h3>
+          <p>
+            This drug is an anti-seizure medication and is also used for bipolar disorder and the
+            prevention of migraine headaches. The use of topiramate as an add-on treatment for OCD
+            is based on several of its actions that result in diminished glutamate activity and
+            increased GABA actions. There are, however, conflicting results from several recent
+            controlled studies. Also, troublesome side effects include influenza-like symptoms,
+            difficulties with memory, and distorted taste sensation. It is also worth noting that
+            the average treatment time until full drug effect may take several months.
+          </p>
+          <h3>LAMOTRIGINE (LAMICTAL AND OTHER BRAND NAMES)</h3>
+          <p>
+            Lamotrigine is an anti-seizure drug and mood stabiliser. Its actions result in decreased
+            glutamate levels and interference with glutamate neurotransmission. It has been used
+            successfully in bipolar disorder. Reports of lamotrigine as an effective add-on
+            treatment for OCD show mixed results. Side effects were observed in 5% to 20% of the
+            patients. These were generally mild and transient, and included sedation, fatigue,
+            headache, and skin rash.
+          </p>
+          <p>
+            The optimal OCD lamotrigine doses remain unclear, although higher doses may result in
+            better responses. Given the levels of overall improvement generally observed, and its
+            modest side effect profile, lamotrigine appears to merit consideration when other drugs
+            are ineffective.
+          </p>
+          <h3>ONDANSETRON (ZOFRAN)</h3>
+          <p>
+            This drug is mainly used to control nausea and vomiting, especially when associated with
+            cancer chemotherapy, radiotherapy and other conditions. The interest in ondansetron as a
+            possible OCD drug is due to its actions that result in reduced nerve transmission by
+            dopamine. As an augmentation agent, several uncontrolled studies showed, at best, only
+            modest improvement from the addition of ondansetron to an SSRI.
+          </p>
+          <p>
+            Common side effects seen with treatment include headache, constipation, and abdominal
+            pain. The high doses of ondansetron that have shown efficacy in clinical trials also
+            increase the possibility of long QTc heart arrhythmias in at-risk patients.
+          </p>
+          <h3>GRANISETRON (SANCUSO, GRANISOL)</h3>
+          <p>
+            Although granisetron has actions similar to ondansetron, it differs in its ability to
+            cross readily from the blood into the spinal fluid that bathes the brain. There appears
+            to be only one study of granisetron in moderate to severe OCD in which one group of
+            patients received granisetron and fluvoxamine and another fluvoxamine alone for eight
+            week. At the end of the study period, a significant and substantial percentage of those
+            receiving granisetron had complete responses (35% or greater reduction of Y-BOCS scores)
+            and remission (Y-BOCS score 16 or less). More modestly improved scores were also seen in
+            the fluvoxamine-only group.
+          </p>
+        </Prose>
       </PageSection>
 
-      <PageSection heading="BRIEF MENTIONS" tone="mist">
+      <PageSection heading="BRIEF MENTIONS" tone="mist" className={CAPS_HEADING}>
         <TextWithFigure
           figure={<Figure file="2022-06-flt2.jpg" alt="A circle with a line struck through it" />}
         >
@@ -389,7 +407,7 @@ export default function BeyondFirstLineTherapyPage() {
         </TextWithFigure>
       </PageSection>
 
-      <PageSection heading="THE INTERNET AS A CBT RESOURCE">
+      <PageSection heading="THE INTERNET AS A CBT RESOURCE" className={CAPS_HEADING}>
         <Prose>
           <p>
             There is no question that the proper use of CBT is a key part, and in some cases the

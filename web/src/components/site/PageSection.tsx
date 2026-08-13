@@ -21,7 +21,8 @@ const HEADING_TONES: Record<SectionTone, string> = {
   strong: 'text-white',
 }
 
-export const SECTION_HEADING_CLASSES = 'text-3xl leading-[1.1] font-bold text-balance md:text-4xl'
+export const SECTION_HEADING_CLASSES =
+  'max-w-3xl text-3xl leading-[1.1] font-bold text-balance md:text-4xl'
 
 function slugify(heading: string): string {
   return heading

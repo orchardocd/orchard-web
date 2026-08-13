@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Figure, PageBanner, PageSection, Prose } from '@/components/site'
+import { PageBanner, PageSection, Prose, Table } from '@/components/site'
 
 export const metadata: Metadata = {
   title: 'Complementary and alternative therapies',
@@ -70,7 +70,7 @@ export default function ComplementaryAndAlternativeTherapiesPage() {
         </Prose>
       </PageSection>
 
-      <PageSection>
+      <PageSection heading="NUTRIENT SUPPLEMENTS">
         <Prose>
           <p>
             Understanding that the majority of CAM treatments for OCD still have insufficient proof
@@ -78,11 +78,6 @@ export default function ComplementaryAndAlternativeTherapiesPage() {
             costs generate continued interest. Below, we will review CAM therapies that are more
             likely to be encountered in real world OCD management.
           </p>
-        </Prose>
-      </PageSection>
-
-      <PageSection heading="NUTRIENT SUPPLEMENTS" tone="ruled">
-        <Prose>
           <p>
             Some nutraceuticals have undergone evaluation for OCD, although the side effect and
             outcomes data in most cases is rather thin. Insights can also be based on studies that
@@ -386,11 +381,14 @@ export default function ComplementaryAndAlternativeTherapiesPage() {
             compared to PRT.
           </p>
         </Prose>
-        <Figure
-          file="2022-06-table3.png"
-          size="band"
-          alt="Y-BOCS scores as a percentage reduction: 46% for ACT and 24% for PRT at the end of the eight week study, and 54% for ACT and 36% for PRT three months after the study"
-          className="my-10"
+        <Table
+          caption="Y-BOCS score reduction for ACT and PRT at the end of the eight week study and three months after it"
+          head={['Y-BOCS scores (% reduction)', 'ACT', 'PRT']}
+          rows={[
+            ['End of 8 week study', '46%', '24%'],
+            ['Three months after study', '54%', '36%'],
+          ]}
+          className="my-10 max-w-measure"
         />
         <Prose>
           <p>

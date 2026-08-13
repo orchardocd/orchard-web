@@ -29,7 +29,7 @@ export default function JoinOurMailingListPage() {
 
       <PageSection label="Sign up for our E-News">
         <NewsletterSignup />
-        <Prose className="mt-10">
+        <Prose className="mt-8">
           <p>
             The data you provide will be stored by Orchard OCD and on MailChimp. We won’t share your
             information with any other third parties and you can opt out at any time. Further

@@ -23,7 +23,7 @@ export function Pagination({
   return (
     <nav
       aria-label="Pages"
-      className="mt-10 flex flex-wrap items-center justify-center gap-1 border-t border-line pt-10 sm:gap-2"
+      className="mt-16 flex flex-wrap items-center justify-center gap-1 border-t border-line pt-16 sm:gap-2 md:mt-20 md:pt-20"
     >
       {pages.map((page) =>
         page === current ? (

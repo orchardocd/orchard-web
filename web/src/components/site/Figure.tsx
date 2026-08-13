@@ -3,8 +3,14 @@ import { Plate, PLATE_SIZES, type PlateProps } from '@/components/site/Plate'
 import { MediaImage } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 
-export async function Figure({ file, alt, ...plate }: PlateProps & { file: string; alt?: string }) {
+type FigureProps = PlateProps & { file: string; alt?: string }
+
+export async function Figure({ file, alt, ...plate }: FigureProps) {
   return <Plate media={await siteImageWithAlt(file, alt)} {...plate} />
+}
+
+export function Mark(props: Omit<FigureProps, 'size'>) {
+  return <Figure {...props} size="mark" />
 }
 
 export async function Photo({

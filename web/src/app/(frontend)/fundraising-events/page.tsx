@@ -11,6 +11,8 @@ export const metadata: Metadata = {
 
 const FUNDRAISING_EMAIL = 'juliet@orchardocd.org'
 
+const CAPS_HEADING = '[&_h2]:tracking-[0.02em]'
+
 function JustGiving() {
   return (
     <a href="https://www.justgiving.com/" rel="noreferrer">
@@ -33,7 +35,7 @@ export default function FundraisingEventsPage() {
         </p>
       </PageBanner>
 
-      <PageSection heading="FUNDRAISE FOR ORCHARD OCD">
+      <PageSection heading="FUNDRAISE FOR ORCHARD OCD" className={CAPS_HEADING}>
         <Prose>
           <ul>
             <li>
@@ -99,13 +101,16 @@ export default function FundraisingEventsPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="ORCHARD OCD EVENTS" tone="mist">
+      <PageSection heading="ORCHARD OCD EVENTS" tone="mist" className={CAPS_HEADING}>
         <Prose>
           <p>If we have any upcoming events, we will post them here. Keep an eye out!</p>
         </Prose>
       </PageSection>
 
-      <PageSection heading="CONTACT US FOR IDEAS AND/OR FUNDRAISING ADVICE">
+      <PageSection
+        heading="CONTACT US FOR IDEAS AND/OR FUNDRAISING ADVICE"
+        className={CAPS_HEADING}
+      >
         <Prose>
           <p>
             Whether you’re into sports, music, baking, comedy, or just socialising with your
@@ -117,7 +122,7 @@ export default function FundraisingEventsPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="CORPORATE PARTNERSHIPS" tone="mist">
+      <PageSection heading="CORPORATE PARTNERSHIPS" tone="mist" className={CAPS_HEADING}>
         <Prose>
           <p>
             Here at Orchard OCD, we would love to partner with companies to help us achieve our{' '}

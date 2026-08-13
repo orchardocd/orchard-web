@@ -8,7 +8,7 @@ export async function SpeakerGrid({ names }: { names: string[] }) {
   const byName = new Map(speakers.map((speaker) => [speaker.name, speaker]))
 
   return (
-    <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
       {names.map((name) => {
         const speaker = byName.get(name)
         if (!speaker) throw new Error(`No speaker named "${name}" in the speakers collection`)

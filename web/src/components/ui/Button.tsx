@@ -35,7 +35,8 @@ export function ButtonLink({
   children: ReactNode
   detail?: string
 }) {
-  const external = /^https?:\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')
+  const external =
+    /^https?:\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')
   const classes = buttonClasses(variant, className)
   const body = (
     <>

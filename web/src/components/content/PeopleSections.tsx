@@ -1,6 +1,6 @@
 import { CARD_TITLE_CLASSES } from '@/components/layout/Banner'
-import { Container, Section } from '@/components/ui/Container'
-import { MediaImage, RoundImage } from '@/components/ui/Media'
+import { PageSection, Plate } from '@/components/site'
+import { RoundImage } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 import { getPeople } from '@/lib/payload'
 import type { Person } from '@/payload-types'
@@ -13,15 +13,9 @@ const GROUPS: { value: Person['group']; label: string }[] = [
   { value: 'college', label: 'Our members' },
 ]
 
-function PersonCard({
-  person,
-  compact = false,
-  className,
-}: {
-  person: Person
-  compact?: boolean
-  className?: string
-}) {
+const MARK_SIZES = '(min-width: 1024px) 320px, (min-width: 640px) 288px, calc(100vw - 5.5rem)'
+
+function PersonCard({ person, compact = false }: { person: Person; compact?: boolean }) {
   // Supporters are organisations: their wordmarks belong on a plate, not in a portrait circle.
   const isOrganisation = person.group === 'partners'
 
@@ -32,18 +26,11 @@ function PersonCard({
         compact
           ? 'relative grid grid-cols-[5.5rem_1fr] p-4 sm:flex sm:flex-col sm:p-6'
           : 'flex flex-col p-5 md:p-7',
-        className,
       )}
     >
       {person.photo ? (
         isOrganisation ? (
-          <div className="flex h-36 w-full items-center justify-center rounded-lg bg-mist p-6">
-            <MediaImage
-              media={person.photo}
-              className="max-h-24 w-auto object-contain"
-              sizes="240px"
-            />
-          </div>
+          <Plate media={person.photo} size="mark" sizes={MARK_SIZES} />
         ) : (
           <RoundImage
             media={person.photo}
@@ -52,8 +39,19 @@ function PersonCard({
           />
         )
       ) : null}
-      <div className="flex w-full flex-col items-center gap-4">
-        <h3 className={cn(CARD_TITLE_CLASSES, 'text-center text-balance text-brand-link')}>
+      <div
+        className={cn(
+          'flex w-full flex-col gap-4',
+          compact ? 'items-start sm:items-center' : 'items-center',
+        )}
+      >
+        <h3
+          className={cn(
+            CARD_TITLE_CLASSES,
+            'text-balance text-brand-link',
+            compact ? 'text-left sm:text-center' : 'text-center',
+          )}
+        >
           {person.website ? (
             <a
               href={person.website}
@@ -69,9 +67,7 @@ function PersonCard({
           )}
         </h3>
         {person.excerpt ? (
-          <p className="w-full text-left text-base leading-relaxed text-body sm:text-sm">
-            {person.excerpt}
-          </p>
+          <p className="w-full text-left text-base leading-relaxed text-body">{person.excerpt}</p>
         ) : null}
       </div>
     </li>
@@ -87,40 +83,29 @@ export async function PeopleSections({ only }: { only?: Person['group'][] } = {}
       {groups.map((group, index) => {
         const members = people.filter((person) => person.group === group.value)
         if (members.length === 0) return null
-        const headingId = `people-${group.value}`
         // A 56-strong roster needs a denser grid than a nine-person team.
         const compact = group.value === 'college'
 
         return (
-          <Section
+          <PageSection
             key={group.value}
-            labelledBy={headingId}
-            className={index % 2 === 0 ? 'bg-mist' : undefined}
+            id={`people-${group.value}`}
+            heading={group.label}
+            tone={index % 2 === 0 ? 'mist' : 'plain'}
           >
-            <Container>
-              <h2
-                id={headingId}
-                className="mb-9 text-2xl leading-[1.1] font-bold text-brand-deep md:text-3xl"
-              >
-                {group.label}
-              </h2>
-              <ul
-                className={cn(
-                  'grid items-stretch gap-x-6 gap-y-10 lg:flex lg:flex-wrap',
-                  compact ? 'grid-cols-1 sm:grid-cols-3' : 'sm:grid-cols-2',
-                )}
-              >
-                {members.map((person) => (
-                  <PersonCard
-                    key={person.id}
-                    person={person}
-                    compact={compact}
-                    className={compact ? 'lg:flex-[1_1_15rem]' : 'lg:flex-[1_1_20rem]'}
-                  />
-                ))}
-              </ul>
-            </Container>
-          </Section>
+            <ul
+              className={cn(
+                'grid items-stretch gap-x-6 gap-y-10',
+                compact
+                  ? 'grid-cols-1 sm:grid-cols-3 lg:grid-cols-4'
+                  : 'sm:grid-cols-2 lg:grid-cols-3',
+              )}
+            >
+              {members.map((person) => (
+                <PersonCard key={person.id} person={person} compact={compact} />
+              ))}
+            </ul>
+          </PageSection>
         )
       })}
     </>

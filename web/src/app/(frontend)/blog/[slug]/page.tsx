@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 
 import { ARTICLE_FIGURE_SIZES, ArticleHeader } from '@/components/content/ArticleHeader'
 import { RichText } from '@/components/RichText'
+import { Plate } from '@/components/site'
 import { Container } from '@/components/ui/Container'
-import { MediaImage } from '@/components/ui/Media'
 import { formatDate } from '@/lib/format'
 import { getPostBySlug } from '@/lib/payload'
 import { slugMetadata, slugParams, type SlugParams } from '@/lib/routes'
@@ -32,12 +32,7 @@ export default async function PostPage({ params }: SlugParams) {
         }
         figure={
           post.featuredImage ? (
-            <MediaImage
-              media={post.featuredImage}
-              className="max-h-[40rem] w-full rounded-lg object-contain"
-              sizes={ARTICLE_FIGURE_SIZES}
-              priority
-            />
+            <Plate media={post.featuredImage} sizes={ARTICLE_FIGURE_SIZES} priority />
           ) : null
         }
       />

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { EmbedFrame } from '@/components/blocks/EmbedFrame'
 import { SpeakerGrid } from '@/components/content/SpeakerGrid'
-import { Figure, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
+import { Figure, Mark, PageBanner, PageSection, Prose } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
@@ -19,6 +19,9 @@ const WEB_APP_GUIDE_URL =
 const VENUE_MAP_URL =
   'https://maps.google.com/maps?q=30%20Euston%20Square%2C%20London%20NW1%202FB&t=m&z=10&output=embed&iwloc=near'
 const VENUE = '30 Euston Square, London NW1 2FB'
+
+const SENTENCE_CASE_HEADING = '[&_h2]:lowercase [&_h2]:first-letter:uppercase'
+const EXHIBITOR_SIZES = '(min-width: 640px) 20rem, calc(100vw - 3rem)'
 
 const SPEAKERS = [
   'Zhen Wang',
@@ -73,57 +76,59 @@ export default function ConferencePage() {
           file="2024-08-Group-8.svg"
           alt="A speaker at a lectern addressing a seated audience under a conference banner"
           size="band"
+          sizes="(min-width: 57rem) 33rem, calc(100vw - 3rem)"
+          className="max-w-xl"
         />
-        <p className="mt-9">
+        <p className="mt-8">
           <ButtonLink href={TICKETS_URL}>Secure Your Spot</ButtonLink>
         </p>
       </PageSection>
 
-      <PageSection heading="SUPPORTED BY" tone="mist">
-        <TextWithFigure figure={<Figure file="2026-04-Wellcome-Trust.png" alt="Wellcome Trust" />}>
-          <Prose>
-            <p>Made possible by a Wellcome Trust Award</p>
-          </Prose>
-        </TextWithFigure>
+      <PageSection heading="SUPPORTED BY" tone="mist" className={SENTENCE_CASE_HEADING}>
+        <div className="flex max-w-measure flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <Mark
+            file="2026-04-Wellcome-Trust.png"
+            alt="Wellcome Trust"
+            sizes="12rem"
+            className="w-full max-w-48 shrink-0"
+          />
+          <p className="text-lg leading-relaxed text-body md:text-xl">
+            Made possible by a Wellcome Trust Award
+          </p>
+        </div>
       </PageSection>
 
-      <PageSection heading="EXHIBITORS">
+      <PageSection heading="EXHIBITORS" className={SENTENCE_CASE_HEADING}>
         <Prose>
           <p>
             International OCD Foundation, OCD Action &amp; British Association for
             Psychopharmacology
           </p>
         </Prose>
-        <div className="mt-9 grid gap-8 sm:grid-cols-3">
-          <Figure
+        <div className="mt-8 grid gap-8 sm:grid-cols-3">
+          <Mark
             file="2017-04-The-D-in-OCD.png"
             alt="International OCD Foundation"
-            sizes="(min-width: 640px) 20rem, calc(100vw - 3rem)"
+            sizes={EXHIBITOR_SIZES}
           />
-          <Figure
-            file="2026-04-OCD-Action.jpg"
-            alt="OCD Action"
-            sizes="(min-width: 640px) 20rem, calc(100vw - 3rem)"
-          />
-          <Figure
+          <Mark file="2026-04-OCD-Action.jpg" alt="OCD Action" sizes={EXHIBITOR_SIZES} />
+          <Mark
             file="2026-04-BAP.jpg"
             alt="British Association for Psychopharmacology"
-            sizes="(min-width: 640px) 20rem, calc(100vw - 3rem)"
+            sizes={EXHIBITOR_SIZES}
           />
         </div>
       </PageSection>
 
       <PageSection heading="At 30 Euston Square, London NW1 2FB" id="venue" tone="deep">
-        <div className="grid gap-10 flow:grid-cols-[1fr_auto] flow:items-start flow:gap-12">
-          <EmbedFrame url={VENUE_MAP_URL} title={VENUE} />
-          <div className="flex flex-col items-start gap-4">
-            <ButtonLink href={PROGRAMME_URL} variant="light">
-              View Programme
-            </ButtonLink>
-            <ButtonLink href={WEB_APP_GUIDE_URL} variant="light">
-              View Web App Guide
-            </ButtonLink>
-          </div>
+        <EmbedFrame url={VENUE_MAP_URL} title={VENUE} className="max-w-3xl" />
+        <div className="mt-8 flex flex-wrap items-start gap-4">
+          <ButtonLink href={PROGRAMME_URL} variant="light">
+            View Programme
+          </ButtonLink>
+          <ButtonLink href={WEB_APP_GUIDE_URL} variant="light">
+            View Web App Guide
+          </ButtonLink>
         </div>
       </PageSection>
 

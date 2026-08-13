@@ -9,22 +9,20 @@ export const metadata: Metadata = {
 export default function BecomeATrusteePage() {
   return (
     <>
-      <PageBanner title="Become A Trustee" />
+      <PageBanner title="Become A Trustee" eyebrow="Get Involved" />
 
       <PageSection heading="Trustee Job Description">
         <Prose>
-          <p>
-            <strong>Position:</strong> Trustee
-          </p>
-          <p>
-            <strong>Organization:</strong> Orchard OCD
-          </p>
-          <p>
-            <strong>Location:</strong> Remote (with occasional in-person meetings)
-          </p>
-          <p>
-            <strong>Time Commitment:</strong> Approximately 3-6 hours per month
-          </p>
+          <dl>
+            <dt>Position</dt>
+            <dd>Trustee</dd>
+            <dt>Organization</dt>
+            <dd>Orchard OCD</dd>
+            <dt>Location</dt>
+            <dd>Remote (with occasional in-person meetings)</dd>
+            <dt>Time Commitment</dt>
+            <dd>Approximately 3-6 hours per month</dd>
+          </dl>
         </Prose>
       </PageSection>
 

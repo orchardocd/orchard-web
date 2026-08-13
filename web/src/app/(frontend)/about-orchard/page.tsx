@@ -30,7 +30,7 @@ function Pillar({
 }) {
   return (
     <li className="flex flex-col gap-5">
-      <Figure file={file} alt={alt} sizes={PILLAR_SIZES} />
+      <Figure file={file} alt={alt} sizes={PILLAR_SIZES} className="flow:h-80" />
       <h3 className="text-xl font-bold text-brand-link">{heading}</h3>
       <div className="text-base leading-relaxed text-body">{children}</div>
     </li>
@@ -64,7 +64,7 @@ export default function AboutOrchardPage() {
             OCD.
           </p>
         </Prose>
-        <ul className="mt-12 grid gap-10 flow:grid-cols-3">
+        <ul className="mt-8 grid gap-10 flow:grid-cols-3">
           <Pillar
             file="2022-03-Group12980.svg"
             alt="A brain in bloom forming one half of a heart"
@@ -144,11 +144,7 @@ export default function AboutOrchardPage() {
             </p>
           </Prose>
           <p className="mt-8">
-            <ButtonLink
-              href="/the-work-we-do"
-              variant="secondary"
-              detail="about the work we do"
-            >
+            <ButtonLink href="/the-work-we-do" variant="secondary" detail="about the work we do">
               read more
             </ButtonLink>
           </p>

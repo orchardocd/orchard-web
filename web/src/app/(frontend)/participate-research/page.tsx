@@ -25,7 +25,7 @@ export default async function StudiesIndex({ searchParams }: PagedParams) {
           articles={studies.docs}
           basePath="/participate-research"
           accents={ACCENTS}
-          className="grid items-start gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3"
+          className="md:grid-cols-2 lg:grid-cols-3"
         />
         <Pagination
           current={studies.page ?? current}

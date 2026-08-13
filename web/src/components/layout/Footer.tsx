@@ -11,14 +11,16 @@ import {
   SOCIAL,
 } from '@/lib/site'
 import { Container } from '@/components/ui/Container'
+import { LABEL_CLASSES } from '@/components/site'
 import { SocialLinks } from '@/components/content/SocialLinks'
+import { cn } from '@/lib/cn'
 
 export function Footer() {
   const year = new Date().getFullYear()
 
   return (
     <footer className="bg-footer text-white">
-      <Container className="pt-10 pb-7 md:pt-16">
+      <Container className="pt-16 pb-7 md:pt-20">
         <div className="grid grid-cols-2 gap-x-6 gap-y-7 lg:grid-cols-[2.9fr_0.8fr_0.8fr_1.3fr] lg:gap-y-10">
           <div className="col-span-2 lg:col-span-1">
             <Image
@@ -28,21 +30,18 @@ export function Footer() {
               height={96}
               className="h-11 w-auto"
             />
-            <h2 className="mt-6 mb-3 text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
+            <h2 className={cn(LABEL_CLASSES, 'mt-6 mb-3 text-white/55')}>
               Follow us on social media
             </h2>
             <SocialLinks
               items={SOCIAL}
-              className="flex flex-wrap"
               linkClassName="block rounded-full bg-white/10 px-4 py-2 text-center text-sm font-semibold text-white no-underline hover:bg-white/22"
             />
           </div>
 
           {FOOTER_COLUMNS.map((column) => (
             <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="mb-4 text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
-                {column.heading}
-              </h2>
+              <h2 className={cn(LABEL_CLASSES, 'mb-4 text-white/55')}>{column.heading}</h2>
               <ul className="flex flex-col gap-1">
                 {column.links.map((link) => (
                   <li key={link.href}>
@@ -59,9 +58,7 @@ export function Footer() {
           ))}
 
           <div className="col-span-2 lg:col-span-1">
-            <h2 className="mb-4 text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
-              Contact us
-            </h2>
+            <h2 className={cn(LABEL_CLASSES, 'mb-4 text-white/55')}>Contact us</h2>
             <ul className="flex flex-col gap-3 text-sm text-white/88">
               <li>
                 <a
@@ -92,7 +89,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-white/14 pt-5 text-sm text-white/60 lg:mt-14 lg:gap-6 lg:pt-6">
+        <div className="mt-8 flex flex-wrap justify-between gap-x-6 gap-y-4 border-t border-white/14 pt-5 text-sm text-white/60 lg:mt-14 lg:gap-6 lg:pt-6">
           <p>
             © {year} {SITE_NAME}. {SITE_TAGLINE}.
           </p>
