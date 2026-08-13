@@ -1,9 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
+import { revalidates } from '@/lib/revalidate'
+
 import { articleFields } from '@/fields/document'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  hooks: revalidates(['/blog', '/'], '/blog'),
   access: {
     read: () => true,
   },

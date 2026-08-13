@@ -1,9 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
+import { revalidates } from '@/lib/revalidate'
+
 import { slugField } from '@/fields/slug'
 
 export const People: CollectionConfig = {
   slug: 'people',
+  hooks: revalidates(['/about', '/about-orchard']),
   labels: { singular: 'Person', plural: 'People' },
   access: {
     read: () => true,

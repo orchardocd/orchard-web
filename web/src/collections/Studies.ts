@@ -1,9 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
+import { revalidates } from '@/lib/revalidate'
+
 import { articleFields } from '@/fields/document'
 
 export const Studies: CollectionConfig = {
   slug: 'studies',
+  hooks: revalidates(['/participate-research'], '/participate-research'),
   labels: { singular: 'Study', plural: 'Studies' },
   access: {
     read: () => true,

@@ -24,7 +24,7 @@ echo "==> building"
 
 echo "==> syncing application to $IP"
 $SSH 'install -d -o orchard -g orchard /srv/orchard/app'
-rsync -az --delete --exclude media --exclude documents --exclude videos \
+rsync -az --delete --exclude media --exclude documents --exclude videos --exclude '.next/static' \
   -e "$RSH" "$WEB/.next/standalone/" "root@$IP:/srv/orchard/app/"
 rsync -az -e "$RSH" "$WEB/.next/static/" "root@$IP:/srv/orchard/app/.next/static/"
 rsync -az -e "$RSH" "$WEB/public/" "root@$IP:/srv/orchard/app/public/"
