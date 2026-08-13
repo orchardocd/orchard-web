@@ -82,9 +82,14 @@ export default async function HomePage() {
         image="2022-04-hm-bnrr-1.png"
         imageAlt="A person with leafy plants growing from their head, watered from a can"
         actions={
-          <ButtonLink href={DONATE_URL} variant="donate" className="px-8 py-4 text-lg">
-            Donate Now
-          </ButtonLink>
+          <>
+            <ButtonLink href={DONATE_URL} variant="donate" className="px-8 py-4 text-lg">
+              Donate Now
+            </ButtonLink>
+            <ButtonLink href="/about-ocd" variant="ghost" className="px-8 py-4 text-lg">
+              Learn About Orchard OCD
+            </ButtonLink>
+          </>
         }
       />
 
