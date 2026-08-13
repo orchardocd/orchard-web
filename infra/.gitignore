@@ -1,0 +1,8 @@
+deploy_key
+deploy_key.pub
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+tfplan
+*.tfplan

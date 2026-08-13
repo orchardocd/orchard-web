@@ -1,0 +1,93 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - debian-keyring
+  - debian-archive-keyring
+  - apt-transport-https
+  - rsync
+  - ufw
+  - unattended-upgrades
+
+users:
+  - name: orchard
+    system: true
+    shell: /usr/sbin/nologin
+    home: /srv/orchard
+
+write_files:
+  - path: /etc/caddy/Caddyfile
+    permissions: '0644'
+    content: |
+      ${hostname} {
+        encode zstd gzip
+        header {
+          X-Robots-Tag "noindex, nofollow"
+          Strict-Transport-Security "max-age=31536000; includeSubDomains"
+          X-Content-Type-Options "nosniff"
+          Referrer-Policy "strict-origin-when-cross-origin"
+        }
+        handle_path /media/* {
+          root * /srv/orchard/media
+          file_server
+        }
+        handle_path /documents/* {
+          root * /srv/orchard/documents
+          file_server
+        }
+        handle_path /videos/* {
+          root * /srv/orchard/videos
+          file_server
+        }
+        reverse_proxy 127.0.0.1:3000
+      }
+
+  - path: /etc/systemd/system/orchard-web.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Orchard OCD website
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      User=orchard
+      Group=orchard
+      WorkingDirectory=/srv/orchard/app
+      EnvironmentFile=/srv/orchard/app.env
+      ExecStart=/usr/bin/node server.js
+      Restart=always
+      RestartSec=5
+      NoNewPrivileges=true
+      PrivateTmp=true
+      ProtectSystem=strict
+      ProtectHome=true
+      ReadWritePaths=/srv/orchard
+      LimitNOFILE=65535
+
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  - cloud-init status --wait
+  - export DEBIAN_FRONTEND=noninteractive
+  - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+  - apt-get -o DPkg::Lock::Timeout=900 install -y nodejs
+  - curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  - curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
+  - apt-get -o DPkg::Lock::Timeout=900 update
+  - apt-get -o DPkg::Lock::Timeout=900 -o Dpkg::Options::=--force-confold install -y caddy
+  - dpkg --configure -a --force-confold
+  - install -d -o orchard -g orchard /srv/orchard /srv/orchard/app /srv/orchard/media /srv/orchard/documents /srv/orchard/videos /srv/orchard/data
+  - touch /srv/orchard/app.env
+  - chown orchard:orchard /srv/orchard/app.env
+  - chmod 600 /srv/orchard/app.env
+  - systemctl daemon-reload
+  - systemctl enable orchard-web
+  - systemctl restart caddy
+  - dpkg-reconfigure -f noninteractive unattended-upgrades
