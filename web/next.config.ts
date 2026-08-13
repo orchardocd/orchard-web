@@ -8,6 +8,9 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ['workstation', 'workstation:3000', 'localhost', 'localhost:3000'],
+  experimental: {
+    globalNotFound: true,
+  },
   images: {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

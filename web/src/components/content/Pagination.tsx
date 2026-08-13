@@ -21,7 +21,10 @@ export function Pagination({
   const href = (page: number) => (page === 1 ? basePath : `${basePath}?page=${page}`)
 
   return (
-    <nav aria-label="Pages" className="mt-12 flex flex-wrap items-center gap-2">
+    <nav
+      aria-label="Pages"
+      className="mt-10 flex flex-wrap items-center justify-center gap-1 border-t border-line pt-10 sm:gap-2"
+    >
       {pages.map((page) =>
         page === current ? (
           <span

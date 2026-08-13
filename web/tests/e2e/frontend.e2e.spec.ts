@@ -40,7 +40,12 @@ test.describe('site', () => {
 
   test('lists every team group on the about page', async ({ page }) => {
     await page.goto('/about-orchard')
-    for (const group of ['Our team', 'Scientific advisory board', 'Our supporters', 'Our volunteers']) {
+    for (const group of [
+      'Our team',
+      'Scientific advisory board',
+      'Our supporters',
+      'Our volunteers',
+    ]) {
       await expect(page.getByRole('heading', { name: group, exact: true })).toBeVisible()
     }
   })
@@ -62,6 +67,22 @@ test.describe('site', () => {
 
     await players.first().click()
     await expect(page.locator('main iframe').first()).toHaveAttribute('title', /\S/)
+  })
+
+  test('plays a video inside a post without loading YouTube first', async ({ page }) => {
+    await page.goto('/blog/new-ocd-awareness-video')
+    await expect(page.locator('main iframe')).toHaveCount(0)
+    await expect(
+      page.getByRole('button', { name: 'Watch Now: New OCD Awareness Video' }),
+    ).toBeVisible()
+  })
+
+  test('pages the study index', async ({ page }) => {
+    await page.goto('/participate-research')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Participate in research')
+    await page.getByRole('navigation', { name: 'Pages' }).getByRole('link', { name: '2' }).click()
+    await expect(page).toHaveURL(/\/participate-research\?page=2/)
+    await expect(page.locator('main li a').first()).toBeVisible()
   })
 
   test('returns a 404 page for unknown routes', async ({ page }) => {

@@ -41,8 +41,8 @@ export function NewsletterSignup() {
   }
 
   return (
-    <form onSubmit={submit} className="mt-10 max-w-measure rounded-lg bg-mist p-6 sm:p-8">
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={submit} className="max-w-measure rounded-lg bg-mist p-6 sm:p-8 lg:max-w-none">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {FIELDS.map((field) => (
           <label key={field.name} className="flex flex-col gap-2">
             <span className="text-sm font-bold text-ink">{field.label}</span>
@@ -55,10 +55,14 @@ export function NewsletterSignup() {
             />
           </label>
         ))}
+        <button
+          type="submit"
+          disabled={state === 'sending'}
+          className={buttonClasses('primary', 'mt-2 self-end sm:mt-0')}
+        >
+          Sign up
+        </button>
       </div>
-      <button type="submit" disabled={state === 'sending'} className={buttonClasses('primary', 'mt-6')}>
-        Sign up
-      </button>
       <p aria-live="polite" className="mt-4 text-base text-body empty:mt-0">
         {state === 'done' ? 'Thank you, you are on the list.' : null}
         {state === 'failed' ? 'That did not go through. Please try again.' : null}

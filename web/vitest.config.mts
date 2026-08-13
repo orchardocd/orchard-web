@@ -17,6 +17,7 @@ export default defineConfig({
     environment: 'jsdom',
     // Payload validates its schema on first connect, which outlasts the 10s default.
     hookTimeout: 60_000,
+    fileParallelism: false,
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
   },

@@ -10,7 +10,6 @@ import sharp from 'sharp'
 import { Categories } from '@/collections/Categories'
 import { Documents } from '@/collections/Documents'
 import { Media } from '@/collections/Media'
-import { Pages } from '@/collections/Pages'
 import { People } from '@/collections/People'
 import { Posts } from '@/collections/Posts'
 import { Speakers } from '@/collections/Speakers'
@@ -19,9 +18,6 @@ import { Subscribers } from '@/collections/Subscribers'
 import { Users } from '@/collections/Users'
 import { Videos } from '@/collections/Videos'
 import { Webinars } from '@/collections/Webinars'
-import { HomePage } from '@/globals/HomePage'
-import { Navigation } from '@/globals/Navigation'
-import { SiteSettings } from '@/globals/SiteSettings'
 
 const fromAddress = process.env.EMAIL_FROM_ADDRESS || 'info@orchardocd.org'
 const fromName = process.env.EMAIL_FROM_NAME || 'Orchard OCD'
@@ -37,7 +33,6 @@ export default buildConfig({
     },
   },
   collections: [
-    Pages,
     Posts,
     Studies,
     Webinars,
@@ -50,7 +45,6 @@ export default buildConfig({
     Subscribers,
     Users,
   ],
-  globals: [HomePage, SiteSettings, Navigation],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

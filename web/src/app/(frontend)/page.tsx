@@ -1,262 +1,293 @@
-import { VideoEmbed } from '@/components/blocks/VideoEmbed'
-import { PostCards } from '@/components/content/ArticleCard'
+import type { ReactNode } from 'react'
+
+import { ArticleCards } from '@/components/content/ArticleCard'
 import { SocialLinks } from '@/components/content/SocialLinks'
-import { Banner, BannerTitle } from '@/components/layout/Banner'
-import { Illustrations } from '@/components/layout/Illustrations'
+import { CARD_TITLE_CLASSES } from '@/components/layout/Banner'
+import { Figure, PageBanner, PageSection, Photo, TextWithFigure, Video } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
-import { Container, Section } from '@/components/ui/Container'
-import { MediaImage } from '@/components/ui/Media'
-import { sentenceCase } from '@/lib/format'
-import { getHomePage, getPosts, getSiteSettings } from '@/lib/payload'
+import { cn } from '@/lib/cn'
+import { getPosts } from '@/lib/payload'
+import { DONATE_URL, NEWSLETTER, REGISTRY_URL, SOCIAL } from '@/lib/site'
+
+const CARD_SIZES = '(min-width: 1024px) 18rem, (min-width: 768px) 45vw, calc(100vw - 3rem)'
+const CARD_CLASSES = 'flex flex-col overflow-hidden rounded-lg border border-line'
+const PILLAR_CLASSES = 'rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]'
+const PILLAR_BODY = 'text-base leading-relaxed text-body'
+const LEAD = 'max-w-measure text-lg leading-relaxed text-body md:text-xl'
+const DARK_LEAD = 'max-w-measure text-lg leading-relaxed text-pretty text-white/92'
+const SOCIAL_LINK =
+  'inline-block rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-link no-underline hover:bg-brand-strong hover:text-white'
+
+function Highlight({
+  file,
+  alt,
+  title,
+  href,
+}: {
+  file: string
+  alt: string
+  title: string
+  href: string
+}) {
+  return (
+    <li className={CARD_CLASSES}>
+      <Photo
+        file={file}
+        alt={alt}
+        sizes={CARD_SIZES}
+        className="aspect-[5/4] rounded-none border-b border-line bg-mist object-contain p-5"
+      />
+      <div className="flex flex-1 flex-col gap-4 p-6">
+        <h2 className={cn(CARD_TITLE_CLASSES, 'text-ink')}>{title}</h2>
+        <ButtonLink
+          href={href}
+          variant="secondary"
+          className="mt-auto self-start px-5 py-2.5 text-sm"
+          detail={`about ${title}`}
+        >
+          Read More
+        </ButtonLink>
+      </div>
+    </li>
+  )
+}
+
+function Pillar({
+  file,
+  alt,
+  title,
+  children,
+}: {
+  file: string
+  alt: string
+  title: string
+  children: ReactNode
+}) {
+  return (
+    <li className={PILLAR_CLASSES}>
+      <Photo file={file} alt={alt} sizes="128px" className="mb-5 h-16 w-auto rounded-none" />
+      <h3 className="mb-3 text-xl font-bold text-brand-link">{title}</h3>
+      {children}
+    </li>
+  )
+}
 
 export default async function HomePage() {
-  const [home, settings, posts] = await Promise.all([getHomePage(), getSiteSettings(), getPosts(3)])
-  const { about, proposals, participate, social, blog, webinar, video } = home
+  const posts = await getPosts(3)
 
   return (
     <>
-      <Banner
-        aside={
-          home.hero.image ? (
-            <MediaImage
-              media={home.hero.image}
-              className="rounded-lg"
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              priority
-            />
-          ) : undefined
-        }
-      >
-        <BannerTitle>{home.hero.title}</BannerTitle>
-        {about.intro ? (
-          <p className="mt-7 max-w-measure text-lg leading-relaxed text-pretty text-white/92">
-            {sentenceCase(about.intro)}
-          </p>
-        ) : null}
-        <div className="mt-9 flex flex-wrap items-center gap-4">
-          {home.hero.ctaHref && home.hero.ctaLabel ? (
-            <ButtonLink href={home.hero.ctaHref} variant="donate" className="px-8 py-4 text-lg">
-              {home.hero.ctaLabel}
-            </ButtonLink>
-          ) : null}
-          {about.ctaHref && (about.ctaHeading || about.ctaLabel) ? (
-            <ButtonLink href={about.ctaHref} variant="ghost" className="px-8 py-4 text-lg">
-              {about.ctaHeading ?? about.ctaLabel}
-            </ButtonLink>
-          ) : null}
-        </div>
-      </Banner>
-
-      {(home.highlights ?? []).length > 0 ? (
-        <Section label={about.heading} className="py-14">
-          <Container>
-            <ul className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {(home.highlights ?? []).map((item, index) => (
-                <li
-                  key={item.id ?? index}
-                  className="flex flex-col overflow-hidden rounded-lg border border-line"
-                >
-                  {item.image ? (
-                    <MediaImage
-                      media={item.image}
-                      className="aspect-[16/9] border-b border-line bg-mist object-contain p-5"
-                      sizes="(min-width: 1024px) 25vw, 50vw"
-                    />
-                  ) : null}
-                  <div className="flex flex-1 flex-col gap-4 p-6">
-                    <h2 className="text-lg leading-snug font-bold text-ink">{item.title}</h2>
-                    {item.ctaHref && item.ctaLabel ? (
-                      <ButtonLink
-                        href={item.ctaHref}
-                        variant="secondary"
-                        className="mt-auto self-start px-5 py-2.5 text-sm"
-                      >
-                        {item.ctaLabel}
-                      </ButtonLink>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </Section>
-      ) : null}
-
-      <Section labelledBy="about-orchard" className="bg-mist">
-        <Container>
-          <div className="flex flex-wrap items-center justify-between gap-8">
-            <h2 id="about-orchard" className="text-4xl font-bold text-ink">
-              {about.heading}
-            </h2>
-            {about.image ? (
-              <MediaImage media={about.image} className="max-w-40" sizes="160px" />
-            ) : null}
-          </div>
-
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {(about.pillars ?? []).map((pillar, index) => (
-              <div
-                key={pillar.id ?? index}
-                className="rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]"
-              >
-                {pillar.image ? (
-                  <MediaImage media={pillar.image} className="mb-5 h-16 w-auto" sizes="64px" />
-                ) : null}
-                <h3 className="mb-3 text-xl font-bold text-brand-link">{pillar.title}</h3>
-                <p className="text-base leading-relaxed text-body">{pillar.body}</p>
-              </div>
-            ))}
-            <div className="rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]">
-              {about.goalsImage ? (
-                <MediaImage media={about.goalsImage} className="mb-5 h-16 w-auto" sizes="64px" />
-              ) : null}
-              <h3 className="mb-3 text-xl font-bold text-brand-link">{about.goalsTitle}</h3>
-              <p className="mb-2 text-base leading-relaxed text-body">{about.goalsIntro}</p>
-              <ol className="list-decimal pl-5 text-base leading-relaxed text-body">
-                {(about.goals ?? []).map((goal, index) => (
-                  <li key={goal.id ?? index}>{goal.text}</li>
-                ))}
-              </ol>
-            </div>
-          </div>
-
-          {video?.url || (about.ctaImages ?? []).length > 0 ? (
-            <div className="mt-16 flex flex-col gap-6">
-              <div className="flex flex-wrap items-center justify-between gap-6">
-                <h3 id="learn-about" className="text-3xl font-bold text-ink md:text-4xl">
-                  {about.ctaHeading ?? about.heading}
-                </h3>
-                <Illustrations items={about.ctaImages} size="h-16" />
-              </div>
-              {video?.url ? (
-                <VideoEmbed
-                  url={video.url}
-                  title={about.ctaHeading ?? about.heading}
-                  poster={video.poster}
-                  className="max-w-none"
-                />
-              ) : null}
-            </div>
-          ) : null}
-        </Container>
-      </Section>
-
-      <Section labelledBy="participate">
-        <Container className="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
-          <div>
-            <h2 id="participate" className="text-4xl leading-tight font-bold text-ink">
-              {participate?.heading}
-            </h2>
-            <p className="mt-4 max-w-measure text-lg leading-relaxed text-body">
-              {participate?.body}
-            </p>
-            {participate?.ctaHref && participate?.ctaLabel ? (
-              <ButtonLink href={participate.ctaHref} className="mt-7">
-                {participate.ctaLabel}
-              </ButtonLink>
-            ) : null}
-            <Illustrations items={participate?.images} className="mt-8" size="h-20" />
-          </div>
-          <div className="rounded-lg bg-mist p-8">
-            <h2 className="text-2xl font-bold text-brand-link">{social?.heading}</h2>
-            <p className="mt-3 text-base leading-relaxed text-body">{social?.body}</p>
-            <Illustrations items={social?.images} className="mt-6" size="h-20" />
-            <SocialLinks
-              items={settings.social}
-              className="mt-5"
-              linkClassName="inline-block rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand-link no-underline hover:bg-brand-strong hover:text-white"
-            />
-          </div>
-        </Container>
-      </Section>
-
-      <Section labelledBy="proposals" className="bg-brand-deep">
-        <Container className="grid gap-12 lg:grid-cols-2">
-          <div>
-            <h2 id="proposals" className="text-4xl font-bold text-white">
-              {proposals?.heading}
-            </h2>
-            {(proposals?.body ?? []).map((paragraph, index) => (
-              <p
-                key={paragraph.id ?? index}
-                className="mt-5 max-w-measure leading-relaxed text-pretty text-white/92"
-              >
-                {paragraph.text}
-              </p>
-            ))}
-            {proposals?.ctaHref && proposals.ctaLabel ? (
-              <ButtonLink href={proposals.ctaHref} variant="light" className="mt-8">
-                {proposals.ctaLabel}
-              </ButtonLink>
-            ) : null}
-          </div>
-          <div className="flex flex-col gap-8">
-            {proposals?.quote ? (
-              <blockquote className="rounded-lg bg-white/10 p-9 text-2xl leading-snug font-semibold text-pretty text-white">
-                <p>{proposals.quote}</p>
-              </blockquote>
-            ) : null}
-            {proposals?.image ? (
-              <MediaImage
-                media={proposals.image}
-                className="mx-auto max-w-xs"
-                sizes="(min-width: 1024px) 25vw, 50vw"
-              />
-            ) : null}
-
-          </div>
-        </Container>
-      </Section>
-
-      <Section labelledBy="from-the-blog" className="border-t border-line">
-        <Container>
-          <h2 id="from-the-blog" className="mb-10 text-4xl font-bold text-ink">
-            {blog?.heading}
-          </h2>
-          <PostCards
-            posts={posts.docs}
-            className="grid items-stretch gap-x-6 gap-y-10 md:grid-cols-3"
-            accents={['#00877C', '#00655C']}
-            showImages={false}
-          />
-          <Illustrations items={blog?.images} className="mt-10 justify-center" />
-
-          {webinar?.title ? (
-            <div className="mt-12 flex flex-col items-start gap-6 rounded-lg bg-brand-deep px-9 py-7 md:flex-row md:flex-wrap md:items-center md:justify-between">
-              {webinar.image ? (
-                <MediaImage media={webinar.image} className="h-20 w-auto rounded" sizes="120px" />
-              ) : null}
-              <h3 className="flex-1 text-lg font-semibold text-white">{webinar.title}</h3>
-              {webinar.ctaHref && webinar.ctaLabel ? (
-                <ButtonLink href={webinar.ctaHref} variant="light">
-                  {webinar.ctaLabel}
-                </ButtonLink>
-              ) : null}
-            </div>
-          ) : null}
-        </Container>
-      </Section>
-
-      <Section labelledBy="newsletter" className="bg-brand-strong">
-        <Container className="grid items-center gap-12 lg:grid-cols-2">
-          <div>
-            <h2 id="newsletter" className="text-4xl font-bold text-white">
-              {settings.newsletter?.heading}
-            </h2>
-            <p className="mt-4 leading-relaxed text-pretty text-white/92">
-              {settings.newsletter?.body}
-            </p>
-            <Illustrations items={home.newsletter?.images} className="mt-8" size="h-20" />
-          </div>
-          <ButtonLink
-            href={settings.newsletter?.signupUrl || '/join-our-mailing-list'}
-            variant="light"
-            className="justify-self-start px-8 py-4 text-lg lg:self-center"
-          >
-            Join Our Mailing List
+      <PageBanner
+        title="Help us develop better treatments for Obsessive Compulsive Disorder (OCD)"
+        image="2022-04-hm-bnrr-1.png"
+        imageAlt="A person with leafy plants growing from their head, watered from a can"
+        actions={
+          <ButtonLink href={DONATE_URL} variant="donate" className="px-8 py-4 text-lg">
+            Donate Now
           </ButtonLink>
-        </Container>
-      </Section>
+        }
+      />
+
+      <PageSection label="Highlights">
+        <ul className="grid items-stretch gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
+          <Highlight
+            file="2023-02-Screenshot-2023-02-09-at-13-40-19.png"
+            alt="The Orchard OCD Registry wordmark"
+            title="Join our Orchard OCD Registry Community"
+            href={REGISTRY_URL}
+          />
+          <Highlight
+            file="2022-04-slider-image2.png"
+            alt="Four people talking around a tablet"
+            title="Participate in our brand-new OCD survey on new & alternative forms of OCD treatment"
+            href="https://redcap.herts.ac.uk/surveys/?s=LETKTCCJPM"
+          />
+          <Highlight
+            file="2022-05-ee.svg"
+            alt="A team gathered around a giant lightbulb full of ideas"
+            title="New Blog Post: 2022 Call for Proposals Winner"
+            href="/blog/call-for-proposals-2022"
+          />
+          <Highlight
+            file="2021-06-sliderbrain.png"
+            alt="A smiling cartoon brain wearing glasses, sitting cross-legged in meditation"
+            title="Participate in exciting new OCD research"
+            href="/participate-research"
+          />
+        </ul>
+      </PageSection>
+
+      <PageSection heading="About Orchard OCD" tone="mist">
+        <p className={LEAD}>
+          We build a community of interdisciplinary professionals and work with them closely to
+          progress together in developing new and better treatments for patients suffering from OCD.
+        </p>
+        <ButtonLink href="/about-ocd" variant="secondary" className="mt-7">
+          About us
+        </ButtonLink>
+
+        <ul className="mt-12 grid gap-6 md:grid-cols-3">
+          <Pillar
+            file="2022-03-Group12980.svg"
+            alt="A brain growing leaves and flowers, forming one half of a heart"
+            title="Our Vision"
+          >
+            <p className={PILLAR_BODY}>
+              is a world where all patients suffering from OCD receive effective treatment for their
+              condition.
+            </p>
+          </Pillar>
+          <Pillar
+            file="2022-04-aboutorchard-img.svg"
+            alt="A tangled line unwinding into a lit lightbulb"
+            title="Our Mission"
+          >
+            <p className={PILLAR_BODY}>
+              is to build that world by advancing collaborative translational research and driving
+              the quest for new and better treatments for OCD.
+            </p>
+          </Pillar>
+          <Pillar
+            file="2022-03-home-about.svg"
+            alt="An arrow striking the center of a target"
+            title="Our Goals"
+          >
+            <p className={PILLAR_BODY}>We have a three-pillar approach,</p>
+            <ol className={cn(PILLAR_BODY, 'mt-2 list-decimal pl-5')}>
+              <li>Research (fund and run clinical trials)</li>
+              <li>Hubs (OCD research database and repository)</li>
+              <li>Dissemination (awareness campaigns and conferences)</li>
+            </ol>
+          </Pillar>
+        </ul>
+
+        <div className="mt-16">
+          <div className="flex flex-wrap items-center gap-6">
+            <h3 className="text-2xl font-bold text-ink md:text-3xl">Learn About Orchard OCD</h3>
+            <Photo file="2022-05-e.svg" alt="" sizes="160px" className="h-24 w-auto rounded-none" />
+          </div>
+          <Video
+            url="https://player.vimeo.com/video/306831655?h=924cbb2311"
+            title="Learn About Orchard OCD"
+            poster="2022-05-Untitled-1.png"
+            className="mt-6 max-w-4xl"
+          />
+        </div>
+      </PageSection>
+
+      <PageSection heading="Want To Participate In Brand New OCD Research?">
+        <p className={LEAD}>
+          Please have a look at the current OCD studies looking for participants.
+        </p>
+        <ButtonLink
+          href="/participate-research"
+          className="mt-7"
+          detail="about current OCD studies looking for participants"
+        >
+          Learn more
+        </ButtonLink>
+      </PageSection>
+
+      <PageSection heading="Follow Us On Social Media" tone="mist">
+        <TextWithFigure
+          figure={
+            <div className="w-full max-w-sm">
+              <Photo
+                file="2022-04-Group-14643-1.png"
+                alt="A person reading Orchard OCD updates on their phone"
+                sizes="(min-width: 57rem) 24rem, calc(100vw - 3rem)"
+              />
+            </div>
+          }
+        >
+          <p className={LEAD}>
+            If you want to keep up-to-date on the latest work Orchard is doing then please follow us
+            on our social media platforms.
+          </p>
+          <SocialLinks items={SOCIAL} className="mt-6" linkClassName={SOCIAL_LINK} />
+        </TextWithFigure>
+      </PageSection>
+
+      <PageSection heading="Call For Proposals 2022" tone="deep">
+        <TextWithFigure
+          figure={
+            <Figure
+              file="2022-03-homecallfor.svg"
+              alt="Researchers working around a giant lightbulb, surrounded by charts and gears"
+            />
+          }
+        >
+          <p className={DARK_LEAD}>
+            In 2022 we launched our second call for proposals seeking hard-to-fund projects that
+            have great potential to make a major impact for obsessive compulsive disorder (OCD). We
+            received many great submissions, and our independent scientific advisory board judged
+            the projects last year. We are now excited to announce our winner:
+          </p>
+          <blockquote className="mt-8 rounded-lg bg-white/10 p-6 text-xl leading-snug font-semibold text-pretty text-white md:p-9 md:text-2xl">
+            <p>“Double-blind Randomised Placebo-controlled study of Tolcapone for OCD”</p>
+          </blockquote>
+          <ButtonLink
+            href="/blog/call-for-proposals-2022"
+            variant="light"
+            className="mt-8"
+            detail="about the 2022 Call For Proposals winner"
+          >
+            Read More
+          </ButtonLink>
+        </TextWithFigure>
+      </PageSection>
+
+      <PageSection heading="From The Blog">
+        <ArticleCards
+          headingLevel={3}
+          articles={posts.docs}
+          basePath="/blog"
+          className="grid items-stretch gap-x-6 gap-y-10 md:grid-cols-3"
+          accents={['#00655C', '#00655C']}
+          showImages={false}
+          placeholder={false}
+        />
+        <div className="mt-12 flex flex-col items-start gap-6 rounded-lg bg-brand-deep px-9 py-7 md:flex-row md:flex-wrap md:items-center md:justify-between">
+          <Photo
+            file="2022-04-Registry-socials-copy-2.png"
+            alt="The two speakers on the webinar title card"
+            sizes="(min-width: 768px) 144px, calc(100vw - 6rem)"
+            className="aspect-video w-full rounded object-cover object-top md:w-36"
+          />
+          <h3 className="flex-1 text-lg font-semibold text-white">
+            Our latest Webinar: Everything you need to know about OCD
+          </h3>
+          <ButtonLink href="https://www.youtube.com/watch?v=6x59KTFuRZ4" variant="light">
+            Watch Now
+          </ButtonLink>
+        </div>
+      </PageSection>
+
+      <PageSection heading={NEWSLETTER.heading} tone="strong">
+        <TextWithFigure
+          figure={
+            <div className="flex flex-wrap items-center gap-8">
+              <Photo
+                file="2022-03-Group14629.svg"
+                alt="An open envelope with an Orchard OCD letter inside"
+                sizes="220px"
+                className="h-40 w-auto rounded-none"
+              />
+              <Photo
+                file="2022-04-Group-8871.png"
+                alt="An Orchard OCD letter half out of its envelope"
+                sizes="200px"
+                className="h-40 w-auto rounded-none"
+              />
+            </div>
+          }
+        >
+          <p className={DARK_LEAD}>{NEWSLETTER.body}</p>
+          <ButtonLink href={NEWSLETTER.signupUrl} variant="light" className="mt-8">
+            {NEWSLETTER.ctaLabel}
+          </ButtonLink>
+        </TextWithFigure>
+      </PageSection>
     </>
   )
 }

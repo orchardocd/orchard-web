@@ -17,6 +17,8 @@ export function buildLinkMap(content: SeedContent): LinkMap {
   }
   map.set('the-work-we-do', '/the-work-we-do')
   map.set('blog', '/blog')
+  map.set('ocd-webinars', '/webinars')
+  map.set('about-us', '/about-orchard')
   return map
 }
 
@@ -33,8 +35,10 @@ export function rewriteHref(href: string, map: LinkMap): string {
 }
 
 export function rewriteHtml(html: string, map: LinkMap): string {
-  return html.replace(/href="([^"]+)"/g, (match, href: string) => {
-    const rewritten = rewriteHref(href, map)
-    return rewritten === href ? match : `href="${rewritten}"`
-  })
+  return html
+    .replace(/<a[^>]*\shref="#[^"]*"[^>]*>([\s\S]*?)<\/a>/gi, (_match, text: string) => text)
+    .replace(/href="([^"]+)"/g, (match, href: string) => {
+      const rewritten = rewriteHref(href, map)
+      return rewritten === href ? match : `href="${rewritten}"`
+    })
 }

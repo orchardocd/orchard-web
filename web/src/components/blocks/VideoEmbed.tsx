@@ -5,7 +5,11 @@ import { cn } from '@/lib/cn'
 const YOUTUBE = /(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{6,})/
 const VIMEO = /vimeo\.com\/(?:video\/)?(\d+)/
 
-export function embedUrl(url: string): string | null {
+export function isVideoUrl(url: string): boolean {
+  return YOUTUBE.test(url) || VIMEO.test(url)
+}
+
+function embedUrl(url: string): string | null {
   const youtube = YOUTUBE.exec(url)
   if (youtube) return `https://www.youtube-nocookie.com/embed/${youtube[1]}`
   const vimeo = VIMEO.exec(url)
@@ -27,11 +31,18 @@ export function VideoEmbed({
 }) {
   const src = embedUrl(url)
   if (!src) return null
-  const posterMedia = resolveMedia(poster as Parameters<typeof resolveMedia>[0])
+  const resolved = resolveMedia(poster as Parameters<typeof resolveMedia>[0])
+  const posterMedia = resolved?.url ? resolved : null
 
   return (
     <div className={cn('w-full', className)}>
-      <div className="relative aspect-video overflow-hidden rounded-lg bg-linear-to-br from-brand-deep to-brand-strong">
+      <div
+        className={cn(
+          'relative aspect-video w-full overflow-hidden rounded-lg',
+          'flow:mx-auto flow:h-full flow:w-auto',
+          posterMedia ? 'bg-mist' : 'bg-linear-to-br from-brand-deep to-brand-strong',
+        )}
+      >
         <VideoFacade src={src} title={title || 'Video'} poster={posterMedia} />
       </div>
     </div>
@@ -45,7 +56,10 @@ export function VideoPlayer({
   block: { url?: string | null; file?: unknown; title?: string | null; poster?: unknown }
   className?: string
 }) {
-  const file = typeof block.file === 'object' && block.file !== null ? (block.file as { url?: string | null; title?: string | null }) : null
+  const file =
+    typeof block.file === 'object' && block.file !== null
+      ? (block.file as { url?: string | null; title?: string | null })
+      : null
 
   if (file?.url) {
     return (

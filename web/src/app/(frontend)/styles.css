@@ -2,6 +2,7 @@
 
 @theme {
   --font-sans: var(--font-exo), 'Exo', Arial, Helvetica, sans-serif;
+  --breakpoint-flow: 57rem;
 
   --color-brand: #00877c;
   --color-brand-deep: #00655c;
@@ -25,6 +26,9 @@
   --color-line: rgba(14, 42, 39, 0.14);
 
   --spacing-measure: 40rem;
+  --spacing-plate: 14.625rem;
+  --spacing-band: 29.25rem;
+  --spacing-band-art: 26.25rem;
 }
 
 @layer base {

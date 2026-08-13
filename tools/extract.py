@@ -1,7 +1,7 @@
 """Extract every piece of orchardocd.org content from the local mirror.
 
 Reads the wget mirror plus the wp-json dumps under mirror/api and writes
-web/src/seed/content.json, the single source the Payload seed consumes.
+web/src/seed/content.json, the record of the old site the rebuild is written from.
 """
 
 import html

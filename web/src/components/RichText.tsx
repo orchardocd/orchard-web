@@ -1,33 +1,64 @@
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { RichText as LexicalRichText } from '@payloadcms/richtext-lexical/react'
+import {
+  RichText as LexicalRichText,
+  type JSXConvertersFunction,
+} from '@payloadcms/richtext-lexical/react'
 
+import { isVideoUrl, VideoEmbed, VideoPlayer } from '@/components/blocks/VideoEmbed'
+import { Plate } from '@/components/site/Plate'
+import { PROSE_CLASSES } from '@/components/site/Prose'
 import { cn } from '@/lib/cn'
 
-const PROSE = [
-  'max-w-measure text-base leading-relaxed text-body md:text-lg',
-  '[&_p]:my-6',
-  '[&_h2]:mt-14 [&_h2]:mb-4 [&_h2]:text-2xl md:[&_h2]:text-3xl [&_h2]:font-bold [&_h2]:text-brand-deep [&_h2]:leading-tight',
-  '[&_h3]:mt-10 [&_h3]:mb-3 [&_h3]:text-lg md:[&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-brand-link',
-  '[&_h4]:mt-8 [&_h4]:mb-2 [&_h4]:text-base md:[&_h4]:text-lg [&_h4]:font-bold [&_h4]:text-ink',
-  '[&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-5 [&_ol]:list-decimal [&_ol]:pl-6',
-  '[&_li]:my-2',
-  '[&_a]:font-semibold [&_a]:text-brand-link [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-brand-link-hover',
-  '[&_blockquote]:my-7 [&_blockquote]:border-l-4 [&_blockquote]:border-lime [&_blockquote]:pl-5 [&_blockquote]:text-xl [&_blockquote]:italic [&_blockquote]:text-ink',
-  '[&_strong]:font-bold [&_strong]:text-ink [&_a_strong]:text-inherit',
-  // A file link is a download, and it reads as one everywhere it appears.
-  "[&_a[href$='.pdf']]:inline-flex [&_a[href$='.pdf']]:items-center [&_a[href$='.pdf']]:gap-2",
-  "[&_a[href$='.pdf']]:rounded-full [&_a[href$='.pdf']]:border-2 [&_a[href$='.pdf']]:border-brand",
-  "[&_a[href$='.pdf']]:px-5 [&_a[href$='.pdf']]:py-2 [&_a[href$='.pdf']]:no-underline",
-  "hover:[&_a[href$='.pdf']]:bg-mist",
-  '[&>*:last-child]:mb-0',
-].join(' ')
+const MEDIA_CLASSES = 'my-8'
+const MEDIA_SIZES = '(min-width: 768px) 37rem, calc(100vw - 6rem)'
+
+type LinkedText = {
+  type: string
+  fields?: { url?: string | null }
+  children?: { text?: string }[]
+}
+
+function loneVideoUrl(children: { type: string }[]): string | null {
+  if (children.length !== 1) return null
+  const link: LinkedText = children[0]
+  const [label, ...rest] = link.children ?? []
+  const url = link.fields?.url
+  if (link.type !== 'link' || !url || rest.length > 0 || label?.text !== url) return null
+  return isVideoUrl(url) ? url : null
+}
 
 export function RichText({
   data,
   className,
+  videoTitle,
 }: {
   data: SerializedEditorState
   className?: string
+  videoTitle?: string
 }) {
-  return <LexicalRichText data={data} className={cn(PROSE, className)} />
+  const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
+    ...defaultConverters,
+    upload: ({ node }) => {
+      const upload = node.value
+      if (typeof upload !== 'object' || upload === null) return null
+      if ('alt' in upload)
+        return <Plate media={upload} size="band" sizes={MEDIA_SIZES} className={MEDIA_CLASSES} />
+      const video = 'mimeType' in upload && upload.mimeType?.startsWith('video')
+      return video ? <VideoPlayer block={{ file: upload }} className={MEDIA_CLASSES} /> : null
+    },
+    paragraph: (args) => {
+      const url = loneVideoUrl(args.node.children)
+      if (url) return <VideoEmbed url={url} title={videoTitle} className={MEDIA_CLASSES} />
+      const paragraph = defaultConverters.paragraph
+      return typeof paragraph === 'function' ? paragraph(args) : paragraph
+    },
+  })
+
+  return (
+    <LexicalRichText
+      data={data}
+      converters={converters}
+      className={cn(PROSE_CLASSES, '[&>*:first-child]:mt-0', className)}
+    />
+  )
 }

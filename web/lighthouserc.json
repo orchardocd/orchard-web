@@ -1,0 +1,41 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop",
+        "skipAudits": ["uses-http2"]
+      },
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/about-ocd",
+        "http://localhost:3000/about-orchard",
+        "http://localhost:3000/blog",
+        "http://localhost:3000/blog/yanns-ocd-story",
+        "http://localhost:3000/participate-research",
+        "http://localhost:3000/participate-research/ocd-exercise-study",
+        "http://localhost:3000/webinars",
+        "http://localhost:3000/terms-of-use"
+      ]
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["error", { "minScore": 1 }],
+        "categories:best-practices": ["error", { "minScore": 1 }],
+        "categories:seo": ["error", { "minScore": 1 }],
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 1800 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+        "speed-index": ["error", { "maxNumericValue": 2000 }],
+        "interactive": ["error", { "maxNumericValue": 3000 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 300 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "total-byte-weight": ["error", { "maxNumericValue": 1400000 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": "./.lighthouseci"
+    }
+  }
+}

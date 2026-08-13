@@ -1,12 +1,14 @@
 import Link from 'next/link'
 
+import { CARD_TITLE_CLASSES } from '@/components/layout/Banner'
 import { DashRule } from '@/components/layout/DashPattern'
-import { MediaImage, type MediaValue } from '@/components/ui/Media'
+import { isWideMedia, MediaImage, type MediaValue } from '@/components/ui/Media'
 import { cn } from '@/lib/cn'
 import { formatDate } from '@/lib/format'
-import { withoutRepeats } from '@/lib/unique-images'
 
-export type ArticleCardProps = {
+const PLATE_CLASSES = 'aspect-[16/9] border-b border-line bg-mist'
+
+type ArticleCardProps = {
   href: string
   title: string
   date?: string | null
@@ -14,9 +16,8 @@ export type ArticleCardProps = {
   excerpt?: string | null
   image?: MediaValue
   accent?: string
-  imageClassName?: string
-  /** False where the same words already head another card, so they head the page only once. */
-  heading?: boolean
+  placeholder?: boolean
+  headingLevel?: 2 | 3
 }
 
 export function ArticleCard({
@@ -27,14 +28,16 @@ export function ArticleCard({
   excerpt,
   image,
   accent,
-  imageClassName = 'aspect-[16/9] border-b border-line bg-mist object-cover object-top',
-  heading = true,
+  placeholder = true,
+  headingLevel = 2,
 }: ArticleCardProps) {
-  const Title = heading ? 'h3' : 'p'
+  const wide = isWideMedia(image)
+  const Heading = headingLevel === 3 ? 'h3' : 'h2'
+
   return (
     <li
       className={cn(
-        'flex flex-col overflow-hidden rounded-lg border border-line',
+        'relative flex flex-col overflow-hidden rounded-lg border border-line',
         accent ? 'border-t-6' : undefined,
       )}
       style={accent ? { borderTopColor: accent } : undefined}
@@ -42,16 +45,16 @@ export function ArticleCard({
       {image ? (
         <MediaImage
           media={image}
-          fills
-          className={imageClassName}
+          fills={!wide}
+          className={cn(PLATE_CLASSES, wide ? 'object-contain p-6' : 'object-cover object-top')}
           sizes="(min-width: 1024px) 33vw, 100vw"
         />
-      ) : (
+      ) : placeholder ? (
         // Without a picture the card still needs the same opening band, or the row goes ragged.
-        <div className="flex aspect-[16/9] items-center justify-center border-b border-line bg-mist">
-          <DashRule className="scale-150" />
+        <div className={cn(PLATE_CLASSES, 'hidden items-center justify-center md:flex')}>
+          <DashRule className="scale-150" tone="brand-deep" />
         </div>
-      )}
+      ) : null}
       <div className="flex flex-col gap-2 p-5 md:p-7">
         {date || byline ? (
           <p className="text-xs font-bold tracking-[0.1em] text-faint uppercase">
@@ -60,20 +63,23 @@ export function ArticleCard({
             {byline}
           </p>
         ) : null}
-        <Title className="mt-1 line-clamp-3 text-lg leading-snug font-bold md:text-xl">
-          <Link href={href} className="text-ink no-underline hover:text-brand-link">
+        <Heading className={cn('mt-1 line-clamp-4', CARD_TITLE_CLASSES)}>
+          <Link
+            href={href}
+            className="text-ink no-underline after:absolute after:inset-0 hover:text-brand-link"
+          >
             {title}
           </Link>
-        </Title>
+        </Heading>
         {excerpt ? (
-          <p className="mt-1 line-clamp-4 text-[0.97rem] leading-relaxed text-body">{excerpt}</p>
+          <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-body">{excerpt}</p>
         ) : null}
       </div>
     </li>
   )
 }
 
-export type PostLike = {
+type ArticleLike = {
   id: number
   slug: string
   title: string
@@ -83,35 +89,36 @@ export type PostLike = {
   featuredImage?: MediaValue
 }
 
-export function PostCards({
-  posts,
+export function ArticleCards({
+  articles,
+  basePath,
   className,
   accents,
   showImages = true,
-  imageClassName,
+  placeholder = true,
+  headingLevel = 2,
 }: {
-  posts: PostLike[]
+  articles: ArticleLike[]
+  basePath: string
   className: string
   accents?: [string, string]
   showImages?: boolean
-  imageClassName?: string
+  placeholder?: boolean
+  headingLevel?: 2 | 3
 }) {
-  const items = withoutRepeats(
-    posts.map((post) => ({ ...post, image: showImages ? post.featuredImage : undefined })),
-  )
-
   return (
     <ul className={className}>
-      {items.map((post, index) => (
+      {articles.map((article, index) => (
         <ArticleCard
-          key={post.id}
-          href={`/blog/${post.slug}`}
-          title={post.title}
-          date={post.publishedAt}
-          byline={post.byline}
-          excerpt={post.excerpt}
-          image={post.image}
-          imageClassName={imageClassName}
+          key={article.id}
+          headingLevel={headingLevel}
+          href={`${basePath}/${article.slug}`}
+          title={article.title}
+          date={article.publishedAt}
+          byline={article.byline}
+          excerpt={article.excerpt}
+          image={showImages ? article.featuredImage : undefined}
+          placeholder={placeholder}
           accent={accents ? accents[index % accents.length] : undefined}
         />
       ))}

@@ -134,5 +134,14 @@ for (const asset of collapsed.keys()) {
 }
 if (collapsed.size) console.log('drawings collapsed', collapsed.size)
 
+const measured = new Map()
+for (const item of content.images) {
+  if (!measured.has(item.asset)) {
+    const meta = await sharp(path.join(dest, item.asset)).metadata()
+    measured.set(item.asset, { width: meta.width, height: meta.height })
+  }
+  Object.assign(item, measured.get(item.asset))
+}
+
 await fs.writeFile(contentPath, JSON.stringify(content, null, 1))
 console.log('before MB', (before / 1e6).toFixed(1), '-> after MB', (after / 1e6).toFixed(1))

@@ -5,9 +5,8 @@ import type { Payload } from 'payload'
 import { getPayload } from 'payload'
 
 import config from '@/payload.config'
-import { buildLayout, createLexicalConverter } from '@/seed/blocks'
-import { buildLinkMap, rewriteHref, rewriteHtml } from '@/seed/links'
-import { navigation, siteSettings } from '@/seed/settings'
+import { buildLinkMap } from '@/seed/links'
+import { buildBody, createLexicalConverter } from '@/seed/richtext'
 import type { PersonGroup, SeedContent } from '@/seed/types'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -32,7 +31,6 @@ const GROUP_SLUGS: Record<string, PersonGroup> = {
 }
 
 const COLLECTIONS = [
-  'pages',
   'posts',
   'studies',
   'webinars',
@@ -43,18 +41,6 @@ const COLLECTIONS = [
   'documents',
   'videos',
 ] as const
-
-function stripMarkup(value: string | null | undefined): string {
-  return (value ?? '')
-    .replace(/<br\s*\/?>/g, ' ')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
 
 function assetPath(asset: { id: string; asset?: string }): string {
   if (!asset.asset) {
@@ -219,53 +205,27 @@ export async function seed(payload: Payload) {
   const categoryIds = await seedCategories(payload, content)
 
   const assets = { media: mediaIds, documents: documentIds, videos: videoIds }
-  const layoutOf = (blocks: SeedContent['pages'][number]['blocks']) =>
-    buildLayout(blocks, assets, toLexical, links)
-
-  // The landing page lives in the Home page global, not as an editable blocks page.
-  const pages = content.pages.filter((page) => page.slug !== 'home')
-  payload.logger.info(`Creating ${pages.length} pages`)
-  for (const page of pages) {
-    await payload.create({
-      collection: 'pages',
-      data: {
-        title: page.title,
-        slug: page.slug,
-        hero: page.hero.map((slide) => ({
-          title: slide.title,
-          content: slide.body.length
-            ? toLexical(rewriteHtml(slide.body.map((html) => `<p>${html}</p>`).join(''), links))
-            : undefined,
-          ctaLabel: slide.links[0]?.label,
-          ctaHref: slide.links[0] ? rewriteHref(slide.links[0].href, links) : undefined,
-          image: slide.image ? mediaIds.get(slide.image) : undefined,
-        })),
-        layout: layoutOf(page.blocks),
-        meta: {
-          description: page.description,
-          image: page.featuredImage ? mediaIds.get(page.featuredImage) : undefined,
-        },
-      },
-    })
-  }
+  const bodyOf = (blocks: SeedContent['posts'][number]['blocks'], featuredImage?: number) =>
+    buildBody(blocks, assets, toLexical, links, featuredImage)
 
   payload.logger.info(`Creating ${content.posts.length} posts`)
   for (const post of content.posts) {
+    const featuredImage = mediaIds.get(post.featuredImage ?? firstImage(post.blocks) ?? '')
     try {
       await payload.create({
-      collection: 'posts',
-      data: {
-        title: post.title,
-        slug: post.slug,
-        publishedAt: post.date,
-        byline: post.byline ?? undefined,
-        categories: post.categories
-          .map((name) => categoryIds.get(name))
-          .filter((id): id is number => id !== undefined),
-        excerpt: excerptFrom(post.blocks, post.title),
-        featuredImage: mediaIds.get(post.featuredImage ?? firstImage(post.blocks) ?? ''),
-        layout: layoutOf(post.blocks),
-        meta: { description: post.description },
+        collection: 'posts',
+        data: {
+          title: post.title,
+          slug: post.slug,
+          publishedAt: post.date,
+          byline: post.byline ?? undefined,
+          categories: post.categories
+            .map((name) => categoryIds.get(name))
+            .filter((id): id is number => id !== undefined),
+          excerpt: excerptFrom(post.blocks, post.title),
+          featuredImage,
+          body: bodyOf(post.blocks, featuredImage),
+          meta: { description: post.description },
         },
       })
     } catch (error) {
@@ -275,6 +235,7 @@ export async function seed(payload: Payload) {
 
   payload.logger.info(`Creating ${content.studies.length} studies`)
   for (const study of content.studies) {
+    const featuredImage = mediaIds.get(study.featuredImage ?? firstImage(study.blocks) ?? '')
     await payload.create({
       collection: 'studies',
       data: {
@@ -282,8 +243,8 @@ export async function seed(payload: Payload) {
         slug: study.slug,
         publishedAt: study.date,
         excerpt: excerptFrom(study.blocks, study.title),
-        featuredImage: mediaIds.get(study.featuredImage ?? firstImage(study.blocks) ?? ''),
-        layout: layoutOf(study.blocks),
+        featuredImage,
+        body: bodyOf(study.blocks, featuredImage),
         meta: { description: study.description },
       },
     })
@@ -316,7 +277,6 @@ export async function seed(payload: Payload) {
         photo: person.photo ? mediaIds.get(person.photo) : undefined,
         website: person.website ?? undefined,
         excerpt: person.excerpt,
-        bio: layoutOf(person.bio),
       },
     })
   }
@@ -334,93 +294,6 @@ export async function seed(payload: Payload) {
       },
     })
   }
-
-  payload.logger.info('Writing the home page')
-  const home = content.home
-  // The landing page is one page, so a picture placed in one section is not placed again.
-  const drawn = new Set<number>()
-  const once = (id: number | undefined) => {
-    if (id === undefined || drawn.has(id)) return undefined
-    drawn.add(id)
-    return id
-  }
-  const media = (key: string | null | undefined) => (key ? once(mediaIds.get(key)) : undefined)
-  const text = (value: string | null | undefined) => stripMarkup(value) || undefined
-  const images = (keys: string[] = []) =>
-    keys.map((key) => once(mediaIds.get(key))).filter((id): id is number => id !== undefined)
-      .map((image) => ({ image }))
-  await payload.updateGlobal({
-    slug: 'home-page',
-    data: {
-      hero: {
-        title: stripMarkup(home.hero.title),
-        ctaLabel: text(home.hero.ctaLabel),
-        ctaHref: home.hero.ctaHref ? rewriteHref(home.hero.ctaHref, links) : undefined,
-        image: media(home.hero.image),
-      },
-      highlights: home.highlights.map((item) => ({
-        title: stripMarkup(item.title),
-        ctaLabel: text(item.ctaLabel),
-        ctaHref: item.ctaHref ? rewriteHref(item.ctaHref, links) : undefined,
-        image: media(item.image),
-      })),
-      about: {
-        heading: home.about.heading,
-        intro: stripMarkup(home.about.intro),
-        image: media(home.about.image),
-        pillars: home.about.pillars.map((pillar) => ({
-          title: pillar.title,
-          body: stripMarkup(pillar.body),
-          image: media(pillar.image),
-        })),
-        goalsTitle: home.about.goalsTitle,
-        goalsIntro: stripMarkup(home.about.goalsIntro),
-        goals: home.about.goals.map((goal) => ({ text: stripMarkup(goal) })),
-        goalsImage: media(home.about.goalsImage),
-        ctaHeading: text(home.about.ctaHeading),
-        ctaLabel: text(home.about.ctaLabel),
-        ctaHref: home.about.ctaHref ? rewriteHref(home.about.ctaHref, links) : undefined,
-        ctaImages: images(home.about.ctaImages),
-      },
-      video: { url: home.video.url ?? undefined, poster: media(home.video.poster) },
-      participate: {
-        heading: home.participate.heading,
-        body: stripMarkup(home.participate.body),
-        ctaLabel: text(home.participate.ctaLabel),
-        ctaHref: home.participate.ctaHref
-          ? rewriteHref(home.participate.ctaHref, links)
-          : undefined,
-        images: images(home.participate.images),
-      },
-      social: {
-        heading: home.social.heading,
-        body: stripMarkup(home.social.body),
-        images: images(home.social.images),
-      },
-      proposals: {
-        heading: home.proposals.heading,
-        body: home.proposals.body.map((paragraph) => ({ text: stripMarkup(paragraph) })),
-        quote: text(home.proposals.quote),
-        image: media(home.proposals.image),
-        ctaLabel: text(home.proposals.ctaLabel),
-        ctaHref: home.proposals.ctaHref
-          ? rewriteHref(home.proposals.ctaHref, links)
-          : undefined,
-      },
-      blog: { heading: home.blog.heading, images: images(home.blog.images) },
-      newsletter: { images: images(home.newsletter.images) },
-      webinar: {
-        title: text(home.webinar.title),
-        image: media(home.webinar.image),
-        ctaLabel: text(home.webinar.ctaLabel),
-        ctaHref: home.webinar.ctaHref ? rewriteHref(home.webinar.ctaHref, links) : undefined,
-      },
-    },
-  })
-
-  payload.logger.info('Writing globals')
-  await payload.updateGlobal({ slug: 'site-settings', data: siteSettings })
-  await payload.updateGlobal({ slug: 'navigation', data: navigation })
 
   const email = process.env.PAYLOAD_ADMIN_EMAIL
   const password = process.env.PAYLOAD_ADMIN_PASSWORD

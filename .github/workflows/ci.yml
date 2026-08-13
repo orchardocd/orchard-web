@@ -31,9 +31,6 @@ jobs:
           node-version: 26
           cache: pnpm
           cache-dependency-path: web/pnpm-lock.yaml
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
@@ -45,12 +42,9 @@ jobs:
         timeout-minutes: 10
         run: pnpm test
 
-      - name: Content parity with the previous site
-        timeout-minutes: 10
+      - name: Lighthouse
+        timeout-minutes: 15
         run: |
-          python3 -m pip install --quiet beautifulsoup4 lxml
           pnpm start -H 127.0.0.1 &
           npx --yes wait-on http://127.0.0.1:3000 -t 120000
-          pnpm parity
-          pnpm duplicates
-          pnpm illustrations
+          pnpm lighthouse

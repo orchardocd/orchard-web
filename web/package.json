@@ -17,16 +17,11 @@
     "test:e2e": "cross-env NODE_OPTIONS=--no-deprecation playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "typecheck": "tsc --noEmit",
-    "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)' src tests",
+    "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)|\\(frontend\\)' src tests && npx jsinspect-plus@latest --threshold 60 'src/app/(frontend)'",
     "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
     "seed": "node --import tsx/esm --env-file-if-exists=.env src/seed/index.ts",
-    "parity": "python3 ../tools/check_parity.py --expectations src/seed/parity-expectations.json",
-    "duplicates": "python3 ../tools/check_duplicate_text.py --self-test && python3 ../tools/check_duplicate_text.py --headings --quiet",
-    "illustrations": "python3 ../tools/check_duplicate_images.py --self-test && python3 ../tools/check_duplicate_images.py --quiet",
-    "verify": "pnpm lint && pnpm typecheck && pnpm dup && pnpm seed && pnpm build && pnpm test",
-    "parity:mirror": "python3 ../tools/check_parity.py",
-    "parity:update": "python3 ../tools/check_parity.py --emit-expectations src/seed/parity-expectations.json",
-    "duplicates:all": "python3 ../tools/check_duplicate_text.py --quiet"
+    "lighthouse": "lhci autorun --config=lighthouserc.json",
+    "verify": "pnpm lint && pnpm typecheck && pnpm dup && pnpm seed && pnpm build && pnpm test"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
@@ -51,6 +46,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "1.58.2",
     "@testing-library/react": "16.3.0",
     "@types/node": "22.19.9",

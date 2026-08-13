@@ -1,3 +1,35 @@
+type Dash = { x: number; y: number; w: number; r: number; lime?: boolean }
+
+export function DashRects({
+  dashes,
+  height,
+  opacity,
+}: {
+  dashes: Dash[]
+  height: number
+  opacity?: number
+}) {
+  return (
+    <>
+      {dashes.map((dash) => (
+        <rect
+          key={`${dash.x}-${dash.y}`}
+          x={dash.x}
+          y={dash.y}
+          width={dash.w}
+          height={height}
+          rx={height / 2}
+          fill={dash.lime ? '#B6BF00' : '#FFFFFF'}
+          opacity={opacity}
+          transform={
+            dash.r ? `rotate(${dash.r} ${dash.x + dash.w / 2} ${dash.y + height / 2})` : undefined
+          }
+        />
+      ))}
+    </>
+  )
+}
+
 const DASHES = [
   { x: 60, y: 40, w: 96, r: 24 },
   { x: 230, y: 20, w: 60, r: 0, lime: true },
@@ -18,35 +50,31 @@ const DASHES = [
 export function DashPattern({ className }: { className?: string }) {
   return (
     <div aria-hidden="true" className={className}>
-      <svg
-        viewBox="0 0 620 560"
-        focusable="false"
-        preserveAspectRatio="xMaxYMid meet"
-        className="h-full w-auto"
-      >
-        {DASHES.map((dash) => (
-          <rect
-            key={`${dash.x}-${dash.y}`}
-            x={dash.x}
-            y={dash.y}
-            width={dash.w}
-            height={20}
-            rx={10}
-            fill={dash.lime ? '#B6BF00' : '#FFFFFF'}
-            transform={dash.r ? `rotate(${dash.r} ${dash.x + dash.w / 2} ${dash.y + 10})` : undefined}
-          />
-        ))}
+      <svg focusable="false" className="h-full w-full">
+        <defs>
+          <pattern id="orchard-dashes" patternUnits="userSpaceOnUse" width="620" height="560">
+            <DashRects dashes={DASHES} height={20} />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#orchard-dashes)" />
       </svg>
     </div>
   )
 }
 
+const RULE_TONES = {
+  'brand-deep': '#00655C',
+  lime: '#B6BF00',
+}
+
 export function DashRule({
   className,
   flip = false,
+  tone = 'brand-deep',
 }: {
   className?: string
   flip?: boolean
+  tone?: keyof typeof RULE_TONES
 }) {
   return (
     <svg
@@ -72,7 +100,7 @@ export function DashRule({
         width="20"
         height="10"
         rx="5"
-        fill="#B6BF00"
+        fill={RULE_TONES[tone]}
         transform={`rotate(${flip ? -24 : 24} ${flip ? 10 : 52} 9)`}
       />
     </svg>

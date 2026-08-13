@@ -11,9 +11,10 @@ page, against a local mirror of it.
 | Path | What it holds |
 | --- | --- |
 | `web/` | The application: Payload config, collections, seed, and the Next.js frontend |
+| `web/src/app/(frontend)/` | One directory per route. Every page is hand-written React |
+| `web/src/components/site/` | The kit those pages compose: banner, section, prose, figure, table |
 | `web/src/seed/content.json` | Everything the old site contained, as structured data |
 | `tools/extract.py` | Reads the mirror and writes `web/src/seed/content.json` |
-| `tools/check_parity.py` | Compares every rendered page against the old site |
 | `mirror/` | wget mirror of the old site plus its wp-json dumps (not committed) |
 | `design/` | The three homepage design directions; Campaign Green is the one built |
 
@@ -41,62 +42,46 @@ mirror/  ──tools/extract.py──▶  content.json  ──optimize-assets.mj
   the optimizer adds the `asset` field the seed needs, and the seed fails loudly without it.
 - The optimizer resizes images, converts opaque PNGs to JPEG, and transcodes the six
   self-hosted videos to MP4, taking the assets from 328 MB to 87 MB.
-- `pnpm seed` wipes every collection and rebuilds it, so it is always safe to re-run.
+- `pnpm seed` wipes every collection and rebuilds it, so it is always safe to re-run. It
+  loads the five content collections and the uploads; the rest of `content.json` is kept as
+  the record the hand-written pages were written from, and as the register of every upload
+  those pages draw by filename.
 
-## Content parity
+## Editing a page
 
-`pnpm parity` walks all 142 routes with the production server running and enforces, in both
-directions:
+Pages are not CMS documents. Each route is a React file under `web/src/app/(frontend)/`
+that composes the kit and holds its own copy inline, so the picture can sit beside the
+paragraph it illustrates. The landing page is `web/src/app/(frontend)/page.tsx`, no
+different from the rest. Changing a page means editing that file; there is no block palette
+and no layout field, and an editor cannot change how any page is laid out.
 
-- every text unit the old page rendered is present on the new page, down to headings and
-  button labels (the floor is 12 characters, so only single words are exempt);
-- every illustration the old page used is present on the new page, sits under the same
-  heading it sat under before, and is never rendered twice on one page. Headings are
-  resolved by ARIA role, and structurally: a card's own title, which sits below its
-  picture, wins over the heading further above. `pnpm parity --self-test` states those
-  rules as executable examples;
-- no copy exists on the new site that appears nowhere on the old site.
-
-Copy that is genuinely new (UI wording such as "Skip to main content") lives in an
-explicit allowlist in the script, so any addition has to be declared.
-
-CI checks parity against `web/src/seed/parity-expectations.json`, a fixture holding what
-each old page contained, so the check runs without the mirror. Regenerate it with
-`pnpm parity:update` after re-extracting; `pnpm parity:mirror` checks against the mirror
-directly.
-
-Current state: **3351/3351 text units, 368/368 images, 0 invented text units, 0 gaps.**
-
-## Editing the landing page
-
-The landing page is not a rich-text document. It is a set of designed sections fed by the
-Home page global, where every field is semantic: a heading, a paragraph, a link label, a
-picture. Editors change words and images; the site owns type, colour, spacing and layout.
-Adding a section means adding fields and a component, not markup in a text box.
+Navigation, footer columns, contact details, donate and registry URLs, social profiles and
+newsletter copy live in `web/src/lib/site.ts`.
 
 ## Content model
 
+The CMS holds content, never layout: five collections and the uploads they reference.
+
 | Collection | Count | Notes |
 | --- | --- | --- |
-| Home page (global) | 1 | The landing page as semantic fields, never markup |
-| Pages | 28 | Body stored as blocks; hero slides carry the old banner sliders |
-| Posts | 84 | The blog, at `/blog/<slug>` |
+| Posts | 84 | The blog, at `/blog/<slug>`; the body is rich text |
 | Studies | 32 | "Participate in research", at `/participate-research/<slug>` |
-| Webinars | 15 | Titles from the page's slider, with poster images |
+| Webinars | 15 | Titles from the old page's slider, with poster images |
 | People | 85 | Team, scientific advisory board, supporters, volunteers, and 56 College members |
-| Speakers | 34 | Conference speakers |
-| Media / Documents / Videos | 328 / 22 / 6 | Uploads, PDFs, and the self-hosted talks |
+| Speakers | 34 | Conference speakers, listed by both conference pages |
+| Media / Documents / Videos | 305 / 22 / 6 | Uploads, PDFs, and the self-hosted talks |
 
-Globals hold the navigation, footer columns, donate and registry URLs, contact details,
-social profiles, homepage statistics, and newsletter copy.
+Three supporting collections carry no page content: Categories (the blog's own taxonomy),
+Subscribers (the mailing list the newsletter form writes to) and Users (admin login).
+There are no globals.
 
 ## Checks
 
 ```bash
 cd web
-pnpm verify   # lint, typecheck, duplication, seed, build, tests
-pnpm parity   # content parity, needs `pnpm start` running
+pnpm verify      # lint, typecheck, duplication, seed, build, tests
+pnpm lighthouse  # Lighthouse budgets, needs `pnpm start` running
 ```
 
-`pnpm test` covers Payload integration tests plus Playwright end-to-end tests, including
-axe scans for WCAG 2.2 AA on every page template at desktop and mobile widths.
+CI runs lint, typecheck, duplication, seed and build, then the test suite (which carries the
+axe scans for WCAG 2.2 AA on every page template at desktop and mobile widths), then Lighthouse.

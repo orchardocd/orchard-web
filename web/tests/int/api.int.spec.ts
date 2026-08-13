@@ -10,15 +10,28 @@ describe('content', () => {
     payload = await getPayload({ config: await config })
   })
 
-  it('has every page from the old site', async () => {
-    const pages = await payload.find({ collection: 'pages', limit: 200 })
-    expect(pages.totalDocs).toBeGreaterThanOrEqual(28)
-    const slugs = pages.docs.map((page) => page.slug)
-    for (const slug of ['about-ocd', 'about-orchard', 'get-involved', 'the-work-we-do']) {
-      expect(slugs).toContain(slug)
+  it('keeps content only, never layout', () => {
+    expect(payload.config.globals).toEqual([])
+    expect(payload.config.collections.map((collection) => collection.slug).sort()).toEqual([
+      'categories',
+      'documents',
+      'media',
+      'payload-kv',
+      'payload-locked-documents',
+      'payload-migrations',
+      'payload-preferences',
+      'people',
+      'posts',
+      'speakers',
+      'studies',
+      'subscribers',
+      'users',
+      'videos',
+      'webinars',
+    ])
+    for (const collection of payload.config.collections) {
+      expect(collection.flattenedFields.map((field) => field.type)).not.toContain('blocks')
     }
-    // The landing page is the Home page global, so it is not an editable blocks page.
-    expect(slugs).not.toContain('home')
   })
 
   it('has every post, study and webinar', async () => {
@@ -30,6 +43,33 @@ describe('content', () => {
     expect(posts.totalDocs).toBe(84)
     expect(studies.totalDocs).toBe(32)
     expect(webinars.totalDocs).toBe(15)
+  })
+
+  it('gives every post and study a body, and never repeats the picture above it', async () => {
+    const [posts, studies] = await Promise.all([
+      payload.find({ collection: 'posts', limit: 200, depth: 0 }),
+      payload.find({ collection: 'studies', limit: 200, depth: 0 }),
+    ])
+    const documents = [...posts.docs, ...studies.docs]
+    expect(
+      documents.filter(
+        (document) => !document.featuredImage && !document.body?.root.children.length,
+      ),
+    ).toEqual([])
+
+    let pictures = 0
+    for (const document of documents) {
+      const featured =
+        typeof document.featuredImage === 'object'
+          ? document.featuredImage?.id
+          : document.featuredImage
+      for (const node of document.body?.root.children ?? []) {
+        if (node.type !== 'upload') continue
+        pictures += 1
+        expect(node.value).not.toBe(featured)
+      }
+    }
+    expect(pictures).toBe(55)
   })
 
   it('groups every person into a listed group', async () => {
@@ -47,22 +87,13 @@ describe('content', () => {
     expect(missing.map((item) => item.filename)).toEqual([])
   })
 
-  it('exposes navigation, site settings and the home page', async () => {
-    const [navigation, settings, home] = await Promise.all([
-      payload.findGlobal({ slug: 'navigation' }),
-      payload.findGlobal({ slug: 'site-settings' }),
-      payload.findGlobal({ slug: 'home-page' }),
-    ])
-    expect(home.hero.title).toMatch(/Obsessive Compulsive Disorder/)
-    expect(home.about.pillars?.length).toBe(2)
-    expect(navigation.main?.length).toBeGreaterThan(0)
-    expect(settings.donateUrl).toMatch(/^https:\/\//)
-    expect(settings.contact.charityNumber).toBe('1174480')
-  })
-
   it('never stores an unusable link', async () => {
-    const pages = await payload.find({ collection: 'pages', limit: 200, depth: 0 })
-    const hrefs = JSON.stringify(pages.docs).match(/"url":"([^"]+)"/g) ?? []
+    const [posts, studies] = await Promise.all([
+      payload.find({ collection: 'posts', limit: 200, depth: 0 }),
+      payload.find({ collection: 'studies', limit: 200, depth: 0 }),
+    ])
+    const hrefs = JSON.stringify([...posts.docs, ...studies.docs]).match(/"url":"([^"]*)"/g) ?? []
+    expect(hrefs.length).toBeGreaterThan(50)
     for (const href of hrefs) {
       expect(href).not.toMatch(/"url":"\s*"/)
     }

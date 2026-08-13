@@ -1,53 +1,54 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { Navigation, SiteSetting } from '@/payload-types'
+import {
+  CONTACT,
+  FOOTER_COLUMNS,
+  LOGO_ALT,
+  SITE_STRAPLINE,
+  SITE_TAGLINE,
+  SITE_NAME,
+  SOCIAL,
+} from '@/lib/site'
 import { Container } from '@/components/ui/Container'
 import { SocialLinks } from '@/components/content/SocialLinks'
 
-export function Footer({
-  navigation,
-  settings,
-}: {
-  navigation: Navigation
-  settings: SiteSetting
-}) {
-  const columns = navigation.footer ?? []
-  const contact = settings.contact
+export function Footer() {
   const year = new Date().getFullYear()
 
   return (
     <footer className="bg-footer text-white">
-      <Container className="pt-16 pb-7">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-[2fr_1fr_1fr_1.4fr]">
+      <Container className="pt-10 pb-7 md:pt-16">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-7 lg:grid-cols-[2.9fr_0.8fr_0.8fr_1.3fr] lg:gap-y-10">
           <div className="col-span-2 lg:col-span-1">
             <Image
               src="/brand/logo-neg.png"
-              alt="Orchard OCD, advancing global OCD research"
+              alt={LOGO_ALT}
               width={340}
               height={96}
               className="h-11 w-auto"
             />
-            <h2 className="mt-6 mb-3 text-[0.8rem] font-bold tracking-[0.14em] text-white/55 uppercase">
+            <h2 className="mt-6 mb-3 text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
               Follow us on social media
             </h2>
             <SocialLinks
-              items={settings.social}
-              linkClassName="block rounded-full bg-white/10 px-4 py-1.5 text-center text-[0.8rem] font-semibold text-white no-underline hover:bg-white/22"
+              items={SOCIAL}
+              className="flex flex-wrap"
+              linkClassName="block rounded-full bg-white/10 px-4 py-2 text-center text-sm font-semibold text-white no-underline hover:bg-white/22"
             />
           </div>
 
-          {columns.map((column) => (
-            <nav key={column.id ?? column.heading} aria-label={column.heading}>
-              <h2 className="mb-4 text-[0.8rem] font-bold tracking-[0.14em] text-white/55 uppercase">
+          {FOOTER_COLUMNS.map((column) => (
+            <nav key={column.heading} aria-label={column.heading}>
+              <h2 className="mb-4 text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
                 {column.heading}
               </h2>
-              <ul className="flex flex-col gap-2">
-                {(column.links ?? []).map((link) => (
-                  <li key={link.id ?? link.href}>
+              <ul className="flex flex-col gap-1">
+                {column.links.map((link) => (
+                  <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[0.95rem] text-white/88 no-underline hover:text-lime hover:underline"
+                      className="block py-1 text-sm text-white/88 no-underline hover:text-white hover:underline"
                     >
                       {link.label}
                     </Link>
@@ -57,51 +58,45 @@ export function Footer({
             </nav>
           ))}
 
-          <div>
-            <h2 className="mb-4 text-[0.8rem] font-bold tracking-[0.14em] text-white/55 uppercase">
+          <div className="col-span-2 lg:col-span-1">
+            <h2 className="mb-4 text-xs font-bold tracking-[0.1em] text-white/55 uppercase">
               Contact us
             </h2>
-            <ul className="flex flex-col gap-3 text-[0.95rem] text-white/88">
+            <ul className="flex flex-col gap-3 text-sm text-white/88">
               <li>
                 <a
-                  href={`mailto:${contact.email}`}
-                  className="font-bold text-lime no-underline hover:underline"
+                  href={`mailto:${CONTACT.email}`}
+                  className="font-bold text-white underline underline-offset-2"
                 >
-                  {contact.email}
+                  {CONTACT.email}
                 </a>
               </li>
               <li>
-                {contact.mapUrl ? (
-                  <a
-                    href={contact.mapUrl}
-                    className="leading-relaxed text-white/88 no-underline hover:text-lime hover:underline"
-                  >
-                    {contact.address}
-                  </a>
-                ) : (
-                  <span className="leading-relaxed">{contact.address}</span>
-                )}
+                <a
+                  href={CONTACT.mapUrl}
+                  className="leading-relaxed text-white/88 no-underline hover:text-white hover:underline"
+                >
+                  {CONTACT.address}
+                </a>
               </li>
               <li>
                 Registered charity number:{' '}
-                {contact.charityRegisterUrl ? (
-                  <a
-                    href={contact.charityRegisterUrl}
-                    className="font-bold text-lime underline underline-offset-2"
-                  >
-                    {contact.charityNumber}
-                  </a>
-                ) : (
-                  <strong>{contact.charityNumber}</strong>
-                )}
+                <a
+                  href={CONTACT.charityRegisterUrl}
+                  className="font-bold text-white underline underline-offset-2"
+                >
+                  {CONTACT.charityNumber}
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-wrap justify-between gap-6 border-t border-white/14 pt-6 text-[0.85rem] text-white/60">
-          <p>© {year} Orchard OCD. Advancing global OCD research.</p>
-          <p>Find · Filter · Fund</p>
+        <div className="mt-8 flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-white/14 pt-5 text-sm text-white/60 lg:mt-14 lg:gap-6 lg:pt-6">
+          <p>
+            © {year} {SITE_NAME}. {SITE_TAGLINE}.
+          </p>
+          <p>{SITE_STRAPLINE}</p>
         </div>
       </Container>
     </footer>

@@ -67,7 +67,6 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    pages: Page;
     posts: Post;
     studies: Study;
     webinars: Webinar;
@@ -86,7 +85,6 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     studies: StudiesSelect<false> | StudiesSelect<true>;
     webinars: WebinarsSelect<false> | WebinarsSelect<true>;
@@ -107,16 +105,8 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {
-    'home-page': HomePage;
-    'site-settings': SiteSetting;
-    navigation: Navigation;
-  };
-  globalsSelect: {
-    'home-page': HomePageSelect<false> | HomePageSelect<true>;
-    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    navigation: NavigationSelect<false> | NavigationSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -147,52 +137,53 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "posts".
  */
-export interface Page {
+export interface Post {
   id: number;
   title: string;
   /**
    * URL path segment. Lowercase words separated by hyphens.
    */
   slug: string;
-  /**
-   * Short lede shown under the page title.
-   */
-  intro?: string | null;
-  hero?:
-    | {
-        title: string;
-        content?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        ctaLabel?: string | null;
-        ctaHref?: string | null;
-        image?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  layout?:
-    | (
-        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
-      )[]
-    | null;
+  publishedAt: string;
+  byline?: string | null;
+  categories?: (number | Category)[] | null;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   meta?: {
     description?: string | null;
     image?: (number | null) | Media;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * URL path segment. Lowercase words separated by hyphens.
+   */
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -246,216 +237,6 @@ export interface Media {
   };
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RichTextBlock".
- */
-export interface RichTextBlock {
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'richText';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DocumentBlock".
- */
-export interface DocumentBlock {
-  document: number | Document;
-  label?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'documentBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "documents".
- */
-export interface Document {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ImageBlock".
- */
-export interface ImageBlock {
-  image: number | Media;
-  caption?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'imageBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "VideoBlock".
- */
-export interface VideoBlock {
-  /**
-   * YouTube or Vimeo URL. Leave empty when using an uploaded file.
-   */
-  url?: string | null;
-  file?: (number | null) | Video;
-  poster?: (number | null) | Media;
-  title?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'videoBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "videos".
- */
-export interface Video {
-  id: number;
-  title: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock".
- */
-export interface ButtonBlock {
-  label: string;
-  href: string;
-  variant?: ('primary' | 'secondary' | 'donate') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'buttonBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "EmbedBlock".
- */
-export interface EmbedBlock {
-  url: string;
-  title?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'embedBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TableBlock".
- */
-export interface TableBlock {
-  caption?: string | null;
-  rows: {
-    cells: {
-      value?: string | null;
-      id?: string | null;
-    }[];
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'tableBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccordionBlock".
- */
-export interface AccordionBlock {
-  items: {
-    title: string;
-    content: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'accordionBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  /**
-   * URL path segment. Lowercase words separated by hyphens.
-   */
-  slug: string;
-  publishedAt: string;
-  byline?: string | null;
-  categories?: (number | Category)[] | null;
-  excerpt?: string | null;
-  featuredImage?: (number | null) | Media;
-  layout?:
-    | (
-        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
-      )[]
-    | null;
-  meta?: {
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  /**
-   * URL path segment. Lowercase words separated by hyphens.
-   */
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * Studies people can take part in, shown under Participate in Research.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -471,11 +252,21 @@ export interface Study {
   publishedAt: string;
   excerpt?: string | null;
   featuredImage?: (number | null) | Media;
-  layout?:
-    | (
-        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
-      )[]
-    | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   meta?: {
     description?: string | null;
     image?: (number | null) | Media;
@@ -521,11 +312,6 @@ export interface Person {
   website?: string | null;
   photo?: (number | null) | Media;
   excerpt?: string | null;
-  bio?:
-    | (
-        RichTextBlock | DocumentBlock | ImageBlock | VideoBlock | ButtonBlock | EmbedBlock | TableBlock | AccordionBlock
-      )[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -547,6 +333,44 @@ export interface Speaker {
   order?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: number;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -608,10 +432,6 @@ export interface PayloadKv {
 export interface PayloadLockedDocument {
   id: number;
   document?:
-    | ({
-        relationTo: 'pages';
-        value: number | Page;
-      } | null)
     | ({
         relationTo: 'posts';
         value: number | Post;
@@ -700,142 +520,6 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  intro?: T;
-  hero?:
-    | T
-    | {
-        title?: T;
-        content?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-        image?: T;
-        id?: T;
-      };
-  layout?:
-    | T
-    | {
-        richText?: T | RichTextBlockSelect<T>;
-        documentBlock?: T | DocumentBlockSelect<T>;
-        imageBlock?: T | ImageBlockSelect<T>;
-        videoBlock?: T | VideoBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
-        embedBlock?: T | EmbedBlockSelect<T>;
-        tableBlock?: T | TableBlockSelect<T>;
-        accordionBlock?: T | AccordionBlockSelect<T>;
-      };
-  meta?:
-    | T
-    | {
-        description?: T;
-        image?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "RichTextBlock_select".
- */
-export interface RichTextBlockSelect<T extends boolean = true> {
-  content?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DocumentBlock_select".
- */
-export interface DocumentBlockSelect<T extends boolean = true> {
-  document?: T;
-  label?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ImageBlock_select".
- */
-export interface ImageBlockSelect<T extends boolean = true> {
-  image?: T;
-  caption?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "VideoBlock_select".
- */
-export interface VideoBlockSelect<T extends boolean = true> {
-  url?: T;
-  file?: T;
-  poster?: T;
-  title?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ButtonBlock_select".
- */
-export interface ButtonBlockSelect<T extends boolean = true> {
-  label?: T;
-  href?: T;
-  variant?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "EmbedBlock_select".
- */
-export interface EmbedBlockSelect<T extends boolean = true> {
-  url?: T;
-  title?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TableBlock_select".
- */
-export interface TableBlockSelect<T extends boolean = true> {
-  caption?: T;
-  rows?:
-    | T
-    | {
-        cells?:
-          | T
-          | {
-              value?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccordionBlock_select".
- */
-export interface AccordionBlockSelect<T extends boolean = true> {
-  items?:
-    | T
-    | {
-        title?: T;
-        content?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -846,18 +530,7 @@ export interface PostsSelect<T extends boolean = true> {
   categories?: T;
   excerpt?: T;
   featuredImage?: T;
-  layout?:
-    | T
-    | {
-        richText?: T | RichTextBlockSelect<T>;
-        documentBlock?: T | DocumentBlockSelect<T>;
-        imageBlock?: T | ImageBlockSelect<T>;
-        videoBlock?: T | VideoBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
-        embedBlock?: T | EmbedBlockSelect<T>;
-        tableBlock?: T | TableBlockSelect<T>;
-        accordionBlock?: T | AccordionBlockSelect<T>;
-      };
+  body?: T;
   meta?:
     | T
     | {
@@ -877,18 +550,7 @@ export interface StudiesSelect<T extends boolean = true> {
   publishedAt?: T;
   excerpt?: T;
   featuredImage?: T;
-  layout?:
-    | T
-    | {
-        richText?: T | RichTextBlockSelect<T>;
-        documentBlock?: T | DocumentBlockSelect<T>;
-        imageBlock?: T | ImageBlockSelect<T>;
-        videoBlock?: T | VideoBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
-        embedBlock?: T | EmbedBlockSelect<T>;
-        tableBlock?: T | TableBlockSelect<T>;
-        accordionBlock?: T | AccordionBlockSelect<T>;
-      };
+  body?: T;
   meta?:
     | T
     | {
@@ -925,18 +587,6 @@ export interface PeopleSelect<T extends boolean = true> {
   website?: T;
   photo?: T;
   excerpt?: T;
-  bio?:
-    | T
-    | {
-        richText?: T | RichTextBlockSelect<T>;
-        documentBlock?: T | DocumentBlockSelect<T>;
-        imageBlock?: T | ImageBlockSelect<T>;
-        videoBlock?: T | VideoBlockSelect<T>;
-        buttonBlock?: T | ButtonBlockSelect<T>;
-        embedBlock?: T | EmbedBlockSelect<T>;
-        tableBlock?: T | TableBlockSelect<T>;
-        accordionBlock?: T | AccordionBlockSelect<T>;
-      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1123,415 +773,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * The landing page. Every field is content, never layout or markup.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page".
- */
-export interface HomePage {
-  id: number;
-  hero: {
-    title: string;
-    ctaLabel?: string | null;
-    ctaHref?: string | null;
-    image?: (number | null) | Media;
-    id?: string | null;
-  };
-  /**
-   * The cards shown under the hero.
-   */
-  highlights?:
-    | {
-        title: string;
-        ctaLabel?: string | null;
-        ctaHref?: string | null;
-        image?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  about: {
-    heading: string;
-    intro: string;
-    image?: (number | null) | Media;
-    pillars?:
-      | {
-          title: string;
-          body: string;
-          image?: (number | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    goalsTitle?: string | null;
-    goalsImage?: (number | null) | Media;
-    goalsIntro?: string | null;
-    goals?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-    ctaHeading?: string | null;
-    ctaLabel?: string | null;
-    ctaHref?: string | null;
-    ctaImages?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  video?: {
-    url?: string | null;
-    poster?: (number | null) | Media;
-  };
-  participate?: {
-    heading?: string | null;
-    body?: string | null;
-    ctaLabel?: string | null;
-    ctaHref?: string | null;
-    images?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  social?: {
-    heading?: string | null;
-    body?: string | null;
-    images?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  proposals?: {
-    heading?: string | null;
-    body?:
-      | {
-          text: string;
-          id?: string | null;
-        }[]
-      | null;
-    quote?: string | null;
-    image?: (number | null) | Media;
-    ctaLabel?: string | null;
-    ctaHref?: string | null;
-  };
-  blog?: {
-    heading?: string | null;
-    images?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  newsletter?: {
-    images?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  webinar?: {
-    title?: string | null;
-    image?: (number | null) | Media;
-    ctaLabel?: string | null;
-    ctaHref?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings".
- */
-export interface SiteSetting {
-  id: number;
-  announcement?: {
-    enabled?: boolean | null;
-    text?: string | null;
-    linkLabel?: string | null;
-    linkHref?: string | null;
-  };
-  donateUrl: string;
-  registryUrl: string;
-  contact: {
-    email: string;
-    address: string;
-    mapUrl?: string | null;
-    charityNumber: string;
-    charityRegisterUrl?: string | null;
-  };
-  social?:
-    | {
-        platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube';
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  newsletter?: {
-    heading?: string | null;
-    body?: string | null;
-    signupUrl?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "navigation".
- */
-export interface Navigation {
-  id: number;
-  main?:
-    | {
-        label: string;
-        href: string;
-        children?:
-          | {
-              label: string;
-              href: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  footer?:
-    | {
-        heading: string;
-        links?:
-          | {
-              label: string;
-              href: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page_select".
- */
-export interface HomePageSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        title?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-        image?: T;
-        id?: T;
-      };
-  highlights?:
-    | T
-    | {
-        title?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-        image?: T;
-        id?: T;
-      };
-  about?:
-    | T
-    | {
-        heading?: T;
-        intro?: T;
-        image?: T;
-        pillars?:
-          | T
-          | {
-              title?: T;
-              body?: T;
-              image?: T;
-              id?: T;
-            };
-        goalsTitle?: T;
-        goalsImage?: T;
-        goalsIntro?: T;
-        goals?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        ctaHeading?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-        ctaImages?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-      };
-  video?:
-    | T
-    | {
-        url?: T;
-        poster?: T;
-      };
-  participate?:
-    | T
-    | {
-        heading?: T;
-        body?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-        images?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-      };
-  social?:
-    | T
-    | {
-        heading?: T;
-        body?: T;
-        images?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-      };
-  proposals?:
-    | T
-    | {
-        heading?: T;
-        body?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        quote?: T;
-        image?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-      };
-  blog?:
-    | T
-    | {
-        heading?: T;
-        images?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-      };
-  newsletter?:
-    | T
-    | {
-        images?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-      };
-  webinar?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        ctaLabel?: T;
-        ctaHref?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-settings_select".
- */
-export interface SiteSettingsSelect<T extends boolean = true> {
-  announcement?:
-    | T
-    | {
-        enabled?: T;
-        text?: T;
-        linkLabel?: T;
-        linkHref?: T;
-      };
-  donateUrl?: T;
-  registryUrl?: T;
-  contact?:
-    | T
-    | {
-        email?: T;
-        address?: T;
-        mapUrl?: T;
-        charityNumber?: T;
-        charityRegisterUrl?: T;
-      };
-  social?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
-  newsletter?:
-    | T
-    | {
-        heading?: T;
-        body?: T;
-        signupUrl?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "navigation_select".
- */
-export interface NavigationSelect<T extends boolean = true> {
-  main?:
-    | T
-    | {
-        label?: T;
-        href?: T;
-        children?:
-          | T
-          | {
-              label?: T;
-              href?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  footer?:
-    | T
-    | {
-        heading?: T;
-        links?:
-          | T
-          | {
-              label?: T;
-              href?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

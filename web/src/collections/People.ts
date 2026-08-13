@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { contentBlocks } from '@/blocks/index'
 import { slugField } from '@/fields/slug'
 
 export const People: CollectionConfig = {
@@ -35,10 +34,5 @@ export const People: CollectionConfig = {
     { name: 'website', type: 'text' },
     { name: 'photo', type: 'upload', relationTo: 'media' },
     { name: 'excerpt', type: 'textarea' },
-    {
-      name: 'bio',
-      type: 'blocks',
-      blocks: contentBlocks,
-    },
   ],
 }

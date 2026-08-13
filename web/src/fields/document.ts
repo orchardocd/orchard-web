@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-import { contentBlocks } from '@/blocks/index'
 import { seoFields, slugField } from '@/fields/slug'
 
 /** Fields shared by every dated, article-shaped collection. */
@@ -17,7 +16,7 @@ export function articleFields(extra: Field[] = []): Field[] {
     ...extra,
     { name: 'excerpt', type: 'textarea' },
     { name: 'featuredImage', type: 'upload', relationTo: 'media' },
-    { name: 'layout', type: 'blocks', blocks: contentBlocks },
+    { name: 'body', type: 'richText' },
     seoFields,
   ]
 }
