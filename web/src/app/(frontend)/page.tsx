@@ -86,7 +86,7 @@ export default async function HomePage() {
             <ButtonLink href={DONATE_URL} variant="donate" className="px-8 py-4 text-lg">
               Donate Now
             </ButtonLink>
-            <ButtonLink href="/about-ocd" variant="ghost" className="px-8 py-4 text-lg">
+            <ButtonLink href="/about-orchard" variant="ghost" className="px-8 py-4 text-lg">
               Learn About Orchard OCD
             </ButtonLink>
           </>
