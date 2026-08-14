@@ -1,14 +1,15 @@
-import { Exo } from 'next/font/google'
+import localFont from 'next/font/local'
 import type { ReactNode } from 'react'
 
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 
-const exo = Exo({
-  subsets: ['latin'],
+const exo = localFont({
+  src: [
+    { path: './fonts/exo-latin.woff2', weight: '100 900', style: 'normal' },
+    { path: './fonts/exo-latin-italic.woff2', weight: '100 900', style: 'italic' },
+  ],
   variable: '--font-exo',
-  weight: ['300', '400', '500', '600', '700', '800'],
-  style: ['normal', 'italic'],
   display: 'swap',
 })
 
