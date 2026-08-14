@@ -63,10 +63,19 @@ variable "state_bucket" {
   default     = "orchard-web-tofu-state-600786191241"
 }
 
-variable "github_repository" {
-  description = "The repository whose main branch may assume the deploy role."
+variable "github_repositories" {
+  description = "Repository forms GitHub may name in the subject claim. It issues the plain form and the immutable form carrying the owner and repository ids, so both identify this one repository."
+  type        = list(string)
+  default = [
+    "orchardocd/orchard-web",
+    "orchardocd@304538876/orchard-web@1331285588",
+  ]
+}
+
+variable "github_deploy_ref" {
+  description = "The only ref allowed to assume the deploy role."
   type        = string
-  default     = "orchardocd/orchard-web"
+  default     = "refs/heads/main"
 }
 
 resource "hcloud_ssh_key" "deploy" {
@@ -154,7 +163,7 @@ data "aws_iam_policy_document" "ci_trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repository}:ref:refs/heads/main"]
+      values   = [for repository in var.github_repositories : "repo:${repository}:ref:${var.github_deploy_ref}"]
     }
   }
 }

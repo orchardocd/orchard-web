@@ -3230,6 +3230,10 @@
    "hero": [],
    "blocks": [
     {
+     "type": "document",
+     "document": "uploads/2024/08/Orchard_Research_Strategy.pdf"
+    },
+    {
      "type": "heading",
      "level": 2,
      "text": "Our Research Strategy"
@@ -3244,6 +3248,10 @@
    "hero": [],
    "blocks": [
     {
+     "type": "document",
+     "document": "uploads/2024/08/Orchard_Funding_Policy_doc.pdf"
+    },
+    {
      "type": "heading",
      "level": 2,
      "text": "Our Funding Policy"
@@ -3257,6 +3265,10 @@
    "featuredImage": null,
    "hero": [],
    "blocks": [
+    {
+     "type": "document",
+     "document": "uploads/2024/08/Orchard_Conflict_of_Interest_policy-1.pdf"
+    },
     {
      "type": "heading",
      "level": 2,
@@ -12872,9 +12884,9 @@
    "url": "https://www.orchardocd.org/wp-content/uploads/2022/04/Group-8871.png",
    "file": "www.orchardocd.org/wp-content/uploads/2022/04/Group-8871.png",
    "alt": "",
-   "asset": "2022-04-Group-8871.png",
-   "width": 573,
-   "height": 478
+   "asset": "2022-03-Group14629.svg",
+   "width": 642,
+   "height": 476
   },
   {
    "id": "uploads/2022/04/Group14040.png",
@@ -13169,9 +13181,9 @@
    "url": "https://www.orchardocd.org/wp-content/uploads/2022/05/ee.svg",
    "file": "www.orchardocd.org/wp-content/uploads/2022/05/ee.svg",
    "alt": "",
-   "asset": "2022-05-ee.svg",
-   "width": 344,
-   "height": 325
+   "asset": "2022-03-homecallfor.svg",
+   "width": 447,
+   "height": 417
   },
   {
    "id": "uploads/2022/05/invld.png",
@@ -15185,9 +15197,9 @@
    "url": "https://www.orchardocd.org/wp-content/uploads/2026/04/IOCDF.png",
    "file": "www.orchardocd.org/wp-content/uploads/2026/04/IOCDF.png",
    "alt": "",
-   "asset": "2017-04-The-D-in-OCD.png",
-   "width": 1200,
-   "height": 600
+   "asset": "2026-04-IOCDF.png",
+   "width": 318,
+   "height": 159
   },
   {
    "id": "uploads/2026/04/Isaac_Fradkin.jpg",
@@ -15582,10 +15594,28 @@
    "asset": "2022-08-Information-sheets-participantparent-1.pdf"
   },
   {
+   "id": "uploads/2024/08/Orchard_Conflict_of_Interest_policy-1.pdf",
+   "url": "https://www.orchardocd.org/wp-content/uploads/2024/08/Orchard_Conflict_of_Interest_policy-1.pdf",
+   "file": "www.orchardocd.org/wp-content/uploads/2024/08/Orchard_Conflict_of_Interest_policy-1.pdf",
+   "asset": "2024-08-Orchard-Conflict-of-Interest-policy-1.pdf"
+  },
+  {
+   "id": "uploads/2024/08/Orchard_Funding_Policy_doc.pdf",
+   "url": "https://www.orchardocd.org/wp-content/uploads/2024/08/Orchard_Funding_Policy_doc.pdf",
+   "file": "www.orchardocd.org/wp-content/uploads/2024/08/Orchard_Funding_Policy_doc.pdf",
+   "asset": "2024-08-Orchard-Funding-Policy-doc.pdf"
+  },
+  {
    "id": "uploads/2024/08/Orchard_OCD_Conference_Ad-1.pdf",
    "url": "https://www.orchardocd.org/wp-content/uploads/2024/08/Orchard_OCD_Conference_Ad-1.pdf",
    "file": "www.orchardocd.org/wp-content/uploads/2024/08/Orchard_OCD_Conference_Ad-1.pdf",
    "asset": "2024-08-Orchard-OCD-Conference-Ad-1.pdf"
+  },
+  {
+   "id": "uploads/2024/08/Orchard_Research_Strategy.pdf",
+   "url": "https://www.orchardocd.org/wp-content/uploads/2024/08/Orchard_Research_Strategy.pdf",
+   "file": "www.orchardocd.org/wp-content/uploads/2024/08/Orchard_Research_Strategy.pdf",
+   "asset": "2024-08-Orchard-Research-Strategy.pdf"
   },
   {
    "id": "uploads/2025/11/Poster-Guidelines-Orchard-Scientific-Meeting-2026.pdf",

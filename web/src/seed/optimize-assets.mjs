@@ -5,10 +5,7 @@ import path from 'node:path'
 import { promisify } from 'node:util'
 import sharp from 'sharp'
 
-import { likeness, signatures } from '../../../tools/fingerprint.mjs'
-
-// Below this two pictures are different drawings; at or above it they are two cuts of one.
-const ALIKE = 0.87
+import { ALIKE, likeness, signatures } from '../../../tools/fingerprint.mjs'
 
 const run = promisify(execFile)
 
