@@ -89,7 +89,7 @@ export default async function HomePage() {
             href="https://redcap.herts.ac.uk/surveys/?s=LETKTCCJPM"
           />
           <Highlight
-            file="2022-05-ee.svg"
+            file="2022-03-homecallfor.svg"
             alt="A team gathered around a giant lightbulb full of ideas"
             title="New Blog Post: 2022 Call for Proposals Winner"
             href="/blog/call-for-proposals-2022"
@@ -181,18 +181,12 @@ export default async function HomePage() {
       <PageSection heading={NEWSLETTER.heading} tone="strong">
         <TextWithFigure
           figure={
-            <div className="flex flex-wrap items-center gap-8">
+            <div className="w-full max-w-sm">
               <Photo
                 file="2022-03-Group14629.svg"
                 alt="An open envelope with an Orchard OCD letter inside"
-                sizes="220px"
-                className="h-40 w-auto rounded-none"
-              />
-              <Photo
-                file="2022-04-Group-8871.png"
-                alt="An Orchard OCD letter half out of its envelope"
-                sizes="200px"
-                className="h-40 w-auto rounded-none"
+                sizes="(min-width: 57rem) 24rem, calc(100vw - 3rem)"
+                className="rounded-none"
               />
             </div>
           }

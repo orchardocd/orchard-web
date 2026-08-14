@@ -65,7 +65,7 @@ export default function ResearchPage() {
         <TextWithFigure
           figure={
             <Figure
-              file="2022-05-ee.svg"
+              file="2022-03-homecallfor.svg"
               alt="Researchers around a giant lightbulb with charts, gears and a clock"
             />
           }
