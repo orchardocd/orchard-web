@@ -5,7 +5,7 @@ test.describe('site', () => {
     await page.goto('/')
     await expect(page).toHaveTitle(/Orchard OCD/)
     await expect(page.getByRole('heading', { level: 1 })).toContainText(
-      'Obsessive Compulsive Disorder',
+      'Help us develop better treatments for OCD',
     )
     await expect(
       page.locator('main').getByRole('link', { name: 'Donate Now', exact: true }).first(),

@@ -20,7 +20,7 @@ SSH="ssh -i $KEY -o StrictHostKeyChecking=no root@$IP"
 RSH="ssh -i $KEY -o StrictHostKeyChecking=no"
 
 echo "==> building"
-(cd "$WEB" && pnpm build >/dev/null)
+(cd "$WEB" && NEXT_OUTPUT_STANDALONE=1 pnpm build >/dev/null)
 
 echo "==> syncing application to $IP"
 $SSH 'install -d -o orchard -g orchard /srv/orchard/app'

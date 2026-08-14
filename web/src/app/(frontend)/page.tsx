@@ -1,9 +1,7 @@
-import type { ReactNode } from 'react'
-
 import { ArticleCards } from '@/components/content/ArticleCard'
 import { SocialLinks } from '@/components/content/SocialLinks'
 import { CARD_TITLE_CLASSES } from '@/components/layout/Banner'
-import { Figure, PageBanner, PageSection, Photo, TextWithFigure, Video } from '@/components/site'
+import { PageBanner, PageSection, Photo, TextWithFigure, Video } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 import { cn } from '@/lib/cn'
 import { getPosts } from '@/lib/payload'
@@ -11,8 +9,6 @@ import { DONATE_URL, NEWSLETTER, REGISTRY_URL, SOCIAL } from '@/lib/site'
 
 const CARD_SIZES = '(min-width: 1024px) 18rem, (min-width: 768px) 45vw, calc(100vw - 3rem)'
 const CARD_CLASSES = 'flex flex-col overflow-hidden rounded-lg border border-line'
-const PILLAR_CLASSES = 'rounded-lg bg-white p-8 shadow-[0_2px_10px_rgba(14,42,39,0.06)]'
-const PILLAR_BODY = 'text-base leading-relaxed text-body'
 const LEAD = 'max-w-measure text-lg leading-relaxed text-body md:text-xl'
 const DARK_LEAD = 'max-w-measure text-lg leading-relaxed text-pretty text-white/92'
 const SOCIAL_LINK =
@@ -52,33 +48,13 @@ function Highlight({
   )
 }
 
-function Pillar({
-  file,
-  alt,
-  title,
-  children,
-}: {
-  file: string
-  alt: string
-  title: string
-  children: ReactNode
-}) {
-  return (
-    <li className={PILLAR_CLASSES}>
-      <Photo file={file} alt={alt} sizes="128px" className="mb-5 h-16 w-auto rounded-none" />
-      <h3 className="mb-3 text-xl font-bold text-brand-link">{title}</h3>
-      {children}
-    </li>
-  )
-}
-
 export default async function HomePage() {
   const posts = await getPosts(3)
 
   return (
     <>
       <PageBanner
-        title="Help us develop better treatments for Obsessive Compulsive Disorder (OCD)"
+        title="Help us develop better treatments for OCD"
         image="2022-04-hm-bnrr-1.png"
         imageAlt="A person with leafy plants growing from their head, watered from a can"
         actions={
@@ -91,7 +67,12 @@ export default async function HomePage() {
             </ButtonLink>
           </>
         }
-      />
+      >
+        <p>
+          We build a community of interdisciplinary professionals and work with them closely to
+          progress together in developing new and better treatments for patients suffering from OCD.
+        </p>
+      </PageBanner>
 
       <PageSection label="Highlights">
         <ul className="grid items-stretch gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
@@ -124,57 +105,18 @@ export default async function HomePage() {
 
       <PageSection heading="About Orchard OCD" tone="mist">
         <p className={LEAD}>
-          We build a community of interdisciplinary professionals and work with them closely to
-          progress together in developing new and better treatments for patients suffering from OCD.
+          Watch our short film to hear why Orchard OCD exists, and how we are working to bring new
+          and better treatments to everyone living with the condition.
         </p>
         <ButtonLink href="/about-orchard" variant="secondary" className="mt-8">
           About us
         </ButtonLink>
-
-        <ul className="mt-12 grid gap-6 md:grid-cols-3">
-          <Pillar
-            file="2022-03-Group12980.svg"
-            alt="A brain growing leaves and flowers, forming one half of a heart"
-            title="Our Vision"
-          >
-            <p className={PILLAR_BODY}>
-              is a world where all patients suffering from OCD receive effective treatment for their
-              condition.
-            </p>
-          </Pillar>
-          <Pillar
-            file="2022-04-aboutorchard-img.svg"
-            alt="A tangled line unwinding into a lit lightbulb"
-            title="Our Mission"
-          >
-            <p className={PILLAR_BODY}>
-              is to build that world by advancing collaborative translational research and driving
-              the quest for new and better treatments for OCD.
-            </p>
-          </Pillar>
-          <Pillar
-            file="2022-03-home-about.svg"
-            alt="An arrow striking the center of a target"
-            title="Our Goals"
-          >
-            <p className={PILLAR_BODY}>We have a three-pillar approach,</p>
-            <ol className={cn(PILLAR_BODY, 'mt-2 list-decimal pl-5')}>
-              <li>Research (fund and run clinical trials)</li>
-              <li>Hubs (OCD research database and repository)</li>
-              <li>Dissemination (awareness campaigns and conferences)</li>
-            </ol>
-          </Pillar>
-        </ul>
-
-        <div className="mt-16">
-          <h3 className="text-xl font-bold text-brand-link">Learn About Orchard OCD</h3>
-          <Video
-            url="https://player.vimeo.com/video/306831655?h=924cbb2311"
-            title="Learn About Orchard OCD"
-            poster="2022-05-Untitled-1.png"
-            className="mt-6"
-          />
-        </div>
+        <Video
+          url="https://player.vimeo.com/video/306831655?h=924cbb2311"
+          title="Learn About Orchard OCD"
+          poster="2022-05-Untitled-1.png"
+          className="mt-12"
+        />
       </PageSection>
 
       <PageSection heading="Want To Participate In Brand New OCD Research?">
@@ -207,35 +149,6 @@ export default async function HomePage() {
             on our social media platforms.
           </p>
           <SocialLinks items={SOCIAL} className="mt-8" linkClassName={SOCIAL_LINK} />
-        </TextWithFigure>
-      </PageSection>
-
-      <PageSection heading="Call For Proposals 2022" tone="deep">
-        <TextWithFigure
-          figure={
-            <Figure
-              file="2022-03-homecallfor.svg"
-              alt="Researchers working around a giant lightbulb, surrounded by charts and gears"
-            />
-          }
-        >
-          <p className={DARK_LEAD}>
-            In 2022 we launched our second call for proposals seeking hard-to-fund projects that
-            have great potential to make a major impact for obsessive compulsive disorder (OCD). We
-            received many great submissions, and our independent scientific advisory board judged
-            the projects last year. We are now excited to announce our winner:
-          </p>
-          <blockquote className="mt-8 rounded-lg bg-white/10 p-6 text-xl leading-snug font-semibold text-pretty text-white md:p-9 md:text-2xl">
-            <p>“Double-blind Randomised Placebo-controlled study of Tolcapone for OCD”</p>
-          </blockquote>
-          <ButtonLink
-            href="/blog/call-for-proposals-2022"
-            variant="light"
-            className="mt-8"
-            detail="about the 2022 Call For Proposals winner"
-          >
-            Read More
-          </ButtonLink>
         </TextWithFigure>
       </PageSection>
 

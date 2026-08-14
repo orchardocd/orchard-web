@@ -3,7 +3,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { PeopleSections } from '@/components/content/PeopleSections'
-import { Figure, PageBanner, PageSection, Prose, TextWithFigure } from '@/components/site'
+import { Figure, PageBanner, PageSection, Photo, Prose, TextWithFigure } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
@@ -14,8 +14,6 @@ export const metadata: Metadata = {
 
 const IMPACT_REPORT =
   'https://www.orchardocd.org/wp-content/uploads/2022/06/Orchard-2021-Impact-Report.pdf'
-
-const PILLAR_SIZES = '(min-width: 57rem) 22rem, (min-width: 768px) 40rem, calc(100vw - 3rem)'
 
 function Pillar({
   file,
@@ -29,8 +27,8 @@ function Pillar({
   children: ReactNode
 }) {
   return (
-    <li className="flex flex-col gap-5">
-      <Figure file={file} alt={alt} sizes={PILLAR_SIZES} className="flow:h-80" />
+    <li className="flex flex-col gap-4">
+      <Photo file={file} alt={alt} sizes="176px" className="h-24 w-auto self-start rounded-none" />
       <h3 className="text-xl font-bold text-brand-link">{heading}</h3>
       <div className="text-base leading-relaxed text-body">{children}</div>
     </li>
@@ -57,14 +55,7 @@ export default function AboutOrchardPage() {
       </PageBanner>
 
       <PageSection heading="About Orchard OCD">
-        <Prose>
-          <p>
-            We built a community of interdisciplinary professionals and work with them closely to
-            progress together in developing new and better treatments for patients suffering from
-            OCD.
-          </p>
-        </Prose>
-        <ul className="mt-8 grid gap-10 flow:grid-cols-3">
+        <ul className="grid gap-10 flow:grid-cols-3">
           <Pillar
             file="2022-03-Group12980.svg"
             alt="A brain in bloom forming one half of a heart"
