@@ -21,8 +21,10 @@ IP=$(HCLOUD_TOKEN=$(aws secretsmanager get-secret-value --region $REGION \
 SSH="ssh -i $KEY -o StrictHostKeyChecking=no root@$IP"
 RSH="ssh -i $KEY -o StrictHostKeyChecking=no"
 
-echo "==> building"
-(cd "$WEB" && NEXT_OUTPUT_STANDALONE=1 pnpm build >/dev/null)
+if [ -z "${PREBUILT:-}" ]; then
+  echo "==> building"
+  (cd "$WEB" && pnpm build >/dev/null)
+fi
 
 echo "==> syncing application to $IP"
 $SSH 'install -d -o orchard -g orchard /srv/orchard/app'
