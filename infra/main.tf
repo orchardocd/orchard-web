@@ -10,6 +10,10 @@ terraform {
   }
 
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
+    }
     hcloud = {
       source  = "hetznercloud/hcloud"
       version = "~> 1.51"
@@ -18,6 +22,10 @@ terraform {
 }
 
 provider "hcloud" {}
+
+provider "aws" {
+  region = var.aws_region
+}
 
 variable "hostname" {
   description = "Public hostname this server answers on."
@@ -41,6 +49,24 @@ variable "ssh_allowlist" {
   description = "CIDRs allowed to reach SSH. Empty means anywhere."
   type        = list(string)
   default     = ["0.0.0.0/0", "::/0"]
+}
+
+variable "aws_region" {
+  description = "Region holding the state bucket and the deploy secrets."
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "state_bucket" {
+  description = "Bucket holding the OpenTofu state. Backends cannot read variables, so this repeats the backend block."
+  type        = string
+  default     = "orchard-web-tofu-state-600786191241"
+}
+
+variable "github_repository" {
+  description = "The repository whose main branch may assume the deploy role."
+  type        = string
+  default     = "orchardocd/orchard-web"
 }
 
 resource "hcloud_ssh_key" "deploy" {
@@ -100,6 +126,71 @@ resource "hcloud_server" "web" {
   lifecycle {
     ignore_changes = [user_data]
   }
+}
+
+data "aws_caller_identity" "current" {}
+
+resource "aws_iam_openid_connect_provider" "github" {
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+}
+
+data "aws_iam_policy_document" "ci_trust" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.github.arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = ["repo:${var.github_repository}:ref:refs/heads/main"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "ci" {
+  statement {
+    actions   = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::${var.state_bucket}"]
+  }
+
+  statement {
+    actions   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
+    resources = ["arn:aws:s3:::${var.state_bucket}/orchard-web/*"]
+  }
+
+  statement {
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = ["arn:aws:secretsmanager:${var.aws_region}:${data.aws_caller_identity.current.account_id}:secret:prod/orchard-web/*"]
+  }
+}
+
+resource "aws_iam_role" "ci" {
+  name               = "orchard-web-ci"
+  description        = "Assumed by GitHub Actions to read the state and deploy."
+  assume_role_policy = data.aws_iam_policy_document.ci_trust.json
+}
+
+resource "aws_iam_role_policy" "ci" {
+  name   = "deploy"
+  role   = aws_iam_role.ci.id
+  policy = data.aws_iam_policy_document.ci.json
+}
+
+output "ci_role_arn" {
+  description = "Set this as the AWS_ROLE_ARN repository variable in GitHub."
+  value       = aws_iam_role.ci.arn
 }
 
 output "ipv4" {

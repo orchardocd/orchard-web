@@ -11,6 +11,8 @@ WEB=$INFRA/../web
 KEY=$INFRA/deploy_key
 REGION=us-east-1
 
+tofu init -input=false >/dev/null
+
 IP=$(HCLOUD_TOKEN=$(aws secretsmanager get-secret-value --region $REGION \
       --secret-id prod/orchard-web/hetzner --query SecretString --output text \
       | python3 -c "import sys,json;print(json.load(sys.stdin)['token'])") \

@@ -48,3 +48,47 @@ jobs:
           pnpm start -H 127.0.0.1 &
           npx --yes wait-on http://127.0.0.1:3000 -t 120000
           pnpm lighthouse
+
+  deploy:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      DATABASE_URL: file:./web.db
+      PAYLOAD_SECRET: ci-only-secret
+      PAYLOAD_ADMIN_EMAIL: admin@example.com
+      PAYLOAD_ADMIN_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_wrapper: false
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: web
+      - run: pnpm seed
+        working-directory: web
+
+      - name: Deploy
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          install -m 600 /dev/null infra/deploy_key
+          printf '%s\n' "$DEPLOY_KEY" > infra/deploy_key
+          infra/deploy.sh
