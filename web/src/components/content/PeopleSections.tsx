@@ -34,6 +34,8 @@ function PersonCard({ person, compact = false }: { person: Person; compact?: boo
         ) : (
           <RoundImage
             media={person.photo}
+            // The card carries the name in words, so the portrait adds nothing to read out.
+            alt=""
             className={compact ? 'w-full sm:w-28 lg:w-32' : 'w-36'}
             sizes="144px"
           />

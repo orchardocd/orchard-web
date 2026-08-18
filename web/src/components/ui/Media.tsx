@@ -18,6 +18,8 @@ type MediaImageProps = {
   fallbackHeight?: number
   /** Let the image fill its box even where that means drawing it past its own pixels. */
   fills?: boolean
+  /** Overrides the upload's own alt text. Empty where the picture repeats the words beside it. */
+  alt?: string
 }
 
 export function MediaImage({
@@ -28,6 +30,7 @@ export function MediaImage({
   fallbackWidth = 1200,
   fallbackHeight = 800,
   fills = false,
+  alt,
 }: MediaImageProps) {
   const resolved = resolveMedia(media)
   if (!resolved?.url) return null
@@ -35,7 +38,7 @@ export function MediaImage({
   return (
     <NextImage
       src={resolved.url}
-      alt={resolved.alt ?? ''}
+      alt={alt ?? resolved.alt ?? ''}
       width={resolved.width ?? fallbackWidth}
       height={resolved.height ?? fallbackHeight}
       sizes={sizes}
@@ -47,11 +50,12 @@ export function MediaImage({
   )
 }
 
-export function RoundImage({ media, className, sizes = '160px' }: MediaImageProps) {
+export function RoundImage({ media, className, sizes = '160px', alt }: MediaImageProps) {
   return (
     <MediaImage
       media={media}
       sizes={sizes}
+      alt={alt}
       fills
       fallbackWidth={400}
       fallbackHeight={400}

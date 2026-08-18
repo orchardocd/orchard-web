@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
 
-const WCAG_22_AA = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
+const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice']
 
 const WIDTHS = [
   ['desktop', { width: 1440, height: 900 }],
@@ -47,7 +47,7 @@ async function violationsOn(page: Page, path: string, viewport: { width: number;
   await page.setViewportSize(viewport)
   await page.goto(path)
   const results = await new AxeBuilder({ page })
-    .withTags([...WCAG_22_AA])
+    .withTags([...AXE_TAGS])
     // YouTube renders its own markup inside the embed; we cannot change it.
     .exclude('iframe')
     .analyze()
@@ -70,7 +70,7 @@ test('every video player names the webinar it plays', async ({ page }) => {
 
 for (const [name, path] of ROUTES) {
   for (const [label, viewport] of WIDTHS) {
-    test(`${name} has no WCAG 2.2 AA violations on ${label}`, async ({ page }) => {
+    test(`${name} has no accessibility violations on ${label}`, async ({ page }) => {
       expect(await violationsOn(page, path, viewport)).toEqual([])
     })
   }

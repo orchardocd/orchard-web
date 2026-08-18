@@ -17,7 +17,7 @@ function Officer({ file, title, name }: { file: string; title: string; name: str
       <div className="w-36 overflow-hidden rounded-full bg-mist ring-1 ring-line">
         <Photo
           file={file}
-          alt={name}
+          alt=""
           sizes="300px"
           className="aspect-square scale-[2.08] object-cover grayscale"
         />

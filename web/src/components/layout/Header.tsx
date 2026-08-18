@@ -89,7 +89,7 @@ export function Header() {
         Skip to main content
       </a>
 
-      <div className="bg-lime">
+      <aside aria-label="Announcement" className="bg-lime">
         <Container className="flex flex-wrap items-center justify-center gap-3 py-2.5 text-center">
           <span className="text-sm font-semibold text-ink-on-lime">{ANNOUNCEMENT.text}</span>
           <a
@@ -99,7 +99,7 @@ export function Header() {
             {ANNOUNCEMENT.label}
           </a>
         </Container>
-      </div>
+      </aside>
 
       <header className="sticky top-0 z-50 bg-white shadow-[0_1px_0_rgba(14,42,39,0.12)]">
         <Container className="flex items-center justify-between gap-3 py-3.5 lg:gap-8">
