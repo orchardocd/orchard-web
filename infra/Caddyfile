@@ -1,0 +1,26 @@
+new.orchardocd.org {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
+	# The admin panel and the API are for editors, not for search engines.
+	@private path /admin /admin/* /api /api/*
+	header @private X-Robots-Tag "noindex, nofollow"
+
+	handle_path /media/* {
+		root * /srv/orchard/media
+		file_server
+	}
+	handle_path /documents/* {
+		root * /srv/orchard/documents
+		file_server
+	}
+	handle_path /videos/* {
+		root * /srv/orchard/videos
+		file_server
+	}
+	reverse_proxy 127.0.0.1:3000
+}

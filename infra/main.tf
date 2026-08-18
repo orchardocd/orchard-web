@@ -27,12 +27,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-variable "hostname" {
-  description = "Public hostname this server answers on."
-  type        = string
-  default     = "new.orchardocd.org"
-}
-
 variable "server_type" {
   description = "Hetzner server type."
   type        = string
@@ -76,6 +70,14 @@ variable "github_deploy_ref" {
   description = "The only ref allowed to assume the deploy role."
   type        = string
   default     = "refs/heads/main"
+}
+
+locals {
+  caddyfile = file("${path.module}/Caddyfile")
+
+  # The Caddyfile opens with the site address, which is the hostname the server
+  # answers on. Reading it back keeps the two in step.
+  hostname = trimspace(split("{", local.caddyfile)[0])
 }
 
 resource "hcloud_ssh_key" "deploy" {
@@ -124,7 +126,7 @@ resource "hcloud_server" "web" {
   backups      = true
 
   user_data = templatefile("${path.module}/cloud-init.yaml", {
-    hostname = var.hostname
+    caddyfile = indent(6, chomp(local.caddyfile))
   })
 
   labels = {
@@ -213,7 +215,7 @@ output "ipv6" {
 
 output "dns_record" {
   description = "The record to add in the FastComet cPanel zone editor."
-  value       = "${replace(var.hostname, ".orchardocd.org", "")}  A  ${hcloud_server.web.ipv4_address}"
+  value       = "${replace(local.hostname, ".orchardocd.org", "")}  A  ${hcloud_server.web.ipv4_address}"
 }
 
 output "ssh" {

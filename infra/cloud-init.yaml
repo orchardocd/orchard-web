@@ -23,28 +23,7 @@ write_files:
   - path: /etc/caddy/Caddyfile
     permissions: '0644'
     content: |
-      ${hostname} {
-        encode zstd gzip
-        header {
-          X-Robots-Tag "noindex, nofollow"
-          Strict-Transport-Security "max-age=31536000; includeSubDomains"
-          X-Content-Type-Options "nosniff"
-          Referrer-Policy "strict-origin-when-cross-origin"
-        }
-        handle_path /media/* {
-          root * /srv/orchard/media
-          file_server
-        }
-        handle_path /documents/* {
-          root * /srv/orchard/documents
-          file_server
-        }
-        handle_path /videos/* {
-          root * /srv/orchard/videos
-          file_server
-        }
-        reverse_proxy 127.0.0.1:3000
-      }
+      ${caddyfile}
 
   - path: /etc/systemd/system/orchard-web.service
     permissions: '0644'
