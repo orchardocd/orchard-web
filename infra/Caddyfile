@@ -11,15 +11,15 @@ new.orchardocd.org {
 	header @private X-Robots-Tag "noindex, nofollow"
 
 	handle_path /media/* {
-		root * /srv/orchard/media
+		root * /srv/orchard/data/media
 		file_server
 	}
 	handle_path /documents/* {
-		root * /srv/orchard/documents
+		root * /srv/orchard/data/documents
 		file_server
 	}
 	handle_path /videos/* {
-		root * /srv/orchard/videos
+		root * /srv/orchard/data/videos
 		file_server
 	}
 	reverse_proxy 127.0.0.1:3000

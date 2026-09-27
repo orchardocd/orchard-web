@@ -39,6 +39,7 @@ rsync -az -e "$RSH" "$WEB/.next/static/" "root@$IP:/srv/orchard/app/.next/static
 rsync -az -e "$RSH" "$WEB/public/" "root@$IP:/srv/orchard/app/public/"
 $SSH 'install -d -o orchard -g orchard /srv/orchard/app/scripts'
 rsync -az -e "$RSH" "$WEB/scripts/update-content.mjs" "root@$IP:/srv/orchard/app/scripts/"
+rsync -az -e "$RSH" "$WEB/scripts/configure-stripe.mjs" "root@$IP:/srv/orchard/app/scripts/"
 
 echo "==> relinking persistent data"
 $SSH 'cd /srv/orchard/app && for d in media documents videos; do rm -rf $d; ln -s /srv/orchard/data/$d $d; done; chown -R orchard:orchard /srv/orchard'
@@ -49,6 +50,12 @@ $SSH 'caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy'
 
 echo "==> updating existing content"
 $SSH 'cd /srv/orchard/app && runuser -u orchard -- node --experimental-sqlite --env-file=/srv/orchard/app.env scripts/update-content.mjs'
+
+echo "==> configuring donations"
+aws secretsmanager get-secret-value --region "$REGION" \
+  --secret-id prod/orchard-web/stripe --query SecretString --output text \
+  | python3 -c "import sys,json;print(json.load(sys.stdin)['secret-key'])" \
+  | $SSH "cd /srv/orchard/app && runuser -u orchard -- node scripts/configure-stripe.mjs /srv/orchard/app.env https://$HOST"
 
 echo "==> restarting"
 $SSH 'systemctl restart orchard-web && sleep 5 && systemctl is-active orchard-web'
