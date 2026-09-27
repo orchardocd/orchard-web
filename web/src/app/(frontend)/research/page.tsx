@@ -47,7 +47,8 @@ export default function ResearchPage() {
           <Prose>
             <p>
               In 2020 we ran a 5-week crowdfunding campaign and raised £60,130 for our psilocybin
-              project. Thank you to everyone who contributed and supported us.
+              project. The trial is now complete and is no longer recruiting participants. Thank you
+              to everyone who contributed and supported us.
             </p>
           </Prose>
           <div className="mt-8">

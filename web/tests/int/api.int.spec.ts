@@ -74,7 +74,7 @@ describe('content', () => {
 
   it('groups every person into a listed group', async () => {
     const people = await payload.find({ collection: 'people', limit: 200 })
-    expect(people.totalDocs).toBe(85)
+    expect(people.totalDocs).toBe(84)
     const groups = new Set(people.docs.map((person) => person.group))
     expect(groups).toEqual(
       new Set(['team', 'scientific-advisory-board', 'partners', 'ambassadors', 'college']),

@@ -913,7 +913,7 @@ def extract_posts(categories):
 
 
 def extract_studies():
-    return [
+    studies = [
         {
             'slug': study['slug'],
             'title': strip_tags(study['title']['rendered']),
@@ -925,6 +925,21 @@ def extract_studies():
         for study in load_api('p_in_research')
         if study.get('status') == 'publish'
     ]
+    for study in studies:
+        if study['slug'] == 'the-psilocd-study-recruitment-is-now-open-now-closed':
+            study['title'] = 'The PSILOCD Study – Completed'
+            study['description'] = (
+                'The PSILOCD Study investigating psilocybin for OCD is complete '
+                'and is no longer recruiting participants.'
+            )
+            for block in study['blocks']:
+                if block['type'] == 'paragraph':
+                    block['html'] = (
+                        study['description'] + ' The information below describes the completed '
+                        'study and is retained for reference.'
+                    )
+                    break
+    return studies
 
 
 def extract_research_slides():
@@ -1032,7 +1047,7 @@ def extract_people():
                 person['order'] = sum(1 for p in people.values() if p['group'] == group) - 1
 
     return sorted(
-        people.values(),
+        (person for person in people.values() if person['slug'] != 'katherine-selby'),
         key=lambda person: (group_order.get(person['group'], len(group_order)), person['order']),
     )
 

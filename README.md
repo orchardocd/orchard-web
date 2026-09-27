@@ -58,6 +58,16 @@ and no layout field, and an editor cannot change how any page is laid out.
 Navigation, footer columns, contact details, donate and registry URLs, social profiles and
 newsletter copy live in `web/src/lib/site.ts`.
 
+Donations use Stripe Checkout. See [donation setup](web/docs/donations.md) for the required
+server configuration. The [content update command](web/docs/content-updates.md) applies
+member and study-status corrections to existing databases without reseeding.
+
+Past conference recordings, talks and resources live at `/past-conferences`, using a
+snapshot of public conference-app content in `web/src/data/conference-2026.json`.
+Podcasts, webinars and Nick Sireau’s Substack are linked from `/educational-material`.
+Media remains at its original public URLs. Caption and transcript files were not available
+in the source archive; the automated accessibility scans do not cover that limitation.
+
 ## Content model
 
 The CMS holds content, never layout: five collections and the uploads they reference.
@@ -67,7 +77,7 @@ The CMS holds content, never layout: five collections and the uploads they refer
 | Posts | 84 | The blog, at `/blog/<slug>`; the body is rich text |
 | Studies | 32 | "Participate in research", at `/participate-research/<slug>` |
 | Webinars | 15 | Titles from the old page's slider, with poster images |
-| People | 85 | Team, scientific advisory board, supporters, volunteers, and 56 College members |
+| People | 84 | Team, scientific advisory board, supporters, volunteers, and 56 College members |
 | Speakers | 34 | Conference speakers, listed by both conference pages |
 | Media / Documents / Videos | 305 / 22 / 6 | Uploads, PDFs, and the self-hosted talks |
 

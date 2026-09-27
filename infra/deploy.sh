@@ -37,6 +37,8 @@ rsync -az --delete --exclude media --exclude documents --exclude videos --exclud
   -e "$RSH" "$WEB/.next/standalone/" "root@$IP:/srv/orchard/app/"
 rsync -az -e "$RSH" "$WEB/.next/static/" "root@$IP:/srv/orchard/app/.next/static/"
 rsync -az -e "$RSH" "$WEB/public/" "root@$IP:/srv/orchard/app/public/"
+$SSH 'install -d -o orchard -g orchard /srv/orchard/app/scripts'
+rsync -az -e "$RSH" "$WEB/scripts/update-content.mjs" "root@$IP:/srv/orchard/app/scripts/"
 
 echo "==> relinking persistent data"
 $SSH 'cd /srv/orchard/app && for d in media documents videos; do rm -rf $d; ln -s /srv/orchard/data/$d $d; done; chown -R orchard:orchard /srv/orchard'
@@ -44,6 +46,9 @@ $SSH 'cd /srv/orchard/app && for d in media documents videos; do rm -rf $d; ln -
 echo "==> updating the web server configuration"
 $SSH 'cat > /etc/caddy/Caddyfile && chmod 644 /etc/caddy/Caddyfile' < "$INFRA/Caddyfile"
 $SSH 'caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy'
+
+echo "==> updating existing content"
+$SSH 'cd /srv/orchard/app && runuser -u orchard -- node --experimental-sqlite --env-file=/srv/orchard/app.env scripts/update-content.mjs'
 
 echo "==> restarting"
 $SSH 'systemctl restart orchard-web && sleep 5 && systemctl is-active orchard-web'

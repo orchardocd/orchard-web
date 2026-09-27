@@ -8,11 +8,9 @@ import { ButtonLink } from '@/components/ui/Button'
 export const metadata: Metadata = {
   title: 'Conference',
   description:
-    'ORCHARD OCD INTERNATIONAL SCIENTIFIC CONFERENCE 4-5TH JUNE 2026 Secure Your Spot! Secure Your Spot SUPPORTED BY Made possible by a Wellcome Trust Award EXHIBITORS International OCD Foundation, OCD Action & British Association for Psychopharmacology At 30 Euston Square, London NW1 2FB View Programme View Web App Guide Our Speakers Our Chairs',
+    'The Orchard OCD International Scientific Conference took place on 4–5 June 2026 in London. Explore the programme, speakers and archived recordings.',
 }
 
-const TICKETS_URL =
-  'https://www.eventbrite.co.uk/e/orchard-ocd-international-scientific-conference-tickets-1865601597599'
 const PROGRAMME_URL = 'https://drive.google.com/file/d/13rjMuHY7uyDjLnWX_znslP4bNJOy4uL2/view'
 const WEB_APP_GUIDE_URL =
   'https://drive.google.com/file/d/1GbgS3bU4_vNHyoLhyhrUdTu2HTBn3xbZ/view?usp=drive_link'
@@ -71,7 +69,13 @@ export default function ConferencePage() {
         eyebrow="4-5TH JUNE 2026"
       />
 
-      <PageSection heading="Secure Your Spot!">
+      <PageSection heading="Conference recordings and resources">
+        <Prose className="mb-8">
+          <p>
+            This conference took place on 4–5 June 2026. Explore its recordings and resources in our
+            archive.
+          </p>
+        </Prose>
         <Figure
           file="2024-08-Group-8.svg"
           alt="A speaker at a lectern addressing a seated audience under a conference banner"
@@ -80,7 +84,7 @@ export default function ConferencePage() {
           className="max-w-xl"
         />
         <p className="mt-8">
-          <ButtonLink href={TICKETS_URL}>Secure Your Spot</ButtonLink>
+          <ButtonLink href="/past-conferences/2026">Explore the conference archive</ButtonLink>
         </p>
       </PageSection>
 

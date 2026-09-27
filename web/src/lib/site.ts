@@ -6,7 +6,7 @@ type FooterColumn = { heading: string; links: SiteLink[] }
 
 export type SocialProfile = { label: string; url: string }
 
-export const DONATE_URL = 'https://checkout.justgiving.com/c/2633482'
+export const DONATE_URL = '/donate'
 
 export const REGISTRY_URL = 'https://orchardocdregistry.org/'
 
@@ -66,7 +66,9 @@ export const MAIN_NAV: NavItem[] = [
     children: [
       { label: 'Blog', href: '/blog' },
       { label: 'Webinars', href: '/webinars' },
+      { label: 'Educational material', href: '/educational-material' },
       { label: 'Conference', href: '/conference' },
+      { label: 'Past conferences', href: '/past-conferences' },
     ],
   },
   { label: 'About us', href: '/about-orchard', children: [] },
@@ -81,6 +83,8 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: 'Our research strategy', href: '/our-research-strategy' },
       { label: 'Participate in research', href: '/participate-research' },
       { label: 'Conference', href: '/conference' },
+      { label: 'Past conferences', href: '/past-conferences' },
+      { label: 'Educational material', href: '/educational-material' },
       { label: 'Webinars', href: '/webinars' },
     ],
   },

@@ -5,7 +5,7 @@ import { PageBanner, PageSection, Prose } from '@/components/site'
 export const metadata: Metadata = {
   title: 'Psilocybin Crowdfunding Campaign',
   description:
-    'Psilocybin Crowdfunding Campaign We closed our crowdfunding campaign (05/05-10/06 2020) with the amount of £60,130. Gift Aids amount to £6,000 making it to £66,130 in total donation. We have previously raised £60,000 from a charitable trust and that makes a total of £126,130 for the study of psilocybin! This would not have been possible without the generous donations […]',
+    'Our 2020 crowdfunding campaign helped fund a pilot clinical trial investigating psilocybin for OCD. The trial is now complete and recruitment is closed.',
 }
 
 const CAMPAIGN_URL = 'https://www.chuffed.org/project/orchardocd#/'
@@ -184,6 +184,7 @@ export default function PsilocybinCrowdfundingCampaignPage() {
   return (
     <>
       <PageBanner title="Psilocybin Crowdfunding Campaign">
+        <p>The trial is now complete and is no longer recruiting participants.</p>
         <p>
           We closed our <a href={CAMPAIGN_URL}>crowdfunding campaign</a> (05/05-10/06 2020) with the
           amount of £60,130. Gift Aids amount to £6,000 making it to £66,130 in total donation.

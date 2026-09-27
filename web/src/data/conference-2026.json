@@ -1,0 +1,1053 @@
+{
+  "source": "https://app.orchardocd.org/",
+  "capturedAt": "2026-09-27",
+  "event": {
+    "id": "b460cfd6-50c1-4bc3-9f38-9d2512ea8c0d",
+    "title": "Orchard OCD International Scientific Conference",
+    "location": "London, UK",
+    "startsOn": "2026-06-04",
+    "endsOn": "2026-06-05"
+  },
+  "recordings": [
+    {
+      "id": "24cf2154-9f91-424e-a0dc-de3da1298fe0",
+      "title": "Neural Basis of OCD",
+      "description": "Day 1 symposium from the Orchard OCD International Scientific Conference (London, 4 June 2026). Programme: Structural and Neurochemical Imaging (DTI, PET, MRS); Task-based and functional connectivity; Neuro-behavioural models of OCD (animal models).",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day1-session1-neural-basis-of-ocd.mp4",
+      "durationSeconds": 6678
+    },
+    {
+      "id": "abec3f53-a84f-40e4-be9a-4cdaef41ae13",
+      "title": "Identification of Molecular Targets for New OCD Medications",
+      "description": "Day 1 symposium. Programme: OCD Genetic Predisposition; Neurobiological and developmental aspects of OCD in children and adolescents; Neurotransmitter pathways and molecular targets for medication development in OCD (incl. psychedelics, in particular Psilocybin); Neuroinflammation and its implications for novel treatments for OCD.",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day1-session2-molecular-targets.mp4",
+      "durationSeconds": 6958
+    },
+    {
+      "id": "77fbfd5b-ccc2-4047-941c-132fc91ccc37",
+      "title": "Predictive Biomarkers for Precision Psychiatry in OCD",
+      "description": "Day 1 symposium. Programme: Prediction and Prevention; Cognitive and electrophysiological markers and their role in personalised treatment; Computational psychiatry approaches to OCD; Integrative machine learning models for predicting OCD trajectories from multi-modal data.",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day1-session3-predictive-biomarkers.mp4",
+      "durationSeconds": 6628
+    },
+    {
+      "id": "6c93a446-0154-4c3d-8649-fd35f71397ed",
+      "title": "Clinical Translation of Precision Psychiatry in the Field of OCD",
+      "description": "Day 1 symposium. Programme: Clinical Staging of OCD (life-span model driven by clinical and neuroimaging findings); Pipeline drugs; OCD spectrum disorders.",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day1-session4-clinical-translation.mp4",
+      "durationSeconds": 5921
+    },
+    {
+      "id": "6ad4dd2e-80c3-4776-9fc8-f83ba99e021f",
+      "title": "Advances in Neuromodulation and Neurosurgical Strategies for OCD",
+      "description": "Day 2 symposium. Programme: Innovations in Deep Brain Stimulation (DBS); Stereotactic lesions for OCD in the DBS era; The current state of non-invasive neurostimulation (rTMS and tDCS) for OCD; Focussed Ultrasound Stimulation (FUS).",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day2-session1-neuromodulation.mp4",
+      "durationSeconds": 7479
+    },
+    {
+      "id": "237d16d7-3973-4483-a3c6-5bceaba9bb29",
+      "title": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "description": "Day 2 symposium featuring nine early-career and hot-paper presentations spanning: childhood trauma as a predictor of SRI response; smartphone and social-media use in OCD; orbitofrontal rTMS augmentation for treatment-resistant OCD; computational accounts of cognitive control; hoarding in emerging adults with ADHD; inflammation in youth OCD and tic-spectrum conditions; sleep disorders in paediatric OCD; ERP and MRS measures of excitatory neurotransmission; and OCD-risk subtypes in pre-adolescents.",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day2-session2-early-career-researchers-clipped-6cca76f54431.mp4",
+      "durationSeconds": 4550
+    },
+    {
+      "id": "9744c488-1a57-44db-9277-2616bb944f99",
+      "title": "Breakthroughs in Psychotherapy for OCD: Beyond CBT and ERP",
+      "description": "Day 2 symposium. Programme: Digital psychotherapeutic approaches for OCD; Large Language Models in the treatment of OCD; Metacognitive Training for OCD; Indian vs UK perspective of inpatient treatment.",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day2-session3-psychotherapy-beyond-cbt.mp4",
+      "durationSeconds": 8308
+    },
+    {
+      "id": "f721da96-9773-40c1-8a88-8c434256024e",
+      "title": "Guidelines Launch and Closing Plenary",
+      "description": "Closing block of the conference: Launch of the first International Guidelines for the Management of Patients with OCD, followed by the Closing Plenary on Future Directions and Accelerating Progress in OCD Research and Treatment Development.",
+      "url": "https://s3.amazonaws.com/eugeniodepalo.com/orchard-conference-2026/day2-session4-closing-plenary.mp4",
+      "durationSeconds": 5464
+    }
+  ],
+  "talks": [
+    {
+      "id": "9da0b781-4f08-43ba-8e83-1609445c6d88",
+      "title": "Opening Remarks",
+      "description": "Head of Mental Health Innovation at Wellcome Trust opens Day 1.",
+      "day": 1,
+      "startsAt": "2026-06-04T08:00:00+00:00",
+      "endsAt": "2026-06-04T08:05:00+00:00",
+      "room": "Main Hall",
+      "session": null,
+      "speakers": [
+        {
+          "name": "Max Ahmed",
+          "institution": "Wellcome Trust"
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "08954356-09cc-4977-9aa2-fc61a52216b4",
+      "title": "Keynote: The human and socio-economic impact of Obsessive Compulsive Disorder (OCD)",
+      "description": "Obsessive–compulsive disorder (OCD) is often imagined as a condition of “quirky habits,” but the reality is far more serious. OCD is a long-lasting, sometimes lifelong illness that affects around 2-3% of people. For many, it causes intrusive, frightening thoughts and repetitive rituals that can take over daily life. Most adults who are diagnosed are already in the moderate to severe range of symptoms, and the impact on their wellbeing, relationships, education, and ability to work is profound.\n\nWe conducted a national study published in 2023 that provides the clearest picture yet of the economic cost of OCD in the UK. It shows that OCD costs the NHS around £378 million every year: mainly through therapy such as cognitive behavioural therapy (CBT), medication, GP visits, and, for the most affected, periods of inpatient or residential care. But the true scale of the condition becomes clear when we look beyond the health service. When lost income, reduced productivity, private therapy costs, and the burden on families are included, the total annual cost rises to just over £5 billion – rising to £10.7 billion when the wider societal costs and economic costs are taken into account. That means more than 95% of the total cost of OCD falls not on the NHS, but on individuals, their families, and society.\n\nThis burden grows sharply with symptom severity. People with severe OCD cost the healthcare system more than five times as much as those with mild symptoms, largely because they need much more intensive treatment and sometimes months-long stays in hospital. Many people also pay for private therapy because NHS waiting lists are long or specialist services are unavailable. In fact, private therapy alone accounts for over £1 billion of the UK’s annual OCD costs.\n\nAt the very severe end (known as extreme treatment-refractory OCD) people often cannot work, require round-the-clock care, and may be repeatedly hospitalised. We conducted a separate UK analysis in 2025 that showed that for this small patient group, the costs to the NHS accumulate over many years, mainly through repeated inpatient admissions. Promisingly, one advanced treatment, deep brain stimulation (DBS), has been shown to reduce long-term healthcare use in this group. Although DBS is relatively expensive to deliver, the analysis found that it becomes cost-saving after around seven years, eventually saving nearly £200,000 per patient over their lifetime. This highlights not just the high cost of severe OCD, but also the potential value of effective, innovative treatments.\n\nTogether, these studies make one message clear: OCD is far more than a mental health condition affecting individuals. It is a major public health and economic challenge. The human cost (lost years of education, abandoned careers, the strain on families, and in the most extreme cases, repeated crises) is mirrored by a financial cost measured in billions. Yet the research also shows that when treatments work, especially for those with the most serious forms, the benefits ripple out widely: people regain independence, families recover, and society saves substantial resources.\n\nUnderstanding the socio-economic impact of OCD is therefore not only about counting costs, it is about recognising the urgent need for more effective therapies, earlier diagnosis, better access to treatment, and sustained investment in research. When we address OCD properly, we do not just reduce suffering: we help people reclaim their lives and reduce a burden borne by the whole of society.",
+      "day": 1,
+      "startsAt": "2026-06-04T08:05:00+00:00",
+      "endsAt": "2026-06-04T08:15:00+00:00",
+      "room": "Main Hall",
+      "session": null,
+      "speakers": [
+        {
+          "name": "Margherita Zenoni",
+          "institution": "Orchard OCD and University of Cambridge"
+        }
+      ],
+      "resources": [
+        {
+          "id": "4b498970-a743-4e59-9622-461a17d2efcb",
+          "type": "podcast",
+          "title": "Keynote: The socio-economic impact of OCD",
+          "caption": "Keynote podcast with Nick Sireau on the socio-economic impact of OCD on families, the health system and wider society.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/6209f374-5006-4bb2-9a02-b9ec52abcebe.ogg",
+          "durationSeconds": 1800
+        }
+      ]
+    },
+    {
+      "id": "4b335ad3-84ac-4585-bf6f-9bb665bc9286",
+      "title": "Structural and Neurochemical Imaging: DTI, PET, MRS",
+      "description": "For more than 25 years, we have used brain imaging research to better understand the biological mechanisms underlying OCD, the diversity of its symptoms, and the effects of therapy. While early studies commonly used positron emission tomography (PET), current research primarily relies on magnetic resonance imaging (MRI) to study brain morphometry — including brain volume, cortical thickness, and surface area using structural MRI — as well as white matter tracts linking grey matter regions (using diffusion MRI) and other tools to study the chemical properties of the brain, such as magnetic resonance spectroscopy (MRS).\n\nThe alterations in the brains of people with OCD are mostly subtle: this means that you cannot see clear “abnormalities” on an individual brain scan, but only at the group level when comparing large groups of patients with large control groups. We also know that brain structure changes over the lifespan, and that certain aspects of brain maturation during childhood seem to contribute to vulnerability to developing OCD. In contrast, many of the alterations observed in adulthood are likely more a consequence than a cause of OCD. The chronic repetitive behaviours seen in OCD, as well as its treatments, “shape” the brain over time.\n\nIn my lecture, I will summarise the most convincing findings from structural brain imaging studies, particularly those emerging from worldwide collaborations that combine data from across the globe, such as the ENIGMA-OCD consortium. I will explain how these findings — together with evidence from functional MRI studies — have shaped the “OCD model”, in which parallel brain circuits underlie specific psychological functions and are linked to OCD symptoms. This model is useful for developing innovative treatments that modulate these brain circuits, since psychotherapy, medication, and brain stimulation all have measurable effects on the brain.",
+      "day": 1,
+      "startsAt": "2026-06-04T08:15:00+00:00",
+      "endsAt": "2026-06-04T08:40:00+00:00",
+      "room": "Main Hall",
+      "session": "Neural Basis of OCD",
+      "speakers": [
+        {
+          "name": "Odile Van Den Heuvel",
+          "institution": "Amsterdam UMC, Netherlands"
+        }
+      ],
+      "resources": [
+        {
+          "id": "577847b2-b5e9-41a5-8cbd-9325a654f44d",
+          "type": "image",
+          "title": "Structural and Neurochemical Imaging: DTI, PET, MRS",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/a7e0b19e-0468-4c4f-b33c-748ba7324a53.png",
+          "durationSeconds": null
+        },
+        {
+          "id": "0d31596c-9cdf-4a61-9b4c-8896e96a1d58",
+          "type": "podcast",
+          "title": "Structural and Neurochemical Imaging: DTI, PET, MRS",
+          "caption": "Podcast with Odile Van Den Heuvel on structural and neurochemical imaging in OCD using DTI, PET and MRS.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/d651f0dd-5214-4dac-9c41-4ed9f4a384e2.ogg",
+          "durationSeconds": 2280
+        }
+      ]
+    },
+    {
+      "id": "d32d97e2-9223-4e12-a1fa-d1ad59d4f36d",
+      "title": "Task-based and functional connectivity",
+      "description": "Modern brain imaging tools, especially functional magnetic resonance imaging, have transformed our understanding of how the human brain works. These noninvasive techniques allow scientists to observe communication between different brain regions and identify large-scale brain networks involved in thinking, emotion, and behaviour. Over the past two decades, this approach has revealed that dysregulation within frontostriatal circuits lies at the core of Obsessive-Compulsive Disorder (OCD). These circuits connect frontal brain regions involved in decision-making and cognitive control with deeper structures such as the striatum. Together, they support emotional regulation, goal-directed behavior, and habit formation.\n\nTraditionally, most neuroimaging studies have averaged brain scans across large groups of individuals to identify common patterns. While this group-based approach has generated valuable insights, it can obscure important details about how each person’s brain is uniquely organized. A newer approach called precision neuroimaging focuses on studying individuals in much greater detail. By collecting many brain scans from the same person over time, researchers can map brain networks with high accuracy, preserving important individual differences often missed in group-based studies. We applied this approach to study OCD. Using precision functional brain mapping in individuals with OCD who were scanned repeatedly over several months we identified a striking imbalance within specific networks of the frontostriatal system.\n\nIn particular, a network called the salience network, which helps the brain identify and focus on important internal and external information, was significantly expanded. This expansion appeared to push into neighbouring executive control networks which are important for goal-directed decision making, altering their organization and, in some cases, reducing their size. This imbalance may help explain why individuals with OCD experience excessive focus on intrusive thoughts and difficulty shifting toward goal-directed behaviour. We also found that changes in communication within these brain circuits tracked changes in symptom severity over time.\n\nBy identifying brain network differences at the individual level and linking them to symptom changes, this research opens the door to more personalized treatment approaches. More broadly, it demonstrates how precision neuroimaging may serve as a foundation for precision psychiatry, where brain imaging has the potential to be used to tailor diagnosis and treatment to each individual.",
+      "day": 1,
+      "startsAt": "2026-06-04T08:40:00+00:00",
+      "endsAt": "2026-06-04T09:05:00+00:00",
+      "room": "Main Hall",
+      "session": "Neural Basis of OCD",
+      "speakers": [
+        {
+          "name": "Matilde Vaghi",
+          "institution": "Birkbeck, University of London, UK"
+        }
+      ],
+      "resources": [
+        {
+          "id": "aae7d240-ec36-44f6-8698-296f66222d4e",
+          "type": "image",
+          "title": "Task-based imaging and functional connectivity",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/e05436a9-7435-4e72-b2aa-359ce3b1f844.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "191af600-64dc-4d68-be75-31c96b0c84b3",
+      "title": "Neuro-behavioural models of OCD (animal models)",
+      "description": "So-called 'models' of OCD are valuable from the perspective of understanding its neuropsychological basis and, in a preliminary manner, testing new ideas for its treatment. Experimental animals cannot represent the complex psychiatric disorder of OCD, but they may display some of the elements of repetitive, apparently maladaptive, responses characteristic of compulsive responding. Moreover, they may also exhibit behaviour that can be inferred to result from obsessional-like tendencies. In constructing a model of OCD, there are generally two main factors; the first is whether the target behaviour corresponds to what is observed in human clinical observational or experimental studies. This correspondence could simply reflect 'face validity', for example, does the behaviour appear physically to resemble OCD-like responses, such as compulsive washing or checking? Or the correspondence could be at a deeper, more theoretical level, reflecting the malfunction of brain systems normally controlling thinking and behaviour.\n\nThe second factor is the 'perturbation' that causes maladaptive, perseverative responding; for example, a genetic mutation or a manipulation of a brain region or network known to be affected in OCD through human neuroimaging studies (whether to increase or decrease its activity) or a behavioural manipulation, such as stress, which might theoretically also trigger OCD symptoms. This presentation will review some of the more plausible models of OCD and their utility.\n\nFrom a behavioural perspective, repetitive grooming behaviour could be seen as resembling compulsive washing behaviour commonly associated with persistent fears of infection. Repetitive grooming, sometimes to the extent of causing skin lesions, is a common read-out of genetic models of OCD, derived from example from knock-outs of genes suspected to be implicated in human OCD, such as Sapap3. Grooming has also been used as an assay for assessing effects of experimental optogenetic activation or inhibition of orbitofrontal circuits in the mouse brain that govern the expression of grooming by the striatum - structures implicated in human OCD. Other examples of maladaptive repetitive behaviours include responses in rodents characterised as 'checking' or hoarding. Some of these responses have been postulated to serve a 'coping' function to reduce stress, which hypothetically accords with some notions that human compulsive behaviours are motivated by harm avoidance.\n\nGoal-directed acts (such as avoidance) are known frequently to become habitual, one theory of OCD suggesting that compulsions arise from responses eventually expressed as dysregulated or inflexible habits. Much is known in humans and other animals about the brain systems in the frontal lobes of the brain that control goal-directed and habitual behaviour. I will focus on evidence in OCD of a shift in balance towards habitual control, coupled with a loss of top-down control resulting from impaired cognitive flexibility and behavioural inhibition. This behaviour is readily modelled in experimental animals to include impairments in flexible thinking as well as behaviour.\n\nThe utility of such animal models of OCD will ultimately be assessed by their ability to predict the efficacy of novel as well as pre-existing treatments, whether behavioural (e.g. response prevention, pharmacological or neuromodulatory (such as deep brain stimulation) in nature- some illustrative examples being provided.",
+      "day": 1,
+      "startsAt": "2026-06-04T09:05:00+00:00",
+      "endsAt": "2026-06-04T09:30:00+00:00",
+      "room": "Main Hall",
+      "session": "Neural Basis of OCD",
+      "speakers": [
+        {
+          "name": "Trevor Robbins",
+          "institution": "University of Cambridge, UK"
+        }
+      ],
+      "resources": [
+        {
+          "id": "d8d20a15-7200-4973-bade-c08c880fde38",
+          "type": "image",
+          "title": "Neuro-behavioural models of OCD (animal models)",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/7eaa9cfc-4aad-4be8-9712-d6ff7c25f3f4.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "e26c203c-037a-4077-b75b-9c44d058d659",
+      "title": "OCD Genetic Predisposition",
+      "description": "Obsessive–compulsive disorder (OCD) is a serious mental health condition that can have a profound impact on daily life. For many people, symptoms such as intrusive thoughts, urges, or repetitive behaviours can be exhausting, distressing, and time-consuming. Although effective therapies exist, many individuals continue to experience symptoms. One major scientific question has been why some people develop OCD while others do not. Research has shown that genetic factors are the single biggest contributor to OCD risk. No single “OCD gene” exists; instead, risk is shaped by many hundreds or thousands of genetic differences, each with a very small effect. When considered together, they provide important clues about the biological systems involved in OCD.\n\nThe latest and largest study of OCD genetics analysed the DNA of tens of thousands of people with and without OCD and identified, for the first time, 30 specific locations in the genome (genetic loci) associated with OCD. These are connected to 249 genes, with 25 highlighted as the most likely to play causal roles. These genes point toward brain regions and molecular pathways that may be involved in OCD. While these discoveries do not yet translate into new treatments, they offer a crucial scientific foundation for understanding the disorder better.\n\nGenetic research also shows that obsessive–compulsive symptoms exist on a spectrum in the general population. Many people experience mild versions of these symptoms, while a smaller group develops symptoms severe enough for a diagnosis. The genetic influences on these everyday traits substantially overlap with those linked to clinical OCD, suggesting that similar biological processes may underlie the spectrum from mild symptoms to diagnosed disorder.\n\nAnother major insight from genetics is that OCD is not an isolated condition. It is both clinically and genetically connected to other psychiatric disorders. The strongest genetic links are observed with anxiety disorders, tic disorders, and anorexia nervosa. Tic disorders and anorexia nervosa show particularly high genetic overlap, forming what has been termed a “compulsive dimension” - a cluster of conditions that share aspects of repetitive thoughts and behaviours. These overlaps do not imply that the conditions are the same or that one causes the other. Instead, they tell us that some biological pathways are shared, while others are unique to OCD.\n\nUnderstanding the genetic architecture of OCD matters for several reasons. It helps clarify the underlying biology of the disorder, reducing stigma by showing that OCD is not caused by personal choices. It identifies biological targets that could guide the development of more effective, personalised treatments in the future. And it provides a framework for understanding why OCD so often co-occurs with other conditions, helping clinicians better support individuals with complex symptom profiles. Importantly, genes are not destiny: having a genetic predisposition does not mean someone will develop OCD, and effective treatments remain essential regardless of genetic profile. Yet by uncovering the biological roots of the disorder, we move closer to a future where treatments are more precise, more personalised, and more effective.",
+      "day": 1,
+      "startsAt": "2026-06-04T10:15:00+00:00",
+      "endsAt": "2026-06-04T10:40:00+00:00",
+      "room": "Main Hall",
+      "session": "Identification of Molecular Targets for New OCD Medications",
+      "speakers": [
+        {
+          "name": "Nora Strom",
+          "institution": "Humboldt-Universität zu Berlin, Germany"
+        }
+      ],
+      "resources": [
+        {
+          "id": "9203580b-8b2d-4506-877c-df121503ca80",
+          "type": "podcast",
+          "title": "OCD Genetic Predisposition",
+          "caption": "Podcast with Nora Strom on the genetic predisposition underlying OCD.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/37c21719-3e98-4116-b4d6-de8d5db43a8a.ogg",
+          "durationSeconds": 2040
+        },
+        {
+          "id": "9d26c1a3-adc6-414e-834c-436b89d96990",
+          "type": "image",
+          "title": "OCD Genetic Predisposition",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/2ad0076a-8c10-462f-b2b3-0d8268114405.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "765d0e49-4d66-4919-9f74-e51e22e5cb97",
+      "title": "Neurobiological and developmental aspects of OCD in children and adolescents",
+      "description": "Obsessive-compulsive disorder (OCD) affects 1% - 3% of children and adolescents and impairs function at home, school and with friends. Without effective treatment, pediatric OCD can lead to lasting impairment into adulthood. Exposure and response prevention (ERP) is the gold-standard treatment for pediatric OCD, yet it leads to remission in only half of affected youth. When ERP fails, children may struggle with intrusive thoughts and repetitive behaviors for years, underscoring the urgent need to understand why some children do not benefit from treatment.\n\nOne key factor may be difficulties with cognitive control - the brain’s ability to flexibly manage thoughts, emotions, and actions. Strong cognitive control helps children resist compulsions and tolerate distress during exposure to obsession-triggering situations. With stronger cognitive control, children can successfully engage with ERP to learn that obsessive concerns and compulsive urges can be dismissed, and feared outcomes do not occur. However, when cognitive control is underdeveloped, children may find it harder to engage with ERP, limiting its effectiveness.\n\nCognitive control normally strengthens throughout childhood as specific brain networks mature. These include the cingulo-opercular and fronto-parietal networks, which support goal-directed behavior, as well as the default mode network, which typically quiets during effortful tasks. In pediatric OCD, atypical development of these networks disrupts the balance needed for flexible thinking and behavior.\n\nOur work suggests that altered development of these cognitive control circuits contributes both to OCD symptoms and to poor response to ERP. Importantly, we find that brain-based measures of cognitive control can predict who is most likely to benefit from ERP - and may also change with effective treatment. By directly targeting and strengthening cognitive control, we aim to help children better engage in ERP and overcome OCD before the disorder becomes entrenched.",
+      "day": 1,
+      "startsAt": "2026-06-04T10:40:00+00:00",
+      "endsAt": "2026-06-04T11:05:00+00:00",
+      "room": "Main Hall",
+      "session": "Identification of Molecular Targets for New OCD Medications",
+      "speakers": [
+        {
+          "name": "Kate Fitzgerald",
+          "institution": "Columbia University, New York, USA"
+        }
+      ],
+      "resources": [
+        {
+          "id": "c35da2e9-0aba-43bf-b93c-5d08179d2f68",
+          "type": "podcast",
+          "title": "Neurobiological and developmental aspects of OCD in children and adolescents",
+          "caption": "Podcast with Kate Fitzgerald on the neurobiological and developmental aspects of OCD in young people.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/7899ea59-3a00-4caf-bc8e-ce4182032ab2.ogg",
+          "durationSeconds": 1980
+        },
+        {
+          "id": "79bd36e1-69af-4ee3-a270-640bb63712e5",
+          "type": "image",
+          "title": "Neurobiological and developmental aspects of OCD in children and adolescents",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/4e3a266b-2926-4f8a-8eab-68624341f70b.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "a7b3c26f-af7e-4241-9984-68494ac579f0",
+      "title": "Neurotransmitter pathways and molecular targets for medication development in OCD (incl. psychedelics, in particular Psilocybin)",
+      "description": "Obsessive-compulsive disorder (OCD) arises from a complex and poorly understood interplay between genetic risk, brain development, inflammation and other physiological processes, and stress and other environmental contributors. The idea that it can be explained by a ‘neurotransmitter imbalance’ and can be ameliorated by a simple restoration of neurotransmitter balance is outdated. Nevertheless, pharmacological treatments act primarily at the level of neurotransmitters. This talk will consider what we know about the contribution of several neurotransmitter systems to the disorder, and new medication treatments that are on the horizon.\n\nThe brain’s serotonin and dopamine systems have received a great deal of attention in OCD, because medications that modulate these systems are the best-established pharmacological tools for treatment. In particular, the selective serotonin reuptake inhibitors (SSRIs) are the mainstay of pharmacological treatment, and the addition of dopamine D2 receptor blockers (the neuroleptics) is the best-proven add-on medication strategy. However, there is very little evidence that serotonin or dopamine levels are abnormal in individuals with OCD, or that abnormalities in these systems is central to pathophysiology.\n\nPsychedelic drugs such as psilocybin and LSD work primarily by binding to serotonin receptors. Recent work has shown benefit from these drugs across a range of psychiatric conditions, including OCD; some recent data will be shared. The mechanisms of change following psychedelic treatment are likely to be different than those attending SSRI treatment.\n\nThere has been interest over the past two decades in whether imbalance in the neurotransmitter glutamate contributes to OCD, and whether glutamate modulators may be useful in treatment. Promising data with the drugs memantine, riluzole, and n-acetylcysteine has been reported, though none of the studies to date have been definitive. Results with the glutamate modulator ketamine are mixed. A large industry-sponsored study of the riluzole prodrug troriluzole recently failed to show benefit, which has somewhat reduced the excitement around glutamate modulators in OCD, but they remain useful adjuncts when better-proven treatment strategies prove inadequate.\n\nThere is genetic and animal-model evidence that neurotransmitter histamine contributes to tic disorders, and perhaps to OCD. Recent observations, which will be shared here for the first time, suggest that a histamine modulator can be helpful in the treatment of OCD. This work is ongoing.\n\nIn sum, several exciting directions in the pharmacological treatment of OCD are under investigation. Interestingly, dysregulation of a neurotransmitter does not have to be a key contributor to illness in order for a drug that targets it to be useful in treatment; this is particularly clear in the case of serotonin, and drugs that modulate it. We can hope that ongoing progress will soon give us new tools to treat those suffering from the symptoms of OCD.",
+      "day": 1,
+      "startsAt": "2026-06-04T11:05:00+00:00",
+      "endsAt": "2026-06-04T11:30:00+00:00",
+      "room": "Main Hall",
+      "session": "Identification of Molecular Targets for New OCD Medications",
+      "speakers": [
+        {
+          "name": "Christopher Pittenger",
+          "institution": "Yale University School of Medicine, USA"
+        }
+      ],
+      "resources": [
+        {
+          "id": "6770de27-7f03-4ff8-b322-a890f5462747",
+          "type": "podcast",
+          "title": "Neurotransmitter pathways and molecular targets",
+          "caption": "Podcast with Christopher Pittenger on molecular pathways under investigation for OCD medication development.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/2526ba5e-f70f-4076-91c5-faef5c4f288c.ogg",
+          "durationSeconds": 2460
+        },
+        {
+          "id": "93f53e55-f003-40c1-a599-b2fa5b67d3fa",
+          "type": "image",
+          "title": "Neurotransmitter pathways and molecular targets for medication development in OCD",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/a2064719-0b2d-4f37-87fe-887fa5a3f93f.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "e4ed060e-0a55-48eb-a1d7-db585006b024",
+      "title": "Neuroinflammation and its implications for novel treatments for OCD",
+      "description": "Dominique Endres will present examples of people whose obsessive-compulsive symptoms may have been caused by underlying biological or medical conditions, rather than “typical” OCD alone. In particular, he will focus on possible autoimmune causes, where the body’s immune system may mistakenly affect the brain, as well as certain genetic conditions or brain injuries that may contribute to OCD symptoms.\n\nHe will discuss how these conditions can be identified and treated, drawing on patient cases, a small retrospective study, and several large reviews of the scientific literature. These reviews looked at evidence for immune system involvement in OCD, including findings from blood tests for brain-related antibodies and changes in cerebrospinal fluid.\n\nFinally, he will present insights from a recent review of published cases of suspected “secondary” OCD. Secondary OCD refers to obsessive-compulsive symptoms that appear to arise as a consequence of another underlying medical, neurological, or biological condition, rather than developing as “primary” OCD on its own. Identifying these underlying causes could help support more personalised and targeted treatments for some patients. However, research in this area is still at an early stage, and more studies are needed before firm clinical recommendations can be made.",
+      "day": 1,
+      "startsAt": "2026-06-04T11:30:00+00:00",
+      "endsAt": "2026-06-04T11:55:00+00:00",
+      "room": "Main Hall",
+      "session": "Identification of Molecular Targets for New OCD Medications",
+      "speakers": [
+        {
+          "name": "Dominique Endres",
+          "institution": "University Medical Centre Freiburg, Germany"
+        }
+      ],
+      "resources": [
+        {
+          "id": "caeb7242-ea61-495c-b397-7edcd7004799",
+          "type": "image",
+          "title": "Neuroinflammation in OCD",
+          "caption": "Infographic illustrating the link between neuroinflammation and novel treatment targets in OCD.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/7e9b7889-82db-4bc4-8a5c-66fe7ab46b27.png",
+          "durationSeconds": 0
+        }
+      ]
+    },
+    {
+      "id": "42fa684e-7b27-4fdf-aa26-818a1ef131cf",
+      "title": "Orchard OCD: What we have accomplished since 2017",
+      "description": "10-minute presentation on the work of Orchard OCD since the charity's founding in 2017.",
+      "day": 1,
+      "startsAt": "2026-06-04T13:10:00+00:00",
+      "endsAt": "2026-06-04T13:20:00+00:00",
+      "room": "Main Hall",
+      "session": null,
+      "speakers": [
+        {
+          "name": "Nick Sireau",
+          "institution": "Orchard OCD & Serenatis Bio"
+        }
+      ],
+      "resources": [
+        {
+          "id": "e48bef90-a346-4f78-9086-b20782aec51d",
+          "type": "podcast",
+          "title": "Orchard OCD: What we have accomplished since 2017",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/b935fc5d-8873-4323-86f7-f19eb62f478b.ogg",
+          "durationSeconds": 1788
+        }
+      ]
+    },
+    {
+      "id": "c9ed8b78-3428-4150-94fa-8b8772f30e74",
+      "title": "Prediction and Prevention",
+      "description": "Obsessive–compulsive disorder (OCD) is a serious mental health condition that can cause high levels of distress and interfere with daily life, relationships, school, and work. For some people, OCD becomes a long-term condition that is difficult to manage and can lead to lasting disability and even premature death. Although effective treatments such as cognitive behavioral therapy (CBT) and medication are available, many people with OCD wait years—sometimes decades—before receiving appropriate help. These long delays mean that symptoms often become more severe and deeply ingrained over time. In general, the longer the delay, the worse the chances of recovery. In recent years, there has been growing agreement among researchers and clinicians that preventing OCD, or reducing its severity before it becomes fully established, should be a major goal. However, despite this recognition, there are currently no prevention programs designed specifically for OCD. There are at least two main reasons for this gap.\n\nFirst, we have had a limited understanding of the factors that increase the risk of developing OCD and the processes that keep it going once it starts. In particular, not enough attention has been paid to how OCD develops over time, especially during childhood and adolescence. OCD often begins during key stages of development, when the brain and emotional regulation systems are still maturing. Prevention efforts need to be tailored to these sensitive developmental periods. Better understanding when and how OCD emerges is essential for identifying who is at risk and when intervention might be most helpful.\n\nSecond, prevention research is difficult to design and fund. Prevention studies often require large samples, long follow-up periods, and careful measurement of early symptoms and risk factors. These challenges can make such studies costly and complex, and they are often harder to fund than treatment trials focused on people who already have a diagnosis.\n\nIn this lecture, I will review recent progress in identifying potentially modifiable risk factors for OCD. This task is harder than it seems because environmental risk factors usually act in tandem with the genetic background of the individual. I will also discuss key considerations for developing prevention strategies that are practical and scalable, drawing on well-established CBT principles. Finally, I will present findings from a pilot prevention trial, showing how targeted interventions during specific developmental stages may offer promising opportunities to prevent OCD or reduce its impact before it becomes more severe.",
+      "day": 1,
+      "startsAt": "2026-06-04T13:20:00+00:00",
+      "endsAt": "2026-06-04T13:40:00+00:00",
+      "room": "Main Hall",
+      "session": "Predictive Biomarkers for Precision Psychiatry in OCD",
+      "speakers": [
+        {
+          "name": "David Mataix-Cols",
+          "institution": "Karolinska Institutet, Sweden"
+        }
+      ],
+      "resources": [
+        {
+          "id": "18a19595-68f6-4097-8573-1186b2467725",
+          "type": "podcast",
+          "title": "Prediction and Prevention",
+          "caption": "Podcast with David Mataix-Cols on predictive biomarkers and early-intervention strategies for OCD.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/9e15c4c6-ea76-4ae0-beca-88d74c6dd9d7.ogg",
+          "durationSeconds": 1800
+        },
+        {
+          "id": "59801ad4-3769-4845-b4b0-49912a6ad328",
+          "type": "image",
+          "title": "Prediction and Prevention",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/ff5d36d8-49eb-4fcb-8c2a-2a85b350720b.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "d0b424b0-cfaa-40bd-90d3-66b80cb1a35f",
+      "title": "Cognitive and electrophysiological markers and their role in personalised treatment",
+      "description": "While specific types of medication and therapy are good treatments for OCD, usual treatment approaches remain unchanged over decades. Many people experience improvements in OCD from these treatments, but some do not. Why is this the case, and what can we do about it? This talk will explore why some people benefit from one type of treatment over another. It will consider what we mean by ‘cognitive’ and ‘electrophysiological’ markers. It will look at findings in people with OCD and family members, because this tells us where to look. It will explore why these markers related to cognition and electrophysiology could be useful. Promising areas will be discussed such as improving cognitive flexibility, and our ability to inhibit habits. The talk will look at the value of exploring new OCD treatment options from other conditions, such as hair pulling, skin picking, and addiction. Lastly, we will consider what makes a good quality predictive research study, or not.",
+      "day": 1,
+      "startsAt": "2026-06-04T13:40:00+00:00",
+      "endsAt": "2026-06-04T14:00:00+00:00",
+      "room": "Main Hall",
+      "session": "Predictive Biomarkers for Precision Psychiatry in OCD",
+      "speakers": [
+        {
+          "name": "Sam Chamberlain",
+          "institution": "University of Southampton, UK"
+        }
+      ],
+      "resources": [
+        {
+          "id": "a71f9e38-2e8b-4771-b2ab-430d7b3e73ef",
+          "type": "image",
+          "title": "Cognitive and electrophysiological markers and their role in personalised treatment",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/c44ea674-3b40-4464-8e19-6ed15a2aa236.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "6f830aab-b3e7-4d6f-a5be-f4de8b72f125",
+      "title": "Computational psychiatry approaches to OCD",
+      "description": "Researchers are still debating why individuals with OCD feel compelled to perform repetitive actions like excessive checking or washing, and there is no consensus on the core mechanism that drives these compulsions. Prominent theories suggest that compulsions are driven by an attempt to reduce threat or anxiety. Such theories are closely linked to patients’ reports of obsessional preoccupations with catastrophic, even if improbable, scenarios. In contrast to these threat-focused accounts, other equally compelling theories argue that compulsions are not about achieving a specific aim (e.g., avoiding a catastrophe) but rather reflect a difficulty in stopping repetitive, habitual behavior, or difficulties in considering the outcomes of compulsive behavior. Theories emphasizing habits rely primarily on studies using neuropsychological tasks; yet, linking these ideas to real-life symptoms and the subjective experience of individuals with OCD has been more challenging. Furthermore, since the two perspectives refer to different assumptions and methods, they are rarely evaluated against one another, let alone integrated.\n\nOne way to overcome these impasses is to specify a mechanism tying together symptoms, performance in neurocognitive tasks, subjective experiences, and the mode of action of existing treatments. This is the overarching goal of the field of computational psychiatry, where mathematical models are used to bridge different levels of analysis.\n\nA computational model of OCD might first ask: what computations does the brain normally use to solve the everyday problems of deciding when to stop handwashing or checking that a door is locked? One recent answer to this question highlights the crucial role of expectations and predictions. For example, when locking your door, you rely not only on sensory information (e.g., hearing and feeling a click) but also on a prediction that locking the door implies that it is locked and will remain locked unless someone unlocks it. This necessity to infer the actual consequences of an action from its expected outcomes is even more evident in the case of handwashing. Given that we have no reliable sensory evidence for the absence (or presence) of germs, we nevertheless infer that our hands are clean and disinfected from the mere fact that we have just washed them.\n\nThe consequences of an inability to rely on such predictions may include an exaggerated need to repeatedly verify that the goals of such actions have actually been attained. Furthermore, it can naturally lead to experiencing the world as unstable and unpredictable, thereby also explaining the key role of debilitating doubt in OCD. Finally, this mechanistic perspective also allows linking such symptoms and experiences to patients’ behavior in neurocognitive tasks. Specifically, computational modelling enables explaining increased reliance on habits as reflecting a compensatory mechanism, where repeating behavior or disregarding the outcomes of compulsions may help individuals avoid uncertainty and indecision.\n\nThe talk will focus on introducing these ideas, reviewing recent empirical and theoretical progress in the field, and discussing the potential relevance of these ideas for understanding the subjective experiences of individuals with OCD. I will also discuss the potential applications of this approach for understanding and improving psychological and pharmacological treatments for OCD.",
+      "day": 1,
+      "startsAt": "2026-06-04T14:00:00+00:00",
+      "endsAt": "2026-06-04T14:20:00+00:00",
+      "room": "Main Hall",
+      "session": "Predictive Biomarkers for Precision Psychiatry in OCD",
+      "speakers": [
+        {
+          "name": "Isaac Fradkin",
+          "institution": "Hebrew University of Jerusalem, Israel"
+        }
+      ],
+      "resources": [
+        {
+          "id": "4ec9efb2-a8ef-4643-b035-6465fbc49bd5",
+          "type": "podcast",
+          "title": "Computational psychiatry approaches to OCD",
+          "caption": "Podcast with Isaac Fradkin on computational psychiatry approaches to understanding and treating OCD.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/af5c93ef-e282-4e30-9b58-8a177bbe9783.ogg",
+          "durationSeconds": 2280
+        },
+        {
+          "id": "5ff8ad44-be3c-4f92-bc37-467efadc12ee",
+          "type": "image",
+          "title": "Computational psychiatry approaches to OCD",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/4a4c8f26-c923-4dd3-8b48-3a0ba6bc53fa.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "0770a2df-e7df-4824-883d-a0be7ab602cb",
+      "title": "Integrative machine learning models for predicting OCD trajectories from multi-modal data",
+      "description": "In mental healthcare, most of what we know about symptoms comes from people describing their own experiences. Someone with OCD explains what they are struggling with, and improvement with treatment is also judged mainly by how the person reports feeling. This approach applies not only to OCD, but to all mental health conditions. While this way of working has been very successful for many decades, it also has important limits.\n\nFirst, self-reports depend on a person’s own experiences and on how easy it is for them to notice, understand, and describe what they are feeling. These reports can be influenced by many factors, such as mood, memory, and how safe or understood someone feels at the time. Second, because symptoms are described in words rather than measured directly, it is very hard to link them clearly to what is happening in the brain or to measure them in a more objective way.\n\nIn my talk, I will describe a series of studies that aim to address these challenges by developing more objective ways of assessing OCD-related symptoms. I will focus on one example: indecisiveness. Indecisiveness is a common and disabling symptom in OCD and is often experienced as an intense and overwhelming sense of doubt that makes it hard to choose or act.\n\nAcross several studies, we have created simple games that can capture patterns of indecisiveness in people with OCD. We have also developed mathematical (computational) models that help describe the brain processes that may underlie this difficulty with decision-making. In addition, we have used brain imaging and medication studies to better understand the brain systems involved in indecisiveness.\n\nFinally, I will show how we are beginning to use these findings in an ongoing project to support the development of new treatments for indecisiveness. Our aim is for these approaches to be used as add-ons to standard OCD therapies, helping to better target specific symptoms.",
+      "day": 1,
+      "startsAt": "2026-06-04T14:20:00+00:00",
+      "endsAt": "2026-06-04T14:40:00+00:00",
+      "room": "Main Hall",
+      "session": "Predictive Biomarkers for Precision Psychiatry in OCD",
+      "speakers": [
+        {
+          "name": "Tobias Hauser",
+          "institution": "University of Tübingen, Germany & UCL, UK"
+        }
+      ],
+      "resources": [
+        {
+          "id": "a87f550a-db5e-4842-b52e-ba0a9913fbe7",
+          "type": "podcast",
+          "title": "Integrative machine learning models for predicting OCD trajectories",
+          "caption": "Podcast with Tobias Hauser on integrative machine learning models for predicting OCD trajectories from multi-modal data.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/e231a52d-4ecc-4a76-94b0-b95dd530754c.ogg",
+          "durationSeconds": 1020
+        },
+        {
+          "id": "93542a16-208c-460a-abc1-d46f62060e43",
+          "type": "image",
+          "title": "Integrative machine learning models for predicting OCD trajectories from multi-modal data",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/5df5746b-89b4-401b-8e33-a3d5bbae18c2.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "56757e09-1dc5-4c40-8b03-6116286f6b3d",
+      "title": "Clinical Staging of OCD (life-span model driven by clinical and neuroimaging findings)",
+      "description": "Staging models, long established in several areas of clinical medicine—most notably oncology—are increasingly being applied to psychiatric disorders, including psychotic illnesses. Parallel to this development, a growing body of evidence suggests that many early-onset psychiatric disorders follow a course that may be described as “neuroprogressive”: although not driven by classical neurodegenerative processes, these conditions often carry a substantial risk of increasing symptom severity, functional impairment, and disability over time. Obsessive–compulsive disorder (OCD) appears to be one such condition. Delays in the implementation of first-line treatments for OCD, such as serotonin reuptake inhibitors (SRIs) or exposure and response prevention (ERP), have been associated with poorer subsequent treatment response, increased family accommodation, and a greater burden of medical comorbidities. In addition, longer duration of OCD has been linked to reduced insight, shortened telomer length, and to structural brain changes, including alterations in the striatum, white matter of the left cingulum bundle, and cortical gyrification indices. Importantly, before reaching the diagnostic threshold for OCD, individuals typically experience a prolonged period of less severe, subthreshold obsessive–compulsive symptoms (OCS), which may be conceptualized as “at-risk” states for the disorder. Subthreshold OCS themselves have been associated with impaired quality of life, occupational and marital difficulties, and increased rates of psychiatric comorbidity. Together, these findings underscore the importance of early intervention, both before and after the formal onset of OCD. In this context, the present work discusses the evidence supporting first-line treatments for OCD, as well as therapeutic strategies for later, treatment-resistant stages of the disorder.\n\nDrawing on work conducted in other clinical populations, we have therefore proposed a clinical staging model for OCD that explicitly includes individuals at risk for the disorder, spanning a continuum from subthreshold symptomatology to severe or “end-stage” OCD. In this model, stages are defined by key milestones in the natural history of OCD, including the rate of progression from subthreshold symptoms to full-threshold disorder, duration of untreated illness, duration of ineffective treatments, and related clinical metrics. A central innovation of this approach lies in its emphasis on stage-specific interventions. Treatments are tailored to illness severity, prioritizing interventions that are effective, scalable, and less intensive in earlier stages. For example, first-line treatments such as ERP or SRIs may be unacceptable or impractical for individuals in early stages, given their cost, limited tolerability, and challenges in large-scale implementation. In contrast, lifestyle interventions targeting stress, sedentary behaviour, and sleep disturbances may represent viable and effective options for individuals with subthreshold or mild OCD. Consistent with this view, we have shown in an online longitudinal study of a non-clinical sample that poor diet and lower levels of moderate-intensity physical activity were associated with worsening OCS. Further, in a randomized controlled trial, we further demonstrated that online interventions, such as acceptance and commitment therapy (ACT), may be particularly beneficial for individuals with mild to moderate OCD. Finally, although treatment options for advanced stages of OCD - such as deep brain stimulation and functional neurosurgery - have been increasingly available, they remain inaccessible to many patients due to cost, stringent eligibility criteria, and stigma associated with invasive procedures. Consequently, there is a clear need for alternative treatments for individuals with later-stage OCD who lack access to, do not meet criteria for, or decline such interventions.",
+      "day": 1,
+      "startsAt": "2026-06-04T15:15:00+00:00",
+      "endsAt": "2026-06-04T15:45:00+00:00",
+      "room": "Main Hall",
+      "session": "Clinical Translation of Precision Psychiatry in the field of OCD",
+      "speakers": [
+        {
+          "name": "Leonardo Fontenelle",
+          "institution": "Monash University & Federal University of Rio de Janeiro (UFRJ), Brazil"
+        }
+      ],
+      "resources": [
+        {
+          "id": "ad9b6f0e-ea22-4a18-b069-a7b1daa60de5",
+          "type": "podcast",
+          "title": "Clinical Staging of OCD",
+          "caption": "Podcast with Carolyn Rodriguez on clinical staging of OCD and its implications for precision treatment.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/cdb19a19-1aa3-4996-9666-6292244e4e85.ogg",
+          "durationSeconds": 2040
+        },
+        {
+          "id": "a759dd54-d39b-42bb-9e0f-ea2e6ebc25f7",
+          "type": "image",
+          "title": "Clinical Staging of OCD",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/14023e42-c825-4d54-be0e-71d2cd89674d.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "3a5719b7-a434-4904-aee7-bc744b89e8d9",
+      "title": "Pipeline drugs",
+      "description": "Serotonin reuptake inhibitor (SRI) medications are well established as first-line pharmacotherapeutic treatment for obsessive-compulsive disorder (OCD). However, despite the excellent safety profile and demonstrated efficacy of these medications, they do not provide sufficient relief of OCD symptoms for everyone who seeks care; thus, there is an urgent need for augmenting and alternative treatments. In this talk, Dr. Rodriguez will draw on her own clinical experiences and illustrative cases as well as the latest published literature to review potential treatment advances in OCD, including experimental medications and combining pharmacologic and psychological treatments. She will additionally highlight non-SRI interventions for OCD that are currently under investigation, including drugs engaging the glutamate pathway, such as ketamine, and other pathways, such as the entactogen 3,4-methylenedioxy-methamphetamine (MDMA).",
+      "day": 1,
+      "startsAt": "2026-06-04T15:45:00+00:00",
+      "endsAt": "2026-06-04T16:15:00+00:00",
+      "room": "Main Hall",
+      "session": "Clinical Translation of Precision Psychiatry in the field of OCD",
+      "speakers": [
+        {
+          "name": "Carolyn Rodriguez",
+          "institution": "Stanford University, USA"
+        }
+      ],
+      "resources": [
+        {
+          "id": "833f4e78-4fb0-4323-ab3c-8e770a6ed2a1",
+          "type": "image",
+          "title": "Pipeline drugs",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/7b524a32-7969-4bce-84c1-da125ad2ab39.png",
+          "durationSeconds": null
+        },
+        {
+          "id": "48ee8019-27c5-4521-8fd2-7caf136ab0ac",
+          "type": "podcast",
+          "title": "Pipeline drugs",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/a5aa7e65-3a9c-41b5-8bdc-76e8e21d9bf7.ogg",
+          "durationSeconds": 2060
+        }
+      ]
+    },
+    {
+      "id": "3e31d98f-0bdc-4f15-a4ee-003f63f7621f",
+      "title": "OCD spectrum disorders",
+      "description": "This talk will focus on disorders such as trichotillomania and skin picking disorder, which are considered part of the OCD spectrum. These disorders share some features with OCD — including repetitive thoughts and ritualised behaviours — but also differ from OCD in important ways. More specifically, this talk will focus on evidence-based treatments for these disorders (i.e. pharmacological, psychotherapeutic), the shortcomings of our current treatments, and the evidence for moving forward with more specific targets for treatment. This will involve discussing the evidence for clinical subtyping of these disorders, evidence for familial transmission, and cognitive features of these disorders (e.g., cognitive rigidity) that may allow for a more precision approach to treatment.",
+      "day": 1,
+      "startsAt": "2026-06-04T16:15:00+00:00",
+      "endsAt": "2026-06-04T16:45:00+00:00",
+      "room": "Main Hall",
+      "session": "Clinical Translation of Precision Psychiatry in the field of OCD",
+      "speakers": [
+        {
+          "name": "Jon Grant",
+          "institution": "University of Chicago, USA"
+        }
+      ],
+      "resources": [
+        {
+          "id": "f25e47e6-95c8-4760-95c4-ae611ffb5c8e",
+          "type": "image",
+          "title": "OCD spectrum disorders",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/ce75cd6c-a0ca-4a5c-b234-03e87ded17f6.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "dd96b1fb-3885-4a25-a6b2-ea762aa769f9",
+      "title": "Introduction: Day Two",
+      "description": "Day 2 opening remarks.",
+      "day": 2,
+      "startsAt": "2026-06-05T08:00:00+00:00",
+      "endsAt": "2026-06-05T08:05:00+00:00",
+      "room": "Main Hall",
+      "session": null,
+      "speakers": [
+        {
+          "name": "Sean Fletcher",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "c0999bf8-3b22-427f-8a3e-8478019ebd3e",
+      "title": "Innovations in Deep Brain Stimulation (DBS)",
+      "description": "Over the past decade, our understanding of obsessive–compulsive disorder (OCD) has advanced enormously. While OCD is often described in terms of thoughts and behaviours, we now know that many of its symptoms arise from patterns of communication within the brain’s networks—much like traffic flows in a busy city. In some individuals with severe OCD, these communication patterns may become “stuck,” creating loops of anxiety, intrusive thoughts, and compulsive actions that are extremely hard to break. Deep Brain Stimulation (DBS) is a treatment developed for people whose OCD has not improved despite years of therapies and medications. In my talk, I will explain what DBS is, how it works, and what our research has uncovered about why some patients benefit from it.\n\nIn our research, we try to answer a simple but crucial question: Why does DBS work well for some people, and less well for others? To find answers, we combine clinical data from many hospitals with advanced brain-imaging techniques. This allows us to build detailed “maps” of the brain circuits involved in OCD. These maps show not only where OCD-related symptoms arise, but also how electrical stimulation travels through the brain’s wiring.\n\nA key insight from our work is that OCD is not caused by a single spot in the brain. Instead, it involves entire networks—collections of regions that communicate with each other. Different symptoms (such as intrusive thoughts, compulsions, anxiety, or low mood) tend to involve different but neighbouring connections. DBS is most effective when stimulation reaches the specific network driving a person’s most troubling symptoms. This is why precise placement of the electrode and careful programming of the stimulation settings are so important.\n\nOur team has helped identify the network pathways most strongly linked to improvement with DBS. We have also created tools that allow clinicians to visualise these pathways in individual patients. These tools help guide DBS surgery and programming so that treatment becomes more personalised. One example is “connectomic targeting,” where we use each patient’s brain wiring map to guide decision-making. Another is “sweetspot mapping,” which helps identify the small areas where stimulation is most likely to reduce symptoms.\n\nMy talk will show how this science may translate into real-world benefits: better targeting, more consistent outcomes, and treatments that are increasingly tailored to the individual. Ultimately, our goal is to help make DBS for OCD safer, more effective, and more accessible—and to do so in a way that remains grounded in the lived experiences of the people it aims to serve.",
+      "day": 2,
+      "startsAt": "2026-06-05T08:05:00+00:00",
+      "endsAt": "2026-06-05T08:35:00+00:00",
+      "room": "Main Hall",
+      "session": "Advances in Neuromodulation and Neurosurgical Strategies for OCD",
+      "speakers": [
+        {
+          "name": "Andreas Horn",
+          "institution": "Harvard Medical School, USA & University of Cologne, Germany"
+        }
+      ],
+      "resources": [
+        {
+          "id": "c7291522-e32e-4395-8ff9-4a847cbe3b96",
+          "type": "image",
+          "title": "Innovations in Deep Brain Stimulation (DBS)",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/970aefcb-6c5f-423a-8ae0-61d7e69ee54f.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "11159be7-712d-4d0b-b7fb-2019cbd04d43",
+      "title": "Stereotactic lesions for OCD in the DBS era",
+      "description": "Abnormal activity in certain brain circuits can cause both movement problems and psychiatric conditions. Functional neurosurgeons can target these circuits using a highly precise method called stereotactic surgery. This technique allows them either to implant a deep brain stimulation (DBS) electrode or to create a very small, carefully placed lesion (stereotactic lesion) to interrupt the faulty signals causing the symptoms.\n\nNeurologists and neurosurgeons have been advancing this area for more than a century. Today, stereotactic procedures for conditions like tremor, muscle spasms, and epilepsy are considered standard treatments and have helped hundreds of thousands of people worldwide. Modern MRI scans allow surgeons to plan each procedure using the individual’s own brain anatomy, making the process extremely accurate. As a result, the risk of serious, lasting harm is now less than 1 in 1000.\n\nFor people with severe, treatment-resistant obsessive compulsive disorder (OCD), this progress is especially important. When psychotherapy and medication have failed, stereotactic neurosurgery can offer meaningful relief. Strong scientific evidence - including randomised controlled trials - shows that both DBS and stereotactic lesions can provide long-term benefits. Both procedures can work very well, but recent studies suggest that stereotactic lesions may be even more effective than DBS, and possibly safer.\n\nStereotactic lesions also have practical advantages. Unlike DBS, they do not require implanted hardware such as batteries or wires, meaning no hardware complications and fewer follow-up appointments. This is especially relevant because many healthcare systems, including the UK NHS, do not routinely fund DBS for OCD. In contrast, stereotactic lesions are funded by the NHS.\n\nDespite this, very few patients with severe OCD are referred for a neurosurgical opinion. Moreover, when neurosurgery is considered, stereotactic lesions are often overlooked. There are several possible reasons for this. Neurologists and neurosurgeons typically work in the same hospitals, which encourages close collaboration. Psychiatrists, however, often work in separate locations, a relic of the historical “asylum” system. As a result, many psychiatrists - even those specialising in OCD - may be less familiar with modern neurosurgical approaches. Another factor is perception. Some clinicians prefer DBS because they see it as “non-destructive,” even though epilepsy specialists routinely use lesion procedures when non-surgical treatments fail. There may also be lingering concerns about historical lobotomy, even though today’s stereotactic techniques are completely different - precise, controlled, and supported by strong evidence.\n\nNeurosurgery for OCD offers genuine hope to people whose symptoms have resisted every other treatment. Yet it remains misunderstood, underused, and sometimes viewed with suspicion. The purpose of this talk is to explain when neurosurgery should be considered, who might benefit, the clinical results, the different stereotactic lesion techniques available (radiofrequency, gamma knife and focused ultrasound) and the important differences when compared to DBS. Most importantly, it aims to demystify these procedures for patients, families, psychiatrists, and other clinicians.\n\nBy improving understanding and encouraging collaboration between psychiatry and neurosurgery, we can help ensure that people with the most severe forms of OCD can access the full range of effective, evidence-based treatments.",
+      "day": 2,
+      "startsAt": "2026-06-05T08:35:00+00:00",
+      "endsAt": "2026-06-05T08:55:00+00:00",
+      "room": "Main Hall",
+      "session": "Advances in Neuromodulation and Neurosurgical Strategies for OCD",
+      "speakers": [
+        {
+          "name": "Ludvic Zrinzo",
+          "institution": "University College London (UCL), UK"
+        }
+      ],
+      "resources": [
+        {
+          "id": "de7b4813-824d-4d59-baf7-5d0da5db2cc5",
+          "type": "podcast",
+          "title": "Stereotactic lesions for OCD in the DBS era",
+          "caption": "Podcast with Ludvic Zrinzo on stereotactic lesion procedures for OCD in the era of deep brain stimulation.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/d6411e73-2955-4a88-9844-22fdf0195863.ogg",
+          "durationSeconds": 2580
+        },
+        {
+          "id": "ad87895a-a648-402c-a4d5-e27b8cc3516a",
+          "type": "image",
+          "title": "Stereotactic lesions for OCD in the DBS era",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/3251331a-0066-4ae7-b494-fa265331e930.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "802e8bd9-8a9a-4bc2-8cb9-43f8380245f5",
+      "title": "The current state of non-invasive forms of neurostimulation (repetitive transcranial magnetic stimulation (rTMS) and transcranial direct current stimulation (tDCS)) for OCD",
+      "description": "Neuromodulation is an exciting brain-based treatment strategy with a growing evidence base supporting its application to psychiatric conditions, including OCD. “Non-invasive” forms of neuromodulation are those that require no surgical or other invasive procedures, but modulate brain activity from outside the head using medical devices capable of sending magnetic and/or electrical currents to reach the brain and alter its functioning. These techniques can be used to induce greater ‘plasticity’ (i.e., increased malleability, flexibility, and adaptability) in the brain, allowing for specific brain areas and/or neural networks to be either ‘tuned up’ or ‘tuned down,’ in an effort to achieve specific therapeutic aims that are rooted in a growing understanding of the brain mechanisms that contribute to OCD and related conditions. This talk will cover the promise and potential of these techniques, and delve into the current status of research findings for two particular forms of non-invasive neuromodulation that have each been studied as potential therapeutics for OCD: Transcranial Magnetic Stimulation (TMS) and transcranial Direct Current Stimulation (tDCS). TMS is currently offered clinically to OCD patients across the globe, with a rapidly growing network of clinics and providers. Certain specific forms of TMS are already FDA-cleared for the treatment of OCD, while others are currently more experimental, but show initial promise. tDCS, while less well-studied, has tremendous potential as a highly portable and safe treatment modality, with a growing evidence base in OCD treatment. The talk will also explore how these neuromodulation tools can be leveraged in synchrony with other behavioral and learning-based techniques to create novel synergies that open a window of plasticity in the brain and foster the efficient uptake of helpful, therapeutic learning to promote healing and recovery.",
+      "day": 2,
+      "startsAt": "2026-06-05T08:55:00+00:00",
+      "endsAt": "2026-06-05T09:15:00+00:00",
+      "room": "Main Hall",
+      "session": "Advances in Neuromodulation and Neurosurgical Strategies for OCD",
+      "speakers": [
+        {
+          "name": "Rebecca Price",
+          "institution": "University of Pittsburgh, USA"
+        }
+      ],
+      "resources": [
+        {
+          "id": "75b1d266-073b-4652-bd39-f18578f9b2db",
+          "type": "podcast",
+          "title": "The current state of non-invasive neurostimulation (rTMS and tDCS) for OCD",
+          "caption": "Podcast with Rebecca Price on rTMS and tDCS as non-invasive neurostimulation options for OCD.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/6c4e3649-e3b9-4cc9-a03c-360fa8508389.ogg",
+          "durationSeconds": 1980
+        },
+        {
+          "id": "e721e4f0-197b-47ea-9c9a-7c0af89eb277",
+          "type": "image",
+          "title": "The current state of non-invasive neurostimulation (rTMS and tDCS) for OCD",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/52762477-3e7e-4bb2-880f-fe7336f435e7.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "fec867fe-c826-4e19-ab27-85408ddda3d0",
+      "title": "Focussed Ultrasound Stimulation (FUS)",
+      "description": "Transcranial ultrasound stimulation is gaining attention as one of this century’s most promising neurotechnologies because it can reach deep brain regions with precision while remaining noninvasive and well suited for repeated use.This session introduces new findings showing that transcranial ultrasound stimulation can temporarily shift how specific brain regions function. These targeted shifts offer insight into how the brain adapts and open the door to new therapeutic strategies. This talk will outline how ultrasound can precisely reach deep brain areas, help researchers test the role of specific circuits, and reveal why these capabilities are valuable for developing future mental health treatments. It will also share recent evidence from decision making studies, early clinical work in obsessive compulsive disorder, and task related behavioural and neural changes that point to short term plasticity. Ultrasound based neuromodulation is emerging as a powerful way to study the brain and may become an important tool for improving decision processes and treating psychiatric conditions.",
+      "day": 2,
+      "startsAt": "2026-06-05T09:15:00+00:00",
+      "endsAt": "2026-06-05T09:35:00+00:00",
+      "room": "Main Hall",
+      "session": "Advances in Neuromodulation and Neurosurgical Strategies for OCD",
+      "speakers": [
+        {
+          "name": "Elsa Fouragnan",
+          "institution": "University of Plymouth, UK"
+        }
+      ],
+      "resources": [
+        {
+          "id": "9abe8ed4-2229-4461-b2ff-413d9ec139c5",
+          "type": "image",
+          "title": "Focussed Ultrasound Stimulation (FUS)",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/ebbe78e6-bccd-4630-bb01-fd3d6bff9199.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "a4a44c81-c642-418a-8ee0-571dc3618ba1",
+      "title": "Childhood trauma as a transdiagnostic predictor of response to serotonin reuptake inhibitor treatment in patients with obsessive-compulsive disorder and social anxiety disorder",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T10:25:00+00:00",
+      "endsAt": "2026-06-05T10:32:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Veronica Huhne",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "ec0213a9-0f82-4758-ab96-5b90b1f9320c",
+      "title": "OCD Online: exploring the links between obsessive-compulsive disorder and smartphone and social media use behaviours",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T10:32:00+00:00",
+      "endsAt": "2026-06-05T10:39:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Carolyn Crawford",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "d41e4a7f-2f6d-43c8-ad10-dd6242cb52a4",
+      "title": "Comparing efficacy and tolerability of two transcranial magnetic stimulation protocols over the left orbitofrontal cortex as an augmentation strategy for treatment-resistant obsessive-compulsive disorder",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T10:39:00+00:00",
+      "endsAt": "2026-06-05T10:46:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Rodolfo Leuzzi",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "9d1bd695-75fd-424f-b987-1123358fdd61",
+      "title": "Context-Deficient Cognitive Control in OCD: A Computational Account of Impaired Flexibility in Habitual and Motor Inhibition",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T10:46:00+00:00",
+      "endsAt": "2026-06-05T10:53:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Chenyu Yuan",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "d661bcbd-6f99-4976-9152-04f28a364167",
+      "title": "Hoarding Symptoms and Behaviours in Emerging Adults with ADHD",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T10:53:00+00:00",
+      "endsAt": "2026-06-05T11:00:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Enes Kartal",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "1754744f-0cc8-498e-a686-3ebd46da24a9",
+      "title": "Inflammation and OCD/Tic Disorder Spectrum Conditions in a Tertiary Care Youth Population",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T11:00:00+00:00",
+      "endsAt": "2026-06-05T11:07:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Lilian Ebner",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "53272ced-df42-44e6-b579-4586a5113404",
+      "title": "Prevalence of Sleep Disorders in Pediatric Obsessive-Compulsive Disorder and First Degree Relatives",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T11:07:00+00:00",
+      "endsAt": "2026-06-05T11:14:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Madeline Morton",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "e6572675-4ed3-4019-9591-f09b0c7b7342",
+      "title": "Event-related potentials correlate with magnetic resonance spectroscopy measures of excitatory neurotransmission and symptom severity in obsessive-compulsive disorder",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T11:14:00+00:00",
+      "endsAt": "2026-06-05T11:21:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Ana Maria Pereira de Souza",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "0599f85d-c4cc-4950-8bff-8becb199e888",
+      "title": "Compulsive and obsessional OCD-risk subtypes in pre-adolescents: multimodal trajectory modelling and CSTC coupling identify a sub-clinical at-risk pathway",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T11:21:00+00:00",
+      "endsAt": "2026-06-05T11:28:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Mairead Healy",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "b600aefb-eb1a-4833-9574-9973c20e6dbb",
+      "title": "Chemogenetic activation of orbitofrontal cortex impairs action-outcome understanding in marmoset model of OCD: Remediation by mGluR2 positive allosteric modulator",
+      "description": null,
+      "day": 2,
+      "startsAt": "2026-06-05T11:28:00+00:00",
+      "endsAt": "2026-06-05T11:40:00+00:00",
+      "room": "Main Hall",
+      "session": "Early Career Researchers (ECRs) and Hot Papers Symposium",
+      "speakers": [
+        {
+          "name": "Stacey Gould",
+          "institution": null
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "3d48db3f-75f0-4be0-8cf4-cee4e381bcce",
+      "title": "Digital psychotherapeutic approaches for OCD: where do we stand?",
+      "description": "Obsessive-compulsive disorder (OCD) is a serious mental health condition that causes intrusive, unwanted thoughts (obsessions) and repetitive behaviors (compulsions). While cognitive behavioral therapy (CBT) is widely regarded as one of the most effective treatments for OCD, many individuals face significant barriers to accessing it, including high costs, limited availability of trained therapists, and the rigid scheduling demands of in-person therapy. To address these challenges, Dr. Sabine Wilhelm and her research team conducted a study to evaluate the effectiveness of a smartphone-based CBT app, called Perspectives, as an innovative and accessible treatment option for OCD.\n\nThe study enrolled 120 adults from across the United States, all of whom had moderate to severe OCD. Participants were randomly assigned to use one of two programs for 12 weeks: Perspectives, a coach-supported app delivering CBT specifically designed for OCD, or HealthWatch, an internet-based program offering general health and wellness education enhanced with some OCD-specific content. Both programs included light-touch support from trained coaches, who provided encouragement and guidance through text messages and brief phone calls.\n\nThe results revealed that while both programs helped participants reduce OCD symptoms, Perspectives showed significantly greater benefits overall. By the end of the 12-week treatment period, 65% of Perspectives users experienced meaningful reductions in OCD symptoms, compared to 41% of participants in HealthWatch. Additionally, Perspectives participants reported greater improvements in daily functioning and higher satisfaction with their treatment. Notably, 91% of Perspectives users reported that they would recommend the app to a friend, demonstrating its acceptability and potential for widespread adoption.\n\nA key advantage of Perspectives is its efficiency. Traditional face-to-face CBT often requires around 12 or more hours of direct time with a therapist. In comparison, Perspectives achieved significant symptom reductions with approximately 75 minutes of coaching support over the course of the program. This suggests that app-based CBT could offer a cost-effective and scalable solution for individuals with OCD.",
+      "day": 2,
+      "startsAt": "2026-06-05T12:40:00+00:00",
+      "endsAt": "2026-06-05T13:10:00+00:00",
+      "room": "Main Hall",
+      "session": "Breakthroughs in Psychotherapy for OCD: Beyond CBT and ERP",
+      "speakers": [
+        {
+          "name": "Sabine Wilhelm",
+          "institution": "Harvard Medical School, USA"
+        }
+      ],
+      "resources": [
+        {
+          "id": "639c0be2-a41b-4bf1-b54f-ef91a0b7d769",
+          "type": "image",
+          "title": "Digital psychotherapeutic approaches for OCD and ERP",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/111a6f57-afb5-4ca7-b3cb-00cb663e3b99.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "3d7e466b-6130-4dc6-a6d4-915d98301923",
+      "title": "Large Language Models in the treatment of OCD",
+      "description": "This talk explores the transformative potential of Large Language Models (LLMs) in creating a paradigm shift for understanding and treating Obsessive-Compulsive Disorder (OCD). It focuses on three groundbreaking applications of this technology.\n\nFirst, LLMs can serve as a powerful tool for unraveling disease mechanisms and modeling disease dynamics. By integrating and analyzing vast, heterogeneous datasets—including longitudinal clinical records, neurobiological data, genetic associations, and patient-generated content—LLMs can identify complex, non-linear interactions and temporal patterns that may underlie OCD pathogenesis and progression. This capability moves us beyond static diagnostic categories towards a dynamic, systems-level understanding of the disorder.\n\nSecond, the presentation introduces LLMs as a “Predictive Engine” to address the core clinical challenge of treatment uncertainty in OCD. Current therapeutic selection—between pharmacotherapy, cognitive-behavioral therapy, and their combination—remains largely standardized, leading to initial treatment inefficacy for a substantial proportion of patients. LLMs offer a solution by functioning as sophisticated multi-modal data integrators. They can simultaneously analyze a patient's unique profile, including neuroimaging, electrophysiological, genomic, computational behavioral, and clinical symptomatology data, to identify complex predictive patterns. This capability facilitates a transition from empirical trial-and-error toward a precision medicine framework, where the treatment modality with the highest predicted efficacy can be recommended at the outset.\n\nThird, the talk frames LLMs as an “Adaptive Intervention Partner” to combat critical barriers to treatment accessibility and adherence. Many OCD patients face a shortage of qualified therapists or find core therapeutic components such as exposure challenging to tolerate. LLMs can enable intelligent digital assistants that provide real-time, interactive support. Unlike static psycho-educational platforms, these AI systems can contextually understand patient-reported text, infer emotional state, and dynamically adapt therapeutic guidance. They offer personalized encouragement, adjust exercise difficulty, and deliver supportive crisis interventions, thereby enhancing engagement and making evidence-based protocols more accessible and sustainable.\n\nIn conclusion, the “LLM-powered therapeutic ecosystem” could fundamentally advance both the science and practice of OCD care. It supports the continuum of patient care: from elucidating disease mechanisms and enabling data-driven assessment with personalized treatment matching, through ongoing adaptive intervention delivery, to long-term maintenance and progression modeling. While significant challenges regarding clinical safety, ethical implementation, and model transparency require rigorous attention, the synergistic combination of mechanistic insight, predictive analytics, and adaptive intervention delivered by LLMs represents a promising frontier for advancing personalized OCD care beyond current standards.",
+      "day": 2,
+      "startsAt": "2026-06-05T13:10:00+00:00",
+      "endsAt": "2026-06-05T13:30:00+00:00",
+      "room": "Main Hall",
+      "session": "Breakthroughs in Psychotherapy for OCD: Beyond CBT and ERP",
+      "speakers": [
+        {
+          "name": "Zhen Wang",
+          "institution": "Shanghai Jiao Tong University, China"
+        }
+      ],
+      "resources": [
+        {
+          "id": "bd870d05-8281-4027-b7c6-a4bd0ec37e95",
+          "type": "image",
+          "title": "Large Language Models in the treatment of OCD",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/37de1dd1-a6ac-4339-a5d0-80b9f2507624.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "bfff10ea-380d-46f3-92d3-e1e9c1a33f94",
+      "title": "Metacognitive Training for OCD",
+      "description": "Many people with obsessive-compulsive disorder (OCD) wish for psychotherapeutic support but struggle to engage or access traditional treatment. The most effective approach—exposure and response prevention (ERP)—requires patients to directly face their fears, which can feel overwhelming to some. As a result, many individuals decline or drop out of ERP, and there are too few therapists trained and confident enough to offer it consistently. This creates significant gaps in care.\n\nMetacognitive Training for OCD (MCT-OCD) is a promising alternative or add on for people who are not ready—or not willing—to participate in ERP. Instead of asking patients to confront feared situations, MCT-OCD focuses on the thinking patterns or biases that keep OCD going: feeling overly responsible, overestimating threats, striving for perfection, or struggling to tolerate uncertainty. MCT-OCD helps participants recognize these patterns (and general cognitive biases), question them, and try out more flexible ways of thinking.\n\nOne major strength of MCT-OCD is its high level of standardisation. Because the programme follows clearly structured, slide-based material across eight modules, it can be delivered not only by experienced psychotherapists, but also by other trained mental health professionals, including psychology trainees and nursing staff. This makes MCT-OCD especially valuable in settings where specialized (ERP) therapists are scarce. The group format also reduces shame, provides social support, and makes it possible to reach more patients at the same time—an important step toward closing treatment gaps.\n\nRecent research by our group showed that MCT-OCD is not only well accepted but also effective. Participants report meaningful reductions in OCD symptoms (i.e. especially compulsions). Importantly, we also found session-specific effects: individual modules reliably influenced the cognitive processes they were designed to target. For example, thought control improved after the corresponding module. These findings suggest that MCT-OCD works through identifiable mechanisms and may even help patients prepare for ERP should they choose to pursue it later.\n\nTo extend these benefits beyond the therapy room, the presentation will also introduce COGITO, a digital app designed to help people practice OCD-relevant skills in daily life. COGITO offers psychoeducation, structured exercises, self-monitoring tools, and opportunities for cognitive flexibility practice for OCD and other frequent comorbid problems such as low mood. It can be used as a gentle entry point for individuals who feel unsure about starting therapy, or as a supportive companion for those already engaged in MCT-OCD or other treatments.\n\nAdditional digital approaches, including guided internet-based CBT (iCBT), will be discussed as complementary low-threshold options that can further expand access to evidence-based support.\n\nTaken together, MCT-OCD, digital tools like COGITO, and online therapeutic pathways illustrate how OCD treatment can move beyond traditional ERP-based models. These approaches create multiple entry points into care and help ensure that individuals who are hesitant about ERP still receive meaningful, effective, and empowering support.",
+      "day": 2,
+      "startsAt": "2026-06-05T13:30:00+00:00",
+      "endsAt": "2026-06-05T13:50:00+00:00",
+      "room": "Main Hall",
+      "session": "Breakthroughs in Psychotherapy for OCD: Beyond CBT and ERP",
+      "speakers": [
+        {
+          "name": "Lena Jelinek",
+          "institution": "University of Hamburg, Germany"
+        }
+      ],
+      "resources": [
+        {
+          "id": "3e9ba7d5-6cbd-4dfb-98da-78a8deaf7a71",
+          "type": "podcast",
+          "title": "Metacognitive Training for OCD",
+          "caption": "Podcast with Lena Jelinek on metacognitive training as a therapeutic approach for OCD.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/26db5aff-d5ab-4abb-b897-6a6143731229.ogg",
+          "durationSeconds": 1740
+        },
+        {
+          "id": "ef20717d-c85a-4aaa-b2a5-2c55f0acfea9",
+          "type": "image",
+          "title": "Metacognitive Training for OCD",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/87d29c9a-69ae-4f8f-8d50-c69a389cf6a2.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "f2f4b63c-679d-4655-9cc0-fe43c0013c1f",
+      "title": "Indian vs UK perspective of inpatient treatment",
+      "description": "UK perspective — Lynne Drummond\n\nThe vast majority of people who develop OCD can be treated in the community. However, those with the most severe symptoms may require 24-hour care to be able to safely manage them. Examples include people who are incontinent due to OCD fears or slowness, those who are unable to get out of bed or whose symptoms render them immobile for many continuous hours as well as those whose symptoms render them incapable of completing even the basic tasks of daily living. This disability is despite the fact that many are highly intelligent individuals who have often demonstrated previous success in life.\n\nIn this talk I will briefly discuss the history of developing the UK National Inpatient Service for those with profound, chronic, refractory OCD and the difficulties in convincing authorities of the importance of such a facility. Describing the demographics and individual characteristics of this group and demonstrating the often prolonged and arduous journeys they and their relatives have had to undergo in order to be recognised as needing this specialised help. I will also discuss some of the ways of helping these people and demonstrate that a truly personalised package of care is needed for success. Finally, I will present data on the outcome following inpatient treatment as well as looking towards the future and what we may need in terms of future management and treatment in the UK.\n\nIndian perspective — Janardhan Reddy\n\nIn India, most people with OCD are treated as outpatients, usually with medication such as SSRIs, while only a small proportion have access to cognitive behavioural therapy (CBT).\n\nAt the National Institute of Mental Health and Neurosciences (NIMHANS) in Bangalore, the specialist OCD Clinic has provided inpatient care for more than 30 years. In recent years, the number of admissions has grown to more than 100 patients per year, many of whom receive intensive inpatient CBT alongside carefully optimised medication treatment. At the national level, although some academic centres offer inpatient care for those with severe OCD, inpatient services for OCD are mostly non-existent. At NIMHANS, we usually admit only those resistant to multiple pharmacological trials, which constitute the majority, or those with failed outpatient CBT or those who have such a severe OCD that outpatient CBT is not feasible. What is common to all these people is very severe illness, and varying degrees of treatment resistance.\n\nOur inpatient programme differs from many other centres in that close family members stay with the patient throughout the entire period of inpatient care, which lasts on average around six weeks. During this time, the clinical team works closely with families to address family accommodation and emotional responses, and family members are often actively involved in exposure and response prevention exercises. Most of our inpatient population also experience additional mental health conditions alongside OCD, including mood and anxiety disorders, personality disorders, and, more rarely, psychosis.\n\nI will present data from more than 420 inpatients with OCD treated between 2012 and 2017. Around 70% showed improvement by the time of discharge, and approximately 50% maintained these improvements over a two-year follow-up period, although the attrition rate during follow-up was high. Those with shorter duration of illness, better insight and absence of contamination fears fared better. In our inpatient program, these days, we also offer neuromodulation (such as deep transcranial magnetic stimulation) to some of the individuals in addition to CBT. At any point of time, about 20 people with OCD are admitted with us. Because of the increasing demand for inpatient care, the hospital has approved a special OCD ward with 20 rooms (facility built, soon to become operational).\n\nBased on our experience over 3 decades, we strongly recommend intensive inpatient/residential treatment for treatment-resistant patients who do not improve with outpatient care. The Clinical Practice Guidelines (CPG) for OCD developed by the Indian Psychiatry Society (IPS), of which we are the primary authors recommend inpatient treatment for severely ill, treatment-resistant people with OCD.\n\nThere are several challenges that are particularly relevant in the Indian context, including a severe shortage of trained therapists and limited availability of inpatient facilities. Another important issue relates to socioeconomic inequalities. Many people with OCD — especially those with contamination fears and prominent compulsions — are reluctant to stay in shared inpatient facilities with common bathrooms, and instead prefer private accommodation. However, private rooms come at an additional cost that many patients cannot afford.\n\nDespite these limitations, I believe our inpatient programme remains highly cost-effective compared with similar facilities elsewhere in the world.",
+      "day": 2,
+      "startsAt": "2026-06-05T13:50:00+00:00",
+      "endsAt": "2026-06-05T14:30:00+00:00",
+      "room": "Main Hall",
+      "session": "Breakthroughs in Psychotherapy for OCD: Beyond CBT and ERP",
+      "speakers": [
+        {
+          "name": "Lynne Drummond",
+          "institution": "South West London and St George's Mental Health NHS Trust, UK"
+        },
+        {
+          "name": "Janardhan Reddy",
+          "institution": "National Institute of Mental Health and Neurosciences (NIMHANS), Bangalore, India"
+        }
+      ],
+      "resources": [
+        {
+          "id": "ca49169f-5ca4-4d54-a3c8-4e70e5147121",
+          "type": "podcast",
+          "title": "Indian vs UK perspective of inpatient OCD treatment",
+          "caption": "Podcast with Lynne Drummond comparing inpatient OCD treatment between India and the UK.",
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/audio/podcasts/7d86b452-ca91-4dc6-8716-0ff3b0fda7c8.ogg",
+          "durationSeconds": 2280
+        },
+        {
+          "id": "6e136fd5-2205-44a5-92c6-f34ffd680c01",
+          "type": "image",
+          "title": "Indian vs UK perspective of inpatient OCD treatment",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/5603a42b-0534-48e9-ad06-e0d75a03a7a8.png",
+          "durationSeconds": null
+        },
+        {
+          "id": "d606288f-c35d-49f9-80be-8b70efb27f05",
+          "type": "image",
+          "title": "Indian vs UK perspective of inpatient OCD treatment",
+          "caption": null,
+          "url": "https://woteuvxtmppyrqmvglwq.supabase.co/storage/v1/object/public/assets/infographics/403809f4-4e2d-405d-bb3f-976656238c74.png",
+          "durationSeconds": null
+        }
+      ]
+    },
+    {
+      "id": "49702f18-8bc2-4d07-8424-75adcbebaf3a",
+      "title": "Launch of the first International Guidelines for the Management of Patients with OCD",
+      "description": "Once neglected, obsessive-compulsive disorder (OCD) is now recognized as a common, highly disabling early-onset brain disorder, affecting 2% of the population at some point in their lifetime. The burden associated with OCD is broad, with individuals often experiencing distress, impaired functioning, social isolation, and poor quality of life. Clinical and translational research in OCD is expanding and has contributed to significant advances in the understanding of this complex disorder. The Canadian Network for Mood and Anxiety Treatments (CANMAT) has long published evidence-based guidelines for managing Major Depressive Disorder and Bipolar Disorder. CANMAT guidelines include recommendations accompanied by the level of evidence available to support each graded line of treatment. In addition, recommendations are ranked based on expert consensus from the CANMAT editorial group on clinical outcomes including safety, tolerability, and feasibility, where possible. Although several evidence-based clinical guidelines for the management of OCD have been published, recent feedback from topic experts and stakeholders identified the need for an update. A group of international OCD experts from CANMAT in association with the International College of Obsessive-Compulsive Spectrum Disorders (ICOCS) compiled a comprehensive, updated set of evidence-based treatment guidelines for OCD across the lifespan, based upon current research findings. This presentation will discuss the key findings from the newly published 2025 CANMAT-ICOCS OCD Guidelines. The guideline methodology and framework will be reviewed as well as the evidence for the first-line treatment recommendations for both pharmacotherapy and psychotherapy. The evidence and recommendations for treatment-resistant OCD, including pharmacological, non-pharmacological and neuromodulation treatments will also be reviewed and a new OCD treatment algorithm will be discussed.",
+      "day": 2,
+      "startsAt": "2026-06-05T15:15:00+00:00",
+      "endsAt": "2026-06-05T15:45:00+00:00",
+      "room": "Main Hall",
+      "session": null,
+      "speakers": [
+        {
+          "name": "Michael Van Ameringen",
+          "institution": "McMaster University, Ontario, Canada"
+        }
+      ],
+      "resources": []
+    },
+    {
+      "id": "d0e8d7ff-937c-4957-b25f-f8eaa93df572",
+      "title": "Closing Plenary: Future Directions and Accelerating Progress in OCD Research and Treatment Development",
+      "description": "Closing plenary with Naomi Fineberg, Trevor Robbins and Max Ahmed on the future directions of OCD research and how to accelerate progress in treatment development.",
+      "day": 2,
+      "startsAt": "2026-06-05T15:45:00+00:00",
+      "endsAt": "2026-06-05T16:30:00+00:00",
+      "room": "Main Hall",
+      "session": null,
+      "speakers": [
+        {
+          "name": "Naomi Fineberg",
+          "institution": "University of Hertfordshire, UK"
+        },
+        {
+          "name": "Trevor Robbins",
+          "institution": "University of Cambridge, UK"
+        }
+      ],
+      "resources": []
+    }
+  ]
+}

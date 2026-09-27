@@ -2,17 +2,15 @@ import type { Metadata } from 'next'
 
 import { EmbedFrame } from '@/components/blocks/EmbedFrame'
 import { SpeakerGrid } from '@/components/content/SpeakerGrid'
-import { Figure, PageBanner, PageSection } from '@/components/site'
+import { Figure, PageBanner, PageSection, Prose } from '@/components/site'
 import { ButtonLink } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
   title: 'Conference',
   description:
-    'ORCHARD OCD INTERNATIONAL SCIENTIFIC Conference 4-5TH JUNE 2026 Secure Your Spot! Get Your Ticket At 30 Euston Square, London NW1 2FB Download Guidelines Our Speakers Download Brochure Add Your Heading Text Here',
+    'Resources and speakers from the Orchard OCD International Scientific Conference, held on 4–5 June 2026 in London.',
 }
 
-const TICKETS_URL =
-  'https://www.eventbrite.co.uk/e/orchard-ocd-international-scientific-conference-tickets-1865601597599'
 const BROCHURE_URL =
   'https://www.orchardocd.org/wp-content/uploads/2024/08/Orchard_OCD_Conference_Ad-1.pdf'
 const GUIDELINES_URL =
@@ -70,7 +68,13 @@ export default function ConferenceCallForPostersPage() {
         }
       />
 
-      <PageSection heading="Secure Your Spot!">
+      <PageSection heading="Conference resources">
+        <Prose className="mb-8">
+          <p>
+            This conference took place on 4–5 June 2026. Its recordings are available in our
+            archive.
+          </p>
+        </Prose>
         <div className="grid gap-12 flow:grid-cols-[1fr_24rem] flow:items-start">
           <div className="flex flex-col items-start gap-8">
             <Figure
@@ -78,7 +82,7 @@ export default function ConferenceCallForPostersPage() {
               alt="A speaker at a lectern addressing a seated audience under a conference banner"
               sizes="(min-width: 57rem) 43.5rem, calc(100vw - 3rem)"
             />
-            <ButtonLink href={TICKETS_URL}>Get Your Ticket</ButtonLink>
+            <ButtonLink href="/past-conferences/2026">Explore the conference archive</ButtonLink>
           </div>
           <div className="flex w-full flex-col items-start gap-8">
             <Figure

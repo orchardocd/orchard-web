@@ -40,6 +40,7 @@ test.describe('site', () => {
 
   test('lists every team group on the about page', async ({ page }) => {
     await page.goto('/about-orchard')
+    await expect(page.getByRole('heading', { name: 'Katherine Selby', exact: true })).toHaveCount(0)
     for (const group of [
       'Our team',
       'Scientific advisory board',
@@ -88,5 +89,27 @@ test.describe('site', () => {
   test('returns a 404 page for unknown routes', async ({ page }) => {
     const response = await page.goto('/this-page-does-not-exist')
     expect(response?.status()).toBe(404)
+  })
+
+  test('finds podcasts and writing through the educational material page', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'News & events' }).click()
+    await page.getByRole('link', { name: 'Educational material', exact: true }).first().click()
+    await expect(page).toHaveURL('/educational-material')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Educational material')
+    await expect(
+      page.getByLabel('Orchard podcast with Professor Christine Lochner'),
+    ).toHaveAttribute('preload', 'none')
+    await expect(page.getByRole('link', { name: 'Open the audio recording' })).toHaveAttribute(
+      'href',
+      /\/audio\/podcasts\/.+\.ogg$/,
+    )
+    await expect(page.getByRole('link', { name: 'Visit Nick’s Substack' })).toHaveAttribute(
+      'href',
+      'https://substack.com/@nicksireau',
+    )
+    await page.getByRole('link', { name: 'Browse conference podcasts' }).click()
+    await expect(page).toHaveURL('/past-conferences/2026#podcasts')
+    await expect(page.getByRole('heading', { name: 'Conference podcasts', exact: true })).toBeVisible()
   })
 })

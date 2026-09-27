@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import type { ReactNode } from 'react'
+import Link from 'next/link'
 
 import { PageBanner, PageSection, Prose, Table } from '@/components/site'
 import { cn } from '@/lib/cn'
@@ -8,7 +8,7 @@ import { cn } from '@/lib/cn'
 export const metadata: Metadata = {
   title: 'Our Research Strategy',
   description:
-    'The full Orchard OCD research strategy: the burden of OCD, the state of the science, the clinical and research challenges, and the seven work packages that make up our five-year plan.',
+    'The Orchard OCD research strategy: the burden of OCD, the state of the science, the clinical and research challenges, and the seven work packages that make up our five-year plan.',
 }
 
 const STRATEGY_PDF_URL =
@@ -25,7 +25,6 @@ const DOC_PROSE = [
 
 const FIGURE_SIZES = '(min-width: 768px) 40rem, calc(100vw - 3rem)'
 const WIDE_FIGURE_SIZES = '(min-width: 1280px) 70.5rem, calc(100vw - 3rem)'
-const PORTRAIT_SIZES = '10rem'
 
 function DocFigure({
   file,
@@ -62,54 +61,9 @@ function DocFigure({
   )
 }
 
-function Person({
-  file,
-  alt,
-  width,
-  height,
-  children,
-}: {
-  file: string
-  alt: string
-  width: number
-  height: number
-  children: ReactNode
-}) {
-  return (
-    <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-start">
-      <Image
-        src={`/strategy/${file}`}
-        alt={alt}
-        width={width}
-        height={height}
-        sizes={PORTRAIT_SIZES}
-        className="w-40 shrink-0 rounded-lg bg-mist"
-      />
-      <Prose className={cn(DOC_PROSE, 'flex-1')}>{children}</Prose>
-    </div>
-  )
-}
-
 const CONTENTS: { href: string; label: string; children?: { href: string; label: string }[] }[] = [
   { href: '#executive-summary', label: 'Executive Summary' },
-  {
-    href: '#overview-of-ocd',
-    label: 'Overview of OCD',
-    children: [
-      { href: '#background', label: 'Background' },
-      { href: '#social-and-economic-burden', label: 'Social and Economic burden of OCD' },
-      { href: '#how-is-it-treated', label: 'OCD: How is it treated?' },
-    ],
-  },
-  {
-    href: '#about-orchard',
-    label: 'About Orchard',
-    children: [
-      { href: '#vision-and-mission', label: 'Vision and Mission' },
-      { href: '#orchards-activities', label: "Orchard's activities" },
-      { href: '#wider-ocd-community', label: 'Orchard’s role in the wider OCD community' },
-    ],
-  },
+  { href: '#social-and-economic-burden', label: 'Social and economic burden of OCD' },
   {
     href: '#current-state-of-ocd-research',
     label: 'Current state of OCD research',
@@ -152,14 +106,8 @@ const CONTENTS: { href: string; label: string; children?: { href: string; label:
       'Work Package 7: Proposal for a Randomised Double-blind Placebo-controlled study of Tolcapone for OCD',
   },
   { href: '#reference', label: 'Reference' },
-  { href: '#appendix-1', label: 'Appendix 1 – The Team' },
-  {
-    href: '#appendix-2',
-    label: 'Appendix 2 – Table of existing and experimental treatments for OCD',
-  },
-  { href: '#appendix-3', label: 'Appendix 3 - What the patients want' },
-  { href: '#appendix-4', label: 'Appendix 4 - Existing research projects' },
-  { href: '#appendix-5', label: 'Appendix 5 - Financial Projections' },
+  { href: '#appendix-3', label: 'Patient priorities' },
+  { href: '#appendix-5', label: 'Financial projections' },
 ]
 
 export default function ResearchStrategyPage() {
@@ -192,13 +140,13 @@ export default function ResearchStrategyPage() {
       <PageSection heading="Executive Summary" id="executive-summary">
         <Prose className={DOC_PROSE}>
           <p>
-            Orchard OCD is a not-for-profit medical charity that works with academia, clinicians,
-            pharmaceutical/biotech companies, government agencies, patients and other charities.
-            Orchard aims to fast-track the development of new and innovative treatments for
-            obsessive-compulsive disorder (OCD) to deliver unique value for professionals and,
-            ultimately, for patients suffering from OCD. Orchard OCD serves as a catalyst to create
-            collaborative and multidisciplinary platforms in order to foster translational research
-            and drive the quest for new and effective treatments for OCD.
+            Read about <Link href="/about-orchard">Orchard’s mission</Link>, our{' '}
+            <Link href="/about-orchard#people-team">team</Link> and{' '}
+            <Link href="/about-orchard#people-scientific-advisory-board">
+              scientific advisory board
+            </Link>
+            . For details of existing research projects, visit{' '}
+            <Link href="/the-work-we-do">The work we do</Link>.
           </p>
           <h3>Operating Principles</h3>
           <p>
@@ -228,35 +176,11 @@ export default function ResearchStrategyPage() {
             treatment development for OCD.
           </p>
           <p>
-            <strong>Team</strong> We are experienced professionals (see appendix 1 – the team)
-            driven by social impact and optimal solutions. We have complementary expertise in
-            business and healthcare. Team members have backgrounds in neuroscience, R&amp;D, drug
-            development, clinical trials, clinical psychiatry, charity development, fundraising and
-            social enterprise.
-          </p>
-          <p>
             <strong>Opportunity</strong> OCD is under-researched, yet it has distinctive features
             that make it an excellent topic of study. Modern neuroscientific techniques – studying
             brain structure, genetics and receptors – provide an exceptional opportunity to
             significantly boost our ability to develop new treatments.
           </p>
-          <p>
-            <strong>Activities</strong> We focus on three key activities
-          </p>
-          <ol>
-            <li>
-              <strong>Research.</strong> Funding, facilitating, and running research on OCD.
-            </li>
-            <li>
-              <strong>Hubs and Platforms.</strong> Sharing knowledge. Providing services and
-              resources for research scientists and clinicians working on OCD.
-            </li>
-            <li>
-              <strong>Engagement and dissemination.</strong> Raising awareness about the condition
-              and communicating research results, treatments and translational science
-              opportunities.
-            </li>
-          </ol>
           <p>
             <strong>Outcomes</strong> With a target budget of £4,246,127, we will carry out the
             following over the first five years:
@@ -329,72 +253,16 @@ export default function ResearchStrategyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="Overview of OCD" id="overview-of-ocd" tone="ruled">
-        <DocFigure
-          file="ocd-the-facts.png"
-          width={1156}
-          height={1400}
-          alt="OCD: The Facts. 1 in 40 adults have OCD. More than 25% of adults have suffered from OCD at some point in their lives. It is estimated that OCD costs the US $8.4 billion annually. For every £1 spent on research into OCD, £5,078 is lost due to the disease."
-        />
+      <PageSection
+        heading="Social and economic burden of OCD"
+        id="social-and-economic-burden"
+        tone="ruled"
+      >
         <Prose className={DOC_PROSE}>
-          <h3 id="background">Background</h3>
           <p>
-            Obsessive-Compulsive Disorder (OCD) is a common, chronic and long-lasting mental health
-            condition. Patients living with OCD experience uncontrollable, intrusive and reoccurring
-            thoughts (obsessions) and behaviours (compulsions) that they feel the urge to repeat
-            over and over, in the attempt to temporarily relieve the unpleasant feelings brought on
-            by the obsessive thought. Common sets of obsessions and compulsions in patients with OCD
-            include<sup>1</sup>:
+            For an introduction to the condition and its symptoms, visit{' '}
+            <Link href="/about-ocd">About OCD</Link>.
           </p>
-          <ul>
-            <li>Concerns about contamination</li>
-            <li>Concerns about harm to self or others</li>
-            <li>Intrusive aggressive or sexual thoughts</li>
-            <li>Concerns about symmetry</li>
-          </ul>
-          <p>
-            <strong>Table 1. Common OCD obsessions and compulsions.</strong>
-          </p>
-          <Table
-            className="[&_table]:text-sm [&_td]:px-2 [&_th]:px-2"
-            caption="Table 1. Common OCD obsessions and compulsions."
-            head={['Dimension', 'Obsessions', 'Compulsions']}
-            rows={[
-              [
-                'Contamination symptoms',
-                'Concerns about dirt, germs, viruses etc.',
-                'Washing, showering, cleaning',
-              ],
-              ['Harm-related symptoms', 'Concerns about harm', 'Checking'],
-              [
-                'Unacceptability symptoms',
-                'Intrusive, aggressive, sexual or religious thoughts',
-                'Mental rituals or praying',
-              ],
-              [
-                'Symmetry symptoms',
-                'Concerns about symmetry',
-                'Ordering, straightening. repeating or counting',
-              ],
-              ['Hoarding symptoms', 'Concerns about hoarding', 'Hoarding behaviours'],
-            ]}
-          />
-          <p>
-            OCD is the fourth most common mental disorder after depression, alcohol/substance
-            misuse, and social phobia/anxiety<sup>2</sup>. The World Health Organisation named OCD
-            as one of the most disabling of all medical disorders. OCD is ubiquitous in both males
-            and females of all age groups and across all socioeconomic classes and countries
-            <sup>3,4</sup>. OCD has a lifetime prevalence of 2–3%, although figures vary across
-            regions, and OCD is strongly associated with comorbidity (the presence of two or more
-            medical conditions) and morbidity. OCD typically starts during adolescence and early
-            adulthood, although symptoms can develop at any age. There are also a substantial number
-            of “sub-clinical” cases of OCD (around 5% of the global? population), where symptoms
-            lead to impairment but are either not disturbing or not disruptive enough to meet full
-            criteria <sup>5</sup>. Diagnosis of OCD is often missed in primary care settings and
-            frequently undertreated; therefore the number of cases is thought to be much greater
-            than is reported.
-          </p>
-          <h3 id="social-and-economic-burden">Social and Economic burden of OCD</h3>
           <p>
             OCD has been shown to interfere significantly with the person&apos;s life (or with the
             development of a child). It puts a great social and economic burden on the person and
@@ -448,196 +316,6 @@ export default function ResearchStrategyPage() {
             diabetes and £18 for cancer. For OCD, this number is £5,078, highlighting how little
             money is spent on OCD research compared to its economic cost. (The full report is
             available on request.)
-          </p>
-          <h3 id="how-is-it-treated">OCD: How is it treated?</h3>
-          <p>
-            OCD symptoms can range from mild to severe. Some people with OCD may spend a couple of
-            hours a day engaged in obsessive-compulsive thinking and behaviour, for others the
-            condition can completely take over their lives. Currently there are both pharmacological
-            and psychological treatments to alleviate symptoms of OCD. The most common
-            pharmacological approach is to inhibit presynaptic reuptake of serotonin through
-            clomipramine, a tricyclic antidepressant (TCA) or through serotonin reuptake inhibitors
-            (SRIs). Use of SRIs show large effect sizes in adults, but only moderate effect sizes in
-            youth. Even with effective medication, most treatment responders show residual symptoms
-            and impairments. There is also a very high relapse rate seen across studies (between
-            24%-89%)<sup>9</sup>. SRIs can be successfully supplemented with adjunctive
-            antipsychotics, but only a third of patients will show improvements and there are
-            serious health concerns with their long-term usage. In conjunction with pharmacology
-            psychological treatments are also used. The psychological treatment of choice for OCD,
-            in both adults and children and backed by clinical trials, is cognitive-behavioural
-            therapy (CBT). However, up to 25% of patients will drop out prior to completion of
-            treatment due to increased anxiety symptoms during difficult exposure tasks.
-          </p>
-          <p>
-            About 40–60% of patients do not adequately respond to pharmacotherapy and CBT.
-            Neuromodulation has shown increasing promise in the treatment of OCD. In August 2018 the
-            FDA approved the use of deep Transcranial Magnetic Stimulation (dTMS) as a treatment
-            option for OCD. TMS uses magnetic waves to stimulate particular areas and structures in
-            the brain that show overactivity. Recently, six weeks of daily dTMS therapy has been
-            shown to be safe and effective in OCD patients who had insufficient response to
-            pharmacology and/or CBT. This presents a novel treatment option for OCD, but many
-            important clinical questions still remain unanswered such as: how efficacious is dTMS in
-            OCD patients with unsatisfactory symptom reduction?
-          </p>
-          <p>
-            Existing treatments (medication and psychotherapeutic) are out-dated and usually only
-            partially successful. Up to 30%–40% of patients do not respond to any available
-            treatment options<sup>10</sup>. Given the chronic nature of the condition with a
-            significant life-long impact and economic burden there is an urgent need to develop new
-            and effective treatments and improve early detection<sup>11</sup>. However, research and
-            treatment development in OCD is underfunded. Fundamental research is vital to understand
-            the causative factors (e.g. is it hereditary or learned) and neurobiological bases
-            (chemical, structural and functional abnormalities) are the cause of the disorder.
-            Translational clinical research is critical for the evaluation and adoption of new
-            treatment avenues.
-          </p>
-          <blockquote>
-            “My OCD has certainly waxed and waned over the years but the torturer in my brain rarely
-            goes on holiday for long. Instead, it raises my hopes by abating for a brief time but
-            then morphs, choosing an obsession to spike me with . . . harm coming to my loved ones,
-            worries about germs and virus, fear that I’ve run over someone whilst driving . . . the
-            torturer in my brain has many instruments”
-          </blockquote>
-        </Prose>
-      </PageSection>
-      <PageSection heading="About Orchard" id="about-orchard" tone="ruled">
-        <DocFigure
-          file="vision-and-mission.png"
-          width={1086}
-          height={608}
-          alt="Diagram of Orchard’s vision, mission and three activities. Vision: improving the quality of life of OCD patients by developing new and effective treatments. Mission: concerted collective action, resources, knowledge and people. Both feed into the Orchard OCD logo, which in turn branches into research, hubs and dissemination."
-        />
-        <Prose className={DOC_PROSE}>
-          <h3 id="vision-and-mission">Vision and Mission</h3>
-          <p>
-            Our vision is a world where all patients suffering from OCD receive effective treatment
-            for their condition.
-          </p>
-          <p>
-            Our mission is to drive the quest for new, innovative and effective treatments (both
-            medication and psychotherapy) for patients suffering from OCD by bringing together
-            researchers, clinicians and patients and building a community of interdisciplinary
-            professionals to foster translational research.
-          </p>
-          <p>
-            Orchard’s team consists of a board of trustees and a scientific advisory board with many
-            experienced professionals with passion for health care and mental health. (See Appendix
-            1 for further details)
-          </p>
-          <h3 id="orchards-activities">Orchard&apos;s activities</h3>
-          <p>
-            Orchard&apos;s three pillar approach comprises Research, Hubs and Dissemination.
-          </p>
-        </Prose>
-        <DocFigure
-          file="three-pillar-approach.png"
-          width={1280}
-          height={856}
-          alt="Diagram of Orchard’s three pillar approach: research, to fund and run clinical studies; hubs, an OCD research database and repository; and dissemination, awareness campaigns and conferences."
-        />
-        <Prose className={DOC_PROSE}>
-          <h4>Research</h4>
-          <p>
-            Orchard facilitates and runs research on OCD by bridging fundamental research and
-            clinical practices and building a consortium of interdisciplinary professionals to plan
-            and implement new treatment development programmes. Examples include:
-          </p>
-          <ul>
-            <li>
-              Fostering drug repurposing by working closely with researchers, pharmaceutical and
-              biotech companies
-            </li>
-            <li>
-              Initiating and running clinical trials with new treatments by collaborating with
-              scientists and industry leaders
-            </li>
-            <li>
-              Stimulating patient engagement and organising patient recruitment for on-going
-              research studies
-            </li>
-          </ul>
-          <p>
-            Orchard is also involved in fundraising for OCD research through crowdsourcing
-            campaigns, leveraging philanthropic funding and partnering with mental health charities
-            such as Mental Quotient (a major UK-based mental health charity) and Foundation for OCD
-            Research.
-          </p>
-          <p>Existing Projects include:</p>
-          <h5>1. Psilocybin</h5>
-          <p>
-            According to a research study in 2006, psilocybin has been reported to significantly
-            reduce OCD symptoms in all treatment resistant patients enrolled in the study. Despite
-            positive results, no further research has been carried out due to the lack of funding.
-            Orchard collaborated with Professor David Nutt, Imperial College, London, and Professor
-            Naomi Fineberg, Queen Elizabeth II Hospital, Welwyn Garden City to run a pilot clinical
-            trial with the compound psilocybin. This study will start in the autumn of 2021 and will
-            last 18 months, recruiting and following up 15 patients. If successful, Orchard will
-            launch a larger clinical trial to obtain enough data for a license.
-          </p>
-          <h5>2. Transcranial Direct Current Stimulation (TDCS)</h5>
-          <p>
-            Research at the University of Hertfordshire involves working on a promising new
-            treatment that involves passing a small, almost imperceptible electric current into
-            brain areas connected to OCD. This may help people with OCD think and behave differently
-            and could help treatments work better. This type of brain stimulation is new and
-            experimental, so this project aims to answer basic questions, including if this
-            stimulation shows signs of working, what are the side effects and if doctors and
-            patients are willing to use it. The project also looks at which areas of the brain
-            should be targeted and how long the effects last. This information would help design and
-            implement larger clinical trials.
-          </p>
-          <p>(See Appendix 4 for further details)</p>
-          <h4>Hubs</h4>
-          <p>
-            Orchard aims to provide services and resources for research scientists and clinicians
-            and foster knowledge exchange and efficient collaboration by
-          </p>
-          <ul>
-            <li>Establishing national and international fora and conferences on OCD</li>
-            <li>Building an OCD research database and study repository</li>
-            <li>Building a secure patient registry and recruitment portal</li>
-          </ul>
-          <h4>Dissemination</h4>
-          <p>
-            Orchard actively disseminates research results, treatments and translational science
-            opportunities in order to raise public awareness around the condition and its
-            debilitating and stigmatising nature.
-          </p>
-          <p>
-            Orchard has built an OCD research community (OCD-R-Us) of over 100 people, bringing
-            together OCD patients and carers, researchers, OCD charities (OCD Action, Orchard,
-            Triumph over Phobia (TOP)), clinicians (OCD clinical expert Prof. Naomi Fineberg (NF))
-            to raise public awareness and generate high quality. Orchard has constructed a web-based
-            questionnaire to improve the understanding of OCD patients of different ages. With the
-            knowledge acquired, Orchard aims to ensure future research programmes are grounded in
-            the living experience of the disorder. The platform serves as effective engagement
-            between different parties to enhance understanding and reduce stigma about OCD.
-          </p>
-          <h3 id="wider-ocd-community">Orchard’s role in the wider OCD community</h3>
-          <h4>Collaborations</h4>
-          <p>Orchard is in regular contact with the following charities:</p>
-          <ul>
-            <li>OCD UK</li>
-            <li>OCD Action</li>
-            <li>International OCD Foundation&apos;s (US)</li>
-            <li>Foundation for OCD Research (US)</li>
-          </ul>
-          <p>
-            Orchard is discussing ways to collaborate and co-fund research projects with Foundation
-            for OCD Research, an organisation with values most in line with Orchard’s goals.
-          </p>
-          <h4>Timeliness</h4>
-          <p>
-            According to the 2015 report of Mental Quotient, very little research funding is going
-            into OCD treatment development along with disease prevention, screening, and diagnosis
-            and disease management. OCD is the most underfunded mental health disorder even though
-            it is listed by the World Health Organization among the 10 most debilitating conditions.
-            There is an important unmet need both on the patient and research sides.
-          </p>
-          <p>
-            There are few organisations focused on OCD research (three of the four aforementioned
-            charities focus on patient support rather than research). Orchard OCD fills a major gap
-            in one of the most debilitating and neglected mental health conditions.
           </p>
         </Prose>
       </PageSection>
@@ -794,20 +472,19 @@ export default function ResearchStrategyPage() {
             target childhood, adolescence, and perinatal states.
           </p>
           <h4>2. Staged treatment approaches to maximise patient benefit</h4>
+          <p>
+            Our treatment guides cover{' '}
+            <Link href="/first-line-treatment">first-line treatment</Link>,{' '}
+            <Link href="/beyond-first-line-therapy">beyond first-line therapy</Link>,{' '}
+            <Link href="/brain-stimulation">brain stimulation</Link> and{' '}
+            <Link href="/complementary-and-alternative-therapies">
+              complementary and alternative therapies
+            </Link>
+            . The research priorities for staged treatment are set out below.
+          </p>
           <h5>I. First-line treatments</h5>
           <p>
-            Current first-line interventions for managing OCD across the age range usually include
-            one or both of the below:
-          </p>
-          <ul>
-            <li>
-              Pharmacological treatments such as serotonin reuptake inhibitors (SRIs), clomipramine,
-              or selective SRIs (SSRIs)
-            </li>
-            <li>CBT typically involving exposure and response prevention (ERP)</li>
-          </ul>
-          <p>
-            However, these treatments only benefit ~50% of patients. Moreover, the degree of
+            First-line treatments only benefit ~50% of patients. Moreover, the degree of
             improvement is usually only partial. We need reliable predictive markers to help
             identify who will respond well to either, or both forms of treatment, in order to guide
             treatment allocation.
@@ -1013,7 +690,8 @@ export default function ResearchStrategyPage() {
           <p>
             <strong>Objective B:</strong> An altogether more visionary approach will be to address
             the fundamental un-answered question that lies at the heart of all the above – i.e. what
-            causes OCD? This is also a key question asked by OCD patients (see appendix 3). The
+            causes OCD? This is also a key question asked by OCD patients (see{' '}
+            <a href="#appendix-3">patient priorities</a>). The
             concept would be to prospectively identify and follow-up, under controlled conditions,
             large ‘at risk’ cohorts of individuals (e.g. the children of parents with OCD) over the
             period when OCD is known to develop (e.g. prenatal-30 years of age), gathering
@@ -2304,8 +1982,7 @@ export default function ResearchStrategyPage() {
             <li>
               In 2020, Orchard raised over £120,000 through a combination of crowdfunding and
               charitable trust grants to fund research on psilocybin as a potential OCD treatment.
-              This study was delayed due to Covid-19, but will start in the autumn of 2021 and will
-              last 18 months, recruiting and following up 15 patients.
+              The trial is now complete and is no longer recruiting participants.
             </li>
           </ul>
           <h3>Expected Outcomes</h3>
@@ -3563,312 +3240,7 @@ export default function ResearchStrategyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="Appendix 1 – The Team" id="appendix-1" tone="ruled">
-        <Prose className={DOC_PROSE}>
-          <h3>The board of trustees</h3>
-          <p>
-            Our board of trustees comprises five experienced professionals with a passion for
-            healthcare and mental health, as well as personal connections with OCD. Our collective
-            scientific expertise in neuroscience, drug development, clinical trials, clinical
-            psychiatry and healthcare is complemented by abundant experience in business,
-            communications, charity development, fundraising and social enterprise.
-          </p>
-        </Prose>
-        <Person
-          file="nick-sireau.jpg"
-          width={274}
-          height={411}
-          alt="Nick Sireau, wearing a dark jacket, looking to camera outdoors"
-        >
-          <p>
-            Dr Nick Sireau is founder and chair of Orchard OCD. Nick is a serial social entrepreneur
-            with 20 years experience in medical charities. Most recently, he founded and is now
-            leading a successful consortium developing a treatment for Black Bone Disease, an ultra
-            rare genetic disease affecting his children. Nick is also an OCD patient.
-          </p>
-        </Person>
-        <Person
-          file="sean-fletcher.jpg"
-          width={339}
-          height={339}
-          alt="Sean Fletcher, smiling to camera in front of a city skyline"
-        >
-          <p>
-            Sean Fletcher has been broadcasting on the BBC, ITV and Sky for more than 15 years. His
-            journalism includes the Panorama investigation, Kids in Crises, which examined whether
-            the Child and Adolescent Mental Health Services are fit for purpose. He also presents on
-            Countryfile, Inside Out and Good Morning Britain. Sean’s son has OCD.
-          </p>
-        </Person>
-        <Person
-          file="vincenzo-garzya.jpg"
-          width={287}
-          height={430}
-          alt="Vincenzo Garzya in a suit and tie, looking to camera"
-        >
-          <p>
-            Vincenzo Garzya is project director in Global Medical Affairs at AstraZeneca, with 20
-            years&apos; pharmaceutical experience in patient centricity, business development and
-            neuroscience.
-          </p>
-        </Person>
-        <Person
-          file="naomi-fineberg.jpg"
-          width={280}
-          height={280}
-          alt="Naomi Fineberg, smiling to camera against a plain background"
-        >
-          <p>
-            Prof Naomi Fineberg is a consultant psychiatrist with 30 years&apos; experience in
-            systematic investigation and treatment of OCD. Naomi serves on the UK National Institute
-            for Clinical Excellence Guidelines Committee for OCD. She is also running an OCD
-            specialist centre at the Hertfordshire Partnerships Mental Health Trust, Queen Elisabeth
-            II Hospital.
-          </p>
-        </Person>
-        <Person
-          file="neil-balmer.jpg"
-          width={329}
-          height={347}
-          alt="Neil Balmer, looking off to one side in a gallery interior"
-        >
-          <p>
-            Neil Balmer has worked in healthcare strategy and external affairs for nearly 20 years,
-            liaising with charities, professional medical organisations and businesses. Most
-            recently, he launched and established MQ, the UK&apos;s leading mental health research
-            charity, as a member of the organisation’s founding Executive team. He has personal
-            experience of OCD.
-          </p>
-        </Person>
-        <Prose className={cn(DOC_PROSE, 'mt-14')}>
-          <h3>Scientific Advisory Board</h3>
-          <p>
-            Our scientific advisory board is made up of world-leading experts in the science and
-            treatment of OCD.
-          </p>
-        </Prose>
-        <Person
-          file="stuart-montgomery.jpg"
-          width={456}
-          height={456}
-          alt="Stuart Montgomery in a suit, standing in a garden"
-        >
-          <h4>STUART MONTGOMERY, MD</h4>
-          <p>Chair</p>
-          <p>
-            Stuart Montgomery is an emeritus professor of Psychiatry at Imperial College London. He
-            is a former President of the European College of Neuropsychopharmacology (ECNP) and of
-            the British Association of Psychopharmacology (BAP). His research in OCD has been
-            seminal, as were his efforts in establishing educational charities in OCD such as OCD
-            Action. His rating scale in depression, the MADRS, is regarded as the most sensitive
-            instrument and is widely used. He was a founding editor of European
-            Neuropsychopharmacology and worked as an editor of International Clinical
-            Psychopharmacology for 25 years.
-          </p>
-        </Person>
-        <Person
-          file="trevor-robbins.jpg"
-          width={388}
-          height={388}
-          alt="Trevor Robbins, smiling to camera in front of a bookshelf"
-        >
-          <h4>TREVOR ROBBINS, CBE, FRS, FMEDSCI, PHD</h4>
-          <p>
-            Prof Trevor Robbins is a professor of cognitive neuroscience with an international
-            reputation in the fields of cognitive neuroscience, behavioural neuroscience and
-            psychopharmacology. He is Director of the University of Cambridge’s Behavioural and
-            Clinical Neuroscience Institute (BCNI) and is leading a major research study into the
-            neuroscience of OCD.
-          </p>
-        </Person>
-        <Person
-          file="david-adam.jpg"
-          width={365}
-          height={365}
-          alt="David Adam, looking to camera against a brick wall"
-        >
-          <h4>DAVID ADAM, PHD</h4>
-          <p>
-            David Adam is an experienced journalist and best-selling author. In 2014 he published
-            The Man Who Couldn’t Stop, a book that discussed his own experiences of OCD, as well as
-            discussing the science, history and treatments of the disorder. He has since been
-            invited to speak on the topic around the world. His second book, The Genius Within, on
-            the subject of intelligence and cognitive enhancement, was published in 2018. David was
-            an editor at the science journal Nature and was previously a special correspondent at
-            the Guardian, writing on science and the environment.
-          </p>
-        </Person>
-        <Person
-          file="susanne-ahmari.jpg"
-          width={370}
-          height={370}
-          alt="Susanne Ahmari, smiling to camera in a patterned top"
-        >
-          <h4>SUSANNE AHMARI, MD, PHD</h4>
-          <p>
-            Dr Susanne Ahmari is assistant professor of Psychiatry at University of Pittsburgh, and
-            Director of the Translational OCD Laboratory. Dr Ahmari’s research programme integrates
-            basic neuroscience approaches and cutting-edge technology in animal models with clinical
-            and post-mortem studies of OCD patients. Her ultimate goal is to identify molecular,
-            cellular, and circuit-level changes that underlie the onset and persistence of abnormal
-            repetitive and compulsive behaviors, and use this information to develop
-            neuroscientifically-based treatments for OCD and other related disorders.
-          </p>
-        </Person>
-        <Person
-          file="sabine-bahn.jpg"
-          width={311}
-          height={354}
-          alt="Sabine Bahn, looking to camera in a dark jacket"
-        >
-          <h4>SABINE BAHN, MD, PHD, MRCPSYCH</h4>
-          <p>
-            Dr Sabine Bahn is a practising psychiatrist, Chair in Neurotechnology and Director of
-            the Cambridge Centre for Neuropsychiatric Research at the University of Cambridge. Her
-            main research interests are the molecular basis of neuropsychiatric disorders and
-            developing novel diagnostics and therapeutics for psychiatric disorders, with a focus on
-            schizophrenia and mood disorders. Sabine has published over 200 research articles and
-            has co-founded 2 spin-out companies. Since 2015, Sabine has been a fellow of the Royal
-            Society of Biology. She is also a fellow of Lucy Cavendish College, Cambridge.
-          </p>
-        </Person>
-        <Person
-          file="lynne-drummond.jpg"
-          width={366}
-          height={349}
-          alt="Lynne Drummond, wearing glasses and a dark jacket, looking to camera"
-        >
-          <h4>LYNNE DRUMMOND, MBCHB, MRCP, FRCPSYCH</h4>
-          <p>
-            Lynne Drummond was Consultant Psychiatrist with the National and Trustwide Services for
-            OCD and BDD at South West London and St George’s NHS Mental Health Trust from 1985 until
-            August 2020. Since then, she has been Honorary Consultant Psychiatrist in South West
-            London and Visiting Professor at the University of Hertfordshire. Her research interests
-            include OCD, anxiety disorders, CBT, the role exercise plays in mental health and the
-            education of healthcare professionals. Lynne’s latest book is “Obsessive-Compulsive
-            Disorders: All you want to know about OCD for those living with OCD, carers and
-            clinicians&apos;&apos;.
-          </p>
-          <p>
-            She is on the Board of Directors of the International College for Obsessive Compulsive
-            Spectrum Disorders and chairs the Obsessive Compulsive and related Disorders network at
-            the Royal College of Psychiatrists.
-          </p>
-        </Person>
-        <Prose className={cn(DOC_PROSE, 'mt-10')}>
-          <h4>JIM HAGAN, PHD</h4>
-          <p>
-            Dr. Jim Hagan is a Senior Research Fellow in Neurosciences at Sosei-Heptares, working on
-            drug discovery programmes for neuropsychiatric indications. Previously, he was the CEO
-            at GMEC, a not-for-profit company formed by the Universities of Oxford and Cambridge,
-            Imperial College, UCL, King’s College London and Queen Mary College London to foster
-            biomedical translational research. He was Vice President and Head of Biology in the
-            Psychiatry Centre of Excellence in Drug Discovery at GSK.
-          </p>
-        </Prose>
-        <Person
-          file="carolyn-rodriguez.jpg"
-          width={456}
-          height={456}
-          alt="Carolyn Rodriguez, smiling to camera with long dark hair"
-        >
-          <h4>CAROLYN RODRIGUEZ, MD, PHD</h4>
-          <p>
-            Dr Carolyn Rodriguez is assistant professor in the Department of Psychiatry and
-            Behavioural Science at Stanford University, School of Medicine. She utilises her
-            training as a psychiatrist, neuroscientist, and clinical researcher to innovate
-            rapid-acting treatments such as ketamine to relieve the suffering of patients with
-            severe mental illnesses, including OCD.
-          </p>
-        </Person>
-      </PageSection>
-
-      <PageSection
-        heading="Appendix 2 – Table of existing and experimental treatments for OCD"
-        id="appendix-2"
-        tone="ruled"
-      >
-        <Table
-          caption="Existing and experimental treatments for OCD, with efficacy, side effects, on-going studies and references"
-          head={['Category', 'Name', 'Efficacy', 'Side effects', 'On-going studies', 'References']}
-          rows={[
-            [
-              'Medications',
-              'Selective Serotonin Reuptake Inhibitors (SSRIs): Sertraline, Fluoxetine, Citalopram. Serotonin Reuptake Inhibitors (SRIs): Clomipramine',
-              'Reduces symptoms by only 30% to 50%.',
-              'Heightened anxiety, sexual dysfunction, weight gain, etc.',
-              'SSRI studies are on-going and are coupled with other new treatments (e.g.: CBT, etc.)',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT00994786?term=ocd+ssri&rank=12',
-            ],
-            [
-              'Electro-convulsive therapy (ECT)',
-              'Deep brain stimulation (DBS) for severely treatment resistant patients',
-              'Effective in 50% of cases.',
-              'Seizure, infection, heart problems, etc.',
-              'University College London.',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT01879254?term=ocd+dbs&rank=4',
-            ],
-            [
-              'Psychological therapies',
-              'Cognitive and behavioural therapy (CBT): Acceptance and commitment therapy (ACT)',
-              'Has shown some efficacy. Further studies needed.',
-              'None.',
-              'Shanghai Mental Health Centre.',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT02955654?term=OCD+act&rank=5',
-            ],
-            [
-              'Psychological therapies',
-              'Cognitive and behavioural therapy (CBT): Eye movement desensitisation and reprocessing (EMDR)',
-              'Undetermined. Studies on-going.',
-              'None.',
-              'None on-going.',
-              '',
-            ],
-            [
-              'Psychological therapies',
-              'Cognitive and behavioural therapy (CBT): Exposure and response prevention (ERP)',
-              'Can be effective in children and adults. Evidence is scarce for the elderly.',
-              'None.',
-              'Studies on-going adding CBT to other therapies',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT02136953?term=ocd+cbt&rank=3',
-            ],
-            [
-              'Psychological therapies',
-              'Transcranial magnetic stimulation (TMS)',
-              'Contradictory. Studies on-going.',
-              'Headache, seizure, general pain.',
-              'Duke University.',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT02528331?term=ocd+tms&rank=2',
-            ],
-            [
-              'Experimental therapies',
-              'Drugs: Ketamine',
-              'Some positive early effects. Studies on-going.',
-              'Body-mind dissociation.',
-              'Stanford University; New York State Psychiatric Institute.',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT02422290?term=ocd+ketamine&rank=1',
-            ],
-            [
-              'Experimental therapies',
-              'Drugs: Psilocybin',
-              'Some positive early results. More studies needed.',
-              'Hallucinations.',
-              'Imperial College.',
-              'E.g.: http://www.maps.org/research-archive/psilo/azproto.html',
-            ],
-            [
-              'Experimental therapies',
-              'Drugs: Bitopertin',
-              'Not known.',
-              'Not known.',
-              'Roche, Phase II clinical study.',
-              'E.g.: https://clinicaltrials.gov/ct2/show/NCT01674361?term=OCD+ssri&rank=10',
-            ],
-          ]}
-        />
-      </PageSection>
-
-      <PageSection heading="Appendix 3 - What the patients want" id="appendix-3" tone="ruled">
+      <PageSection heading="Patient priorities" id="appendix-3" tone="ruled">
         <Prose className={DOC_PROSE}>
           <p>
             In 2021, Orchard OCD worked with the Cambridge Consulting Network to carry out an
@@ -3961,98 +3333,7 @@ export default function ResearchStrategyPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="Appendix 4 - Existing research projects" id="appendix-4" tone="ruled">
-        <Prose className={DOC_PROSE}>
-          <h3>First research project - psilocybin</h3>
-          <p>
-            Our first existing research project focuses on drug development in collaboration with
-            Professor David Nutt, Imperial College, London, and Professor Naomi Fineberg, Queen
-            Elizabeth II Hospital, Welwyn Garden City. Following fundraising of over £120,000
-            through crowdfunding and charitable trust grants, we are preparing to run a pilot
-            clinical trial with the compound psilocybin. In a small experimental study, published in
-            2006<sup>1</sup>, psilocybin was reported to significantly reduce OCD symptoms in all
-            treatment-resistant patients enrolled in the study.
-          </p>
-          <p>
-            <sup>1</sup> Moreno FA1, Wiegand CB, Taitano EK, Delgado PL. (2006).Safety,
-            tolerability, and efficacy of psilocybin in 9 patients with obsessive-compulsive
-            disorder. Journal of Clinical Psychiatry. 2006 Nov;67(11):1735-40.
-          </p>
-          <p>
-            However, despite the positive results and ample subjective positive reports among OCD
-            patients, no further study was carried out, due to lack of funding. It is thus crucial
-            to follow it up and understand further how effective psilocybin can be in treating OCD.
-          </p>
-          <p>
-            This study will start in the autumn of 2021 and will last 18 months, recruiting and
-            following up 15 patients. If successful, we will launch a larger clinical trial, for
-            which we will require further funding, to obtain enough data for a license.
-          </p>
-          <p>
-            The potential for an enduring effect of psilocybin, independent of its psychedelic
-            effect, is particularly interesting and may reflect its central actions as a 5HT2A
-            agonist. The research team intends to test the hypothesis that psilocybin exerts an
-            enduring effect on OCD symptoms by activating the 5HT2A receptor mechanisms in the
-            relevant brain circuitry. They predict they might additionally restore key OCD-related
-            cognitive deficits that may be sensitive to serotonin manipulation, including deficits
-            in behavioural inhibition (attentional set shift, reversal learning) and the balance
-            between goal-directed behaviour and habit. To this end, they plan to conduct a
-            single-dose pharmacological challenge study.
-          </p>
-          <p>
-            They will use a similar dose to the low dose used in Moreno, et al., [J Clin Psychiatry,
-            2006. 67:1735], of 100 μg/kg ≈ 10 mg. This dose is unlikely to induce a psychedelic
-            effect. Participants will be tested at baseline and then at regular intervals over the
-            first 8 hours, and at 1, 7, 30, and 90 days post-psilocybin ingestion. The researchers
-            will measure in detail the effects of this psilocybin-mediated 5HT2A receptor modulation
-            on laboratory-based tasks. Additionally, they will perform a symptom provocation
-            challenge tailored to the individual’s OCD symptoms at baseline and 24 hours
-            post-psilocybin ingestion, to examine the effect that this 5HT2A receptor modulation has
-            on clinically relevant obsessive-compulsive symptoms.
-          </p>
-          <h3>Second research project - transcranial direct current stimulation</h3>
-          <p>
-            Our second existing research project was at the University of Hertfordshire and funded
-            entirely by the NHS, working on a promising new treatment that involves passing a small,
-            almost imperceptible electric current into brain areas connected to OCD. This may help
-            people with OCD think and behave differently and could help treatments work better.
-          </p>
-          <p>
-            This study was designed to test whether small electrical currents applied to the scalp
-            (called transcranial direct current stimulation, or tDCS) can help treat OCD. Some
-            current passes into the brain where it may change brain functioning. Evidence suggests
-            this could help ease OCD symptoms. This type of brain stimulation is new and
-            experimental, so this study aimed to answer basic questions, including whether this
-            stimulation shows signs of working, what the side effects are, and whether doctors and
-            patients are willing to use it. The study also investigated which areas of the brain
-            should be targeted, and duration of effects. This information will help design and
-            implement larger-scale clinical trials.
-          </p>
-          <p>
-            In this study, patients with OCD visited a clinic for six days over a three-month
-            period. On some visits, patients had a region of the brain stimulated twice with very
-            small amounts of electric current; on other visits, they were told that they were
-            receiving the stimulation, but the current was turned off (placebo). On each occasion,
-            the same assessments of thinking, OCD symptoms, and wellbeing were conducted. Comparing
-            assessment outcomes over time will provide information on the duration of the effects of
-            stimulation. Comparing assessment outcomes between the different treatment sessions
-            (including the placebo) will provide information on the efficacy of the stimulation in
-            reducing OCD symptoms, changing thinking, and improving wellbeing.
-          </p>
-          <p>
-            Upon completion of this study, we will have collected valuable information on whether
-            this form of stimulation is a useful treatment for people with OCD, and how this
-            stimulation might be best used on a wider scale in clinical practice. The information
-            collected will be used to design a larger-scale study, for which we will require further
-            funding.
-          </p>
-          <p>
-            The clinical portion of this study has now been conducted successfully, with analysed
-            data and outcomes available in December.
-          </p>
-        </Prose>
-      </PageSection>
-      <PageSection heading="Appendix 5 - Financial Projections" id="appendix-5" tone="ruled">
+      <PageSection heading="Financial projections" id="appendix-5" tone="ruled">
         <Table
           caption="Financial projections for all seven work packages across five years"
           head={[
@@ -4438,14 +3719,15 @@ export default function ResearchStrategyPage() {
         />
       </PageSection>
 
-      <PageSection heading="Download the full document" id="download" tone="mist">
+      <PageSection heading="Original research strategy document" id="download" tone="mist">
         <Prose>
           <p>
-            This page reproduces the Orchard OCD Research Strategy in full. The original 66-page
-            document is also available as a PDF.
+            The original 66-page Orchard OCD Research Strategy is available as a PDF. It includes
+            the background information and appendices omitted from this page. Project descriptions
+            and team details reflect the time the document was written.
           </p>
           <p>
-            <a href={STRATEGY_PDF_URL}>Download the Orchard OCD Research Strategy (PDF)</a>
+            <a href={STRATEGY_PDF_URL}>Download the original full Orchard OCD Research Strategy (PDF)</a>
           </p>
         </Prose>
       </PageSection>

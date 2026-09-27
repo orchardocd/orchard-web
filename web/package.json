@@ -20,6 +20,7 @@
     "dup": "npx jsinspect-plus@latest --threshold 20 --ignore 'payload-types|\\(payload\\)|\\(frontend\\)' src tests && npx jsinspect-plus@latest --threshold 60 'src/app/(frontend)'",
     "content": "python3 ../tools/extract.py && node src/seed/optimize-assets.mjs",
     "seed": "node --import tsx/esm --env-file-if-exists=.env src/seed/index.ts",
+    "update:content": "node --experimental-sqlite --env-file-if-exists=.env scripts/update-content.mjs",
     "lighthouse": "lhci autorun --config=lighthouserc.json",
     "verify": "pnpm lint && pnpm typecheck && pnpm dup && pnpm seed && pnpm build && pnpm test"
   },

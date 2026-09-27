@@ -116,16 +116,11 @@ export default function AboutOrchardPage() {
         >
           <Prose>
             <p>
-              <strong>Psilocybin</strong>: According to a research project in 2006, psilocybin has
-              been reported to significantly reduce OCD symptoms in OCD patients. Despite positive
-              results, no further research has been carried out due to lack of funding.
-            </p>
-            <p>
-              Orchard collaborated with Professor David Nutt, Imperial College London, and Professor
-              Naomi Fineberg, Queen Elizabeth II Hospital, to run a pilot clinical trial using
-              psilocybin to treat OCD. We raised £60,000 from a crowdfunding campaign in 2020 which
-              was match funded by a foundation. The study has now started and will last 18 months,
-              recruiting and following up 15 patients.
+              <strong>Psilocybin</strong>: Orchard collaborated with Professor David Nutt, Imperial
+              College London, and Professor Naomi Fineberg, Queen Elizabeth II Hospital, on a pilot
+              clinical trial investigating psilocybin for OCD. The trial is now complete and is no
+              longer recruiting participants. Our 2020 crowdfunding campaign helped fund the study,
+              with match funding from a foundation.
             </p>
             <p>
               <strong>Transcranial Direct Current Stimulation (TDCS)</strong>: We received funding

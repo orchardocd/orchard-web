@@ -36,19 +36,17 @@ export default function TheWorkWeDoPage() {
         </Prose>
       </PageSection>
 
-      <PageSection heading="Our current funded research projects include:" tone="mist">
+      <PageSection heading="Our funded research projects" tone="mist">
         <Prose>
           <h3>Psilocybin:</h3>
           <p>
-            According to a research project in 2006, psilocybin has been reported to significantly
-            reduce OCD symptoms in OCD patients. Despite positive results, no further research has
-            been carried out due to lack of funding. Orchard OCD collaborated with Professor David
-            Nutt, <a href="https://www.imperial.ac.uk/">Imperial College London</a>, and Professor
-            Naomi Fineberg, <a href="https://www.newqeii.info/">Queen Elizabeth II Hospital</a>, to
-            run a pilot clinical trial using psilocybin to treat OCD. We raised £60,000 from a{' '}
+            Orchard OCD collaborated with Professor David Nutt,{' '}
+            <a href="https://www.imperial.ac.uk/">Imperial College London</a>, and Professor Naomi
+            Fineberg, <a href="https://www.newqeii.info/">Queen Elizabeth II Hospital</a>, to run a
+            pilot clinical trial investigating psilocybin for OCD. We raised £60,000 from a{' '}
             <a href="https://www.chuffed.org/project/orchardocd#/">crowdfunding campaign</a> in 2020
-            which was match funded by a foundation. The study has now started and will last 18
-            months, recruiting and following up 15 patients.
+            which was match funded by a foundation. The trial is now complete and is no longer
+            recruiting participants.
           </p>
           <h3>Transcranial Direct Current Stimulation (TDCS):</h3>
           <p>
